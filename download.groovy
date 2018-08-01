@@ -15,7 +15,8 @@ void push() {
 	restClient.auth.basic 'jenkins', 'jenkins'
 	restClient.encoder.'application/zip' = this.&encodeZipFile
   
-        def response = restClient.put(path: 'http://epbyminw7425/nexus/repository/maven-archive/test_group_id/' + 
+        def response = restClient.put(path: 'http://epbyminw7425/nexus/repository/maven-archive/' +
+				gr + '/' + 
                                 ar + '/' + 
                                 ver + '.' + build +'/' + 
                                 ar + '-'+ ver + '.' + build + '.tar.gz', 
