@@ -17,4 +17,18 @@ node {
            sh "mvn pre-integration-test -f helloworld-ws"
        }
    }
+   
+   stage('integration-test') {
+       withMaven(maven: 'mavenLocal')
+       {
+           sh "mvn integration-test -f helloworld-ws"
+       }
+   }
+   
+   stage('post-integration-test') {
+       withMaven(maven: 'mavenLocal')
+       {
+           sh "mvn post-integration-test -f helloworld-ws"
+       }
+   }
 }
