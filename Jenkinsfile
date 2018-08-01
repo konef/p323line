@@ -1,0 +1,5 @@
+node("${SLAVE}") {
+	stage ('Preparation') {
+	
+	}
+}
