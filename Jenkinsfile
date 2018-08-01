@@ -29,8 +29,13 @@ node {
         projectName: 'MNTLAB-ymaniukevich-child1-build-job', 
         selector: lastSuccessful()
         }
-
+    stage("Packaging and Publishing results"){
+        sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
+        sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
+        sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
+    
+}
         
-    }
+}
     
 
