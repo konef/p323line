@@ -7,7 +7,7 @@ void push() {
   	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/helloworld-ws/pom.xml')
 	println pom.parent
 	def gr = pom.parent.groupId
-	def ar = pom.parent.artefactId
+	def ar = pom.artifactId
 	def ver = pom.parent.version
   	def restClient =  new RESTClient('http://epbyminw7425/nexus/repository/maven-archive/')
 	def workspace = System.getenv("WORKSPACE")
