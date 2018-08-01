@@ -8,7 +8,7 @@ node {
     	  [url: 'git@github.org:MNT-Lab/d323dsl.git']])
 	}
 
-	stage('Build' {
+	stage('Build') {
     	  mvn package
 	}
 
