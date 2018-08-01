@@ -8,7 +8,7 @@ node() {
             sh "mvn -f ./helloworld-ws/pom.xml package"
         }
 	}
-	stage ('Testing') {
+	/*stage ('Testing') {
 	    withMaven(maven: 'mavenLocal') {
 		    parallel (
 		        'pre-integration-test': { 
@@ -22,8 +22,13 @@ node() {
                 }
             )
 	    }
-	}
-	/*stage ('Triggering job and fetching artefact after finishing') {
-		
 	}*/
+	stage ('Triggering job and fetching artefact after finishing') {
+	    build job: 'MNTLAB-omonko-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: 'omonko')]
+	    step([  $class: 'CopyArtifact',
+                        filter: 'omonko_dsl_script.tar.gz	',
+                        fingerprintArtifacts: true,
+                        projectName: 'MNTLAB-omonko-child1-build-job'
+        ])
+	}
 }
