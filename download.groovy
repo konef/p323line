@@ -5,6 +5,7 @@ import org.apache.http.entity.*
 	
 void push() {
   	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/helloworld-ws/pom.xml')
+	println pom
 	println pom.groupId
 	println pom.artefactId
 	println pom.version
@@ -23,7 +24,7 @@ void push() {
                                 ar + '-'+ ver + '.' + build + '.tar.gz', 
                                 body: new File(workspace + '/helloworld-ws/target/' + 
                                                ar + '-' + 
-                                               ver + '.' + build + '.tar.gz'),
+                                               ver + '.' + build + '.war'),
                                 requestContentType: 'application/zip')
 }
 
