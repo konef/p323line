@@ -1,8 +1,8 @@
 
 node{
 
-    //tool name: 'mavenLocal', type: 'maven'
-    //tool name: 'java8', type: 'jdk'
+    tool name: 'mavenLocal', type: 'maven'
+    tool name: 'java8', type: 'jdk'
 
     stage('Preparation') {
         deleteDir()
@@ -11,8 +11,11 @@ node{
         echo "\u2705"
     }
     stage('Building code'){
-        sh 'mvn -f helloworld-ws/pom.xml package'
-        sh 'ls -la helloworld-ws/'
+        def mvn_version = 'mavenLocal'
+        withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+            sh 'mvn -f helloworld-ws/pom.xml package'
+            sh 'ls -la helloworld-ws/'
+        }
     }
 }
 
