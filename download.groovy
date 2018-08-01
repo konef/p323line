@@ -19,9 +19,7 @@ void push() {
                                 ar + '/' + 
                                 ver + '.' + build +'/' + 
                                 ar + '-'+ ver + '.' + build + '.tar.gz', 
-                                body: new File(workspace + '/helloworld-ws/target/' + 
-                                               ar + '-' + 
-                                               ver + '.' + build + '.war'),
+                                body: new File(workspace + '/pipeline-mznak-'+build+'.tar.gz'),
                                 requestContentType: 'application/zip')
 }
 
