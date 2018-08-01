@@ -4,20 +4,23 @@ import org.apache.http.entity.*
 
 	
 void push() {
-  	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/pom.xml')
-  	def restClient =  new RESTClient('http://192.168.1.102:8081/repository/maven-archive/')
+  	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/helloworld-ws/pom.xml')
+	def gr = pom.groupId
+	def ar = pom.artefactId
+	def ver = pom.version
+  	def restClient =  new RESTClient('http://epbyminw7425/nexus/repository/maven-archive/')
 	def workspace = System.getenv("WORKSPACE")
   	def build = System.getenv("BUILD_NUMBER")
 	restClient.auth.basic 'jenkins', 'jenkins'
 	restClient.encoder.'application/zip' = this.&encodeZipFile
   
-        def response = restClient.put(path: 'http://192.168.1.102:8081/repository/maven-archive/test_group_id/' + 
-                                System.getenv("ar") + '/' + 
-                                System.getenv("ver") + '.' + build +'/' + 
-                                System.getenv("ar") + '-'+ System.getenv("ver") + '.' + build + '.tar.gz', 
+        def response = restClient.put(path: 'http://epbyminw7425/nexus/repository/maven-archive/test_group_id/' + 
+                                ar + '/' + 
+                                ver + '.' + build +'/' + 
+                                ar + '-'+ ver + '.' + build + '.tar.gz', 
                                 body: new File(workspace + '/target/' + 
-                                               System.getenv("ar") + '-' + 
-                                               System.getenv("ver") + '.' + build + '.tar.gz'),
+                                               ar + '-' + 
+                                               ver + '.' + build + '.tar.gz'),
                                 requestContentType: 'application/zip')
 }
 
@@ -29,19 +32,13 @@ def encodeZipFile(Object data) throws UnsupportedEncodingException {
 }
 
 
-void pull() {
-  
-  	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/pom.xml')
+void pull() {  
+  	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/helloworld-ws/pom.xml')
 	def gr = pom.groupId
-  	println gr
-	//println pom.artifactId
-	//println pom.version
-	//ver = ver.take(4)
-   	// num = System.getenv("BUILD_NUMBER")
-  	def restClient =  new RESTClient('http://192.168.1.102:8081/repository/maven-archive/')
+  	def restClient =  new RESTClient('http://epbyminw7425/nexus/repository/maven-archive/')
 	def workspace = System.getenv("WORKSPACE")
   
-        def remoteUrl = 'http://192.168.1.102:8081/repository/maven-archive/' + gr +
+        def remoteUrl = 'http://epbyminw7425/nexus/repository/maven-archive/' + gr +
         '/'+ System.getenv("ar") +
         '/'+ System.getenv("ver") + '.' + System.getenv("INPUT_BUILD") + 
         '/' + System.getenv("ar") + '-'+ System.getenv("ver") + '.' + System.getenv("INPUT_BUILD") + '.war'
@@ -60,9 +57,9 @@ def cli = new CliBuilder()
 def options = cli.parse(args)
 def arguments = options.arguments()
 
-if (arguments.size() != 0 && System.getenv("ACTION") == 'pull' ){
+if (arguments.size() != 0 && arguments[0] == 'pull' ){
     pull()
 }
-else  if (arguments.size() != 0 && System.getenv("ACTION") == 'push' ){
+else  if (arguments.size() != 0 && arguments[0] == 'push' ){
     push()
 }
