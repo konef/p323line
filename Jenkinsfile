@@ -7,7 +7,7 @@ node() {
             sh "mvn -f ./helloworld-ws/pom.xml package"
         }
     }
-    stage ('Testing') {
+/*    stage ('Testing') {
         withMaven(maven: 'mavenLocal') {
             parallel (
                 "pre-integration-test" : {
@@ -21,7 +21,7 @@ node() {
                 }
             )
         }
-    }
+    }*/
     stage ('Triggering job and fetching artefact after finishing') {
         build job: "MNTLAB-aaranski-child1-build-job", parameters: [
             string(name: 'BRANCH_NAME', value: 'aaranski')
@@ -39,5 +39,20 @@ node() {
         export PATH=$PATH:$GROOVY_HOME/bin
         groovy push_pull.groovy push
         '''
+    }
+    stage ('Asking for manual approva') {
+        def userInput = true
+        try {
+            timeout(time: 60, unit: 'SECONDS') {
+                userInput = input(
+                id: 'Proceed1', message: 'Approve release?', parameters: [
+                [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+                ])
+            }
+        } catch(err) {
+            def user = err.getCauses()[0].getUser()
+            echo "Aborted by: [${user}]"
+            currentStage.result = 'ABORTED'
+        }
     }
 }
