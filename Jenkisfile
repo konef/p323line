@@ -1,1 +1,45 @@
+node{
+    stage('Checkout'){
+        checkout([$class: 'GitSCM', branches: [[name: 'mznak']],
+                  doGenerateSubmoduleConfigurations: false,
+                  extensions: [], submoduleCfg: [],
+                  userRemoteConfigs: [[url: 'https://github.com/MNT-Lab/p323line']]])
+    }
+    stage('Building code'){
+        withMaven(maven: 'mavenLocal'){
+            sh "mvn -f ./helloworld-ws/pom.xml package"
+        }
+    }
+    parallel(
+            'pre-integration-test':{
+                stage ('pre-integration-test')
+                        {
+                            withMaven(maven: 'mavenLocal'){
+                                sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
+                            }
+                        }
+            },
+            'integration-test':{
+                stage ('integration-test')
+                        {
+                            withMaven(maven: 'mavenLocal'){
+                                sh "mvn -f ./helloworld-ws/pom.xml integration-test"
+                            }
+                        }
+            },
+            'post-integration-test':{
+                stage ('post-integration-test')
+                        {
+                            withMaven(maven: 'mavenLocal'){
+                                sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
+                            }
+                        }
+            }
+    )
 
+    stage ('Triggering job'){
+        build job: 'test/MNTLAB-mznak-child1-build-job', parameters: [[$class: 'GitParameterValue', name: 'BRANCH_NAME', value: 'mznak']]
+        copyArtifacts filter: '$BRANCH_NAME_dsl_script.tar.gz', fingerprintArtifacts: true, projectName: 'test', selector: workspace(), target: '$WORKSPACE'
+    }
+
+}
