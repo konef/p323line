@@ -36,7 +36,16 @@ node() {
 	   tar -cvzf pipeline-omonko-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy -C helloworld-ws/target/ helloworld-ws.war''' 	
 	   archiveArtifacts 'pipeline-omonko-${BUILD_NUMBER}.tar.gz'
 	   //nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [], mavenCoordinate: [artifactId: 'pipeline-omonko-${BUILD_NUMBER}.tar.gz', groupId: 'Task11', packaging: 'zip', version: '${BUILD_NUMBER}']]]
-	   nexusArtifactUploader artifacts: [[artifactId: 'pipeline-omonko', classifier: '', file: 'pipeline-omonko-${BUILD_NUMBER}.tar.gz', type: 'tar.gz']], credentialsId: 'nexus', groupId: 'Task11', nexusUrl: '192.168.1.3', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '$BUILD_NUMBER'
+	   nexusArtifactUploader artifacts: [[artifactId: 'pipeline-omonko', classifier: '', file: 'pipeline-omonko-${BUILD_NUMBER}.tar.gz', type: 'tar.gz']], credentialsId: 'nexus', groupId: 'Task11', nexusUrl: 'nexus', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '$BUILD_NUMBER'
 
 	}
+	stage ('Asking for manual approval') {
+	    input "Deploy to prod?"
+	    timeout(time: 3, unit: 'MINUTES') {
+            input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
+        }
+	}
+	stage ('Deployment') {
+	   
+    }
 }
