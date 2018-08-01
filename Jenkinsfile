@@ -1,28 +1,32 @@
 node {
-	def app
+       stage('Clone sources') {
+        git url: 'https://github.com/MNT-Lab/p323line.git', branch: 'dzhukova';}
+stage('Build') {
+           withMaven(maven: 'mavenLocal')
+        {
+           sh "mvn -f ./helloworld-ws/pom.xml clean install"
+        }
+}
+parallel('pre-integration-test': {
+stage('pre-integration-test') {
+           withMaven(maven: 'mavenLocal')
+        {
+           sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
+        }
+}},
+'integration-test': { 
+    stage('integration-test') {
+           withMaven(maven: 'mavenLocal')
+        {
+           sh "mvn -f ./helloworld-ws/pom.xml integration-test"
+        }
+}},
+'post-integration-test': {
+    stage('post-integration-test') {
+           withMaven(maven: 'mavenLocal')
+        {
+           sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
+        }
+}})
 
-	stage('Clone repository') {
-    	  checkout([$class: 'GitSCM', branches: [[name: '*/dzhukova']],
-    	  doGenerateSubmoduleConfigurations: false, extensions: [],
-    	  submoduleCfg: [], userRemoteConfigs:
-    	  [url: 'git@github.org:MNT-Lab/d323dsl.git']])
-	}
-
-	stage('Build') {
-    	  mvn package
-	}
-
-	stage('pre-integration-test') {
-	mvn pre-integration-test
-	}
- 	stage('integration-test') {
-        mvn integration-test
-	}
- 	stage('post-integration-test') {
-        mvn post-integration-test
-	}
-
-	stage('Push') {
-    	  echo 'Push image'
-	}
 }
