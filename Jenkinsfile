@@ -19,7 +19,18 @@ node {
         "post-Integration test": {
             sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
         }
-        )}
+        )
+        }
+    stage("Triggering job and fetching"){
+        build job: 'MNTLAB-ymaniukevich-child1-build-job', 
+        parameters: [string(name: 'BRANCH_NAME', value: 'ymaniukevich')]
+        copyArtifacts filter: 'ymaniukevich_dsl_script.tar.gz',
+        fingerprintArtifacts: true, 
+        projectName: 'MNTLAB-ymaniukevich-child1-build-job', 
+        selector: lastSuccessful()
+        }
+
+        
     }
     
 
