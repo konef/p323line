@@ -39,7 +39,11 @@ node{
 
     stage ('Triggering job'){
         build job: 'test/MNTLAB-mznak-child1-build-job', parameters: [[$class: 'GitParameterValue', name: 'BRANCH_NAME', value: 'mznak']]
-        copyArtifacts filter: '$BRANCH_NAME_dsl_script.tar.gz', fingerprintArtifacts: true, projectName: 'test', selector: workspace(), target: '$WORKSPACE'
+        copyArtifacts filter: 'mznak_dsl_script.tar.gz', projectName: 'test/MNTLAB-mznak-child1-build-job', selector: workspace()
     }
 
+    stage ('Packaging and Publishing results'){
+        sh "tar -xzvf  mznak_dsl_script.tar.gz"
+        sh "tar -czvf pipeline-mznak-${BUILD_NUMBER}.tar.gz Jenkisfile jobs.groovy -C ./helloworld-ws/target/ helloworld-ws.war "
+    }
 }
