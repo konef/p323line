@@ -5,10 +5,6 @@ import org.apache.http.entity.*
 	
 void push() {
   	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/helloworld-ws/pom.xml')
-	println pom.parent
-	def gr = pom.parent.groupId
-	def ar = pom.artifactId
-	def ver = pom.parent.version
   	def restClient =  new RESTClient('http://epbyminw7425/nexus/repository/maven-archive/')
 	def workspace = System.getenv("WORKSPACE")
   	def build = System.getenv("BUILD_NUMBER")
@@ -34,14 +30,18 @@ def encodeZipFile(Object data) throws UnsupportedEncodingException {
 
 void pull() {  
   	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/helloworld-ws/pom.xml')
-	def gr = pom.groupId
+	def gr = pom.parent.groupId
+	def ar = pom.artifactId
+	def ver = pom.parent.version
+  	def build = System.getenv("BUILD_NUMBER")
+	
   	def restClient =  new RESTClient('http://epbyminw7425/nexus/repository/maven-archive/')
 	def workspace = System.getenv("WORKSPACE")
   
         def remoteUrl = 'http://epbyminw7425/nexus/repository/maven-archive/' + gr +
-        '/'+ System.getenv("ar") +
-        '/'+ System.getenv("ver") + '.' + System.getenv("INPUT_BUILD") + 
-        '/' + System.getenv("ar") + '-'+ System.getenv("ver") + '.' + System.getenv("INPUT_BUILD") + '.war'
+        '/'+ ar +
+        '/'+ ver + '.' + System.getenv("INPUT_BUILD") + 
+        '/' + System.getenv("ar") + '-'+ System.getenv("ver") + '.' + build + '.war'
         def url = new URL(remoteUrl)
         def authString = "jenkins:jenkins".getBytes().encodeBase64().toString()
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
