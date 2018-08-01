@@ -3,7 +3,7 @@ node{
 
     tool name: 'mavenLocal', type: 'maven'
     tool name: 'java8', type: 'jdk'
-
+    def mvn_version = 'mavenLocal'
     stage('Preparation') {
         deleteDir()
         //checkout([$class: 'GitSCM', branches: [[name: '*/aandryieuski']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/MNT-Lab/p323line.git']]])
@@ -15,6 +15,41 @@ node{
         withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
             sh 'mvn -f helloworld-ws/pom.xml package'
             sh 'ls -la helloworld-ws/'
+        }
+    }
+    stage('Testing'){
+        parallel pre-integration-test: {
+            try {
+                sh 'echo "Build pre-integration-test parallel stage"'
+                withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+                    sh 'mvn -f helloworld-ws/pom.xml pre-integration-test'
+                }
+            }
+            finally {
+                sh 'echo "Finished this stage"'
+            }
+
+        }, integration-test: {
+            try {
+                sh 'echo "Build integration-test parallel stage"'
+                withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+                    sh 'mvn -f helloworld-ws/pom.xml integration-test'
+                }
+            }
+            finally {
+                sh 'echo "Finished this stage"'
+            }
+
+        }, post-integration-test: {
+            try {
+                sh 'echo "Build post-integration-test parallel stage"'
+                withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+                    sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
+                }
+            }
+            finally {
+                sh 'echo "Finished this stage"'
+            }
         }
     }
 }
