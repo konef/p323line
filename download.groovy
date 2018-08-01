@@ -5,6 +5,9 @@ import org.apache.http.entity.*
 	
 void push() {
   	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/helloworld-ws/pom.xml')
+	println pom.groupId
+	println pom.artefactId
+	println pom.version
 	def gr = pom.groupId
 	def ar = pom.artefactId
 	def ver = pom.version
