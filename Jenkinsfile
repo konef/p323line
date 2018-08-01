@@ -7,7 +7,14 @@ node {
    stage('Build') { 
        withMaven(maven: 'mavenLocal')
        {
-           sh "mvn clean install -f helloworld-ws/pom.xml"
+           sh "mvn package -f helloworld-ws/pom.xml"
+       }
+   }
+   
+   stage('pre-integration-test') {
+       withMaven(maven: 'mavenLocal')
+       {
+           sh "mvn pre-integration-test -f helloworld-ws"
        }
    }
 }
