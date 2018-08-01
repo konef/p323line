@@ -18,7 +18,7 @@ void push() {
                                 ar + '/' + 
                                 ver + '.' + build +'/' + 
                                 ar + '-'+ ver + '.' + build + '.tar.gz', 
-                                body: new File(workspace + '/target/' + 
+                                body: new File(workspace + '/helloworld-ws/target/' + 
                                                ar + '-' + 
                                                ver + '.' + build + '.tar.gz'),
                                 requestContentType: 'application/zip')
