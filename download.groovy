@@ -43,8 +43,8 @@ void pull() {
   
         def remoteUrl = 'http://epbyminw7425/nexus/repository/maven-archive/' + gr +
         '/'+ ar +
-        '/'+ ver + '.' + System.getenv("INPUT_BUILD") + 
-        '/' + System.getenv("ar") + '-'+ System.getenv("ver") + '.' + build + '.war'
+        '/'+ ver + '.' + build + 
+        '/' + ar + '-'+ ver + '.' + build + '.tar.gz'
         def url = new URL(remoteUrl)
         def authString = "jenkins:jenkins".getBytes().encodeBase64().toString()
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
