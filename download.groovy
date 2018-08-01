@@ -5,13 +5,10 @@ import org.apache.http.entity.*
 	
 void push() {
   	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/helloworld-ws/pom.xml')
-	println pom
-	println pom.groupId
-	println pom.artefactId
-	println pom.version
-	def gr = pom.groupId
-	def ar = pom.artefactId
-	def ver = pom.version
+	println pom.parent
+	def gr = pom.parent.groupId
+	def ar = pom.parent.artefactId
+	def ver = pom.parent.version
   	def restClient =  new RESTClient('http://epbyminw7425/nexus/repository/maven-archive/')
 	def workspace = System.getenv("WORKSPACE")
   	def build = System.getenv("BUILD_NUMBER")
