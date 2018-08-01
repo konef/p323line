@@ -33,9 +33,9 @@ node {
         sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
         sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
         sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
-    
-}
-        
+    }
+	stage("Asking for manual approval"){
+		input 'Do you want manual approval?'
 }
     
 
