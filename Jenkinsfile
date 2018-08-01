@@ -5,7 +5,7 @@ node {
     	  checkout([$class: 'GitSCM', branches: [[name: '*/dzhukova']],
     	  doGenerateSubmoduleConfigurations: false, extensions: [],
     	  submoduleCfg: [], userRemoteConfigs:
-    	  [url: 'git@github.org:MNT-Lab/d323dsl.git']]])
+    	  [url: 'git@github.org:MNT-Lab/d323dsl.git'])
 	}
 
 	stage('Build' {
