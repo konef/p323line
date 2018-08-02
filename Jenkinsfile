@@ -35,5 +35,16 @@ node {
         archiveArtifacts artifacts: "pipeline-mpiatliou-${BUILD_NUMBER}.tar.gz", onlyIfSuccessful: true
         sh 'export GROOVY_HOME=/home/vagrant/.jenkins/tools/hudson.plugins.groovy.GroovyInstallation/groovy; export PATH=$PATH:$GROOVY_HOME/bin; groovy ./pipeline_pullsh.groovy push'
     }
+    stage ('Asking for manual approval') {
+        try {
+            timeout(time: 60, unit: 'SECONDS') {
+                input(id: "Deploy Gate", message: "Do you approve?", ok: 'Approve')
+            }
+        }
+        catch (err) {
+            throw err
+        }
+    }
 }
+
 
