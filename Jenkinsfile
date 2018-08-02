@@ -13,6 +13,7 @@ node{
     tool name: 'java8', type: 'jdk'
     def mvn_version = 'mavenLocal'
     def java_version = 'java8'
+    def groovy_version = 'groovy4'
     stage('Preparation') {
         deleteDir()
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
@@ -75,8 +76,9 @@ node{
         sh "tar -xzf ${student}_dsl_script.tar.gz "
         sh "tar -czf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz Jenkinsfile helloworld-ws/target/helloworld-ws.war jobs.groovy"
         archiveArtifacts "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
-        sh "/usr/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
-
+        withEnv(["GROOVY_HOME=${tool groovy_version}/bin"]) {
+            sh "groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
+        }
     }
 
 }
