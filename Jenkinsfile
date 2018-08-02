@@ -38,7 +38,7 @@ node {
    }
    
    stage('Asking for manual approval') {
-       
+       input "This is a stage before deployment to production tomcat. Are sure to proceed?"
    }
    
    stage('Deployment'){
