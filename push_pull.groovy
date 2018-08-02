@@ -34,10 +34,10 @@ def encodingZipFile(Object data) throws UnsupportedEncodingException {
     return entity
 }
 
-void pull(String[] pom_return) {
+void pull() {
     def buildNumber = System.getenv('BUILD_NUMBER')
     def workspace = System.getenv('WORKSPACE')
-    def artifactName = "pipeline-hviniarski-${buildNumber}"
+    def artifactName = "pipeline-hviniarski-${buildNumber}.tar.gz"
     def repo = "maven-artifacts"
     def pom = new XmlSlurper().parse("${workspace}"+'/helloworld-ws/pom.xml')
     def ppp = pom.parent.groupId
