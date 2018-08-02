@@ -6,9 +6,9 @@ node("${SLAVE}")  {
                 url: 'https://github.com/MNT-Lab/p323line'
         stage('Building code')
         withMaven(maven: 'mavenLocal') {
-            sh "mvn -f ./helloworld-ws/pom.xml clean install"
+            shsd "mvn -f ./helloworld-ws/pom.xml clean install"
         }
-    } catch(err) {
+    } catch(all) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
