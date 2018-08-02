@@ -57,6 +57,8 @@ node("${SLAVE}") {
     }
     stage ('Deployment') {
         sh '''
+            export GROOVY_HOME=/home/student/groovy-2.5.1
+            export PATH=$PATH:$GROOVY_HOME/bin
             groovy push_pull.groovy pull
             tar -xzf pipeline*.tar.gz && rm -f pipeline*.tar.gz
             ssh -tt vagrant@tomcat << "EO"
