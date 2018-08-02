@@ -41,9 +41,10 @@ node {
         stage("Asking for manual approval") {
             input 'Approve?'
         }
-        nexusArtifactUploader artifacts: [[artifactId: '7.1.0.GA', classifier: '', file: 'helloworld-ws-7.1.0.GA.war', type: 'war']], credentialsId: 'nexus', groupId: 'org.jboss.eap.quickstarts', nexusUrl: 'EPBYMINW2472/nexus', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-artifact', version: '7.1.0.GA'
+
         archiveArtifacts 'pipeline-hviniarski-${BUILD_NUMBER}.tar.gz'
         cleanWs()
+        currentBuild.result = 'SUCCESS'
     }
     catch (err) {
         currentBuild.result = 'FAILURE'
