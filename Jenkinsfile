@@ -8,7 +8,7 @@ node{
     stage('Preparation') {
         deleteDir()
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
-        echo "Preparation is done \u2705"
+        echo "Preparation Stage is done \u2705"
     }
     stage('Building code'){
         //def mvn_version = 'mavenLocal'
@@ -16,10 +16,11 @@ node{
             sh 'mvn -f helloworld-ws/pom.xml package'
             sh 'ls -la helloworld-ws/'
         }
-        echo "Building code is done \u2705"
+        echo "Building code Stage is done \u2705"
     }
     stage('Testing'){
-        withEnv(["JAVA_HOME=${tool java_version}/bin"]) {
+        withEnv(["JAVA_HOME=${tool java_version}"]) {
+            echo "${env.JAVA_HOME}"
             parallel PreIntegrationTest: {
                 try {
                     sh 'echo "Build pre-integration-test parallel stage"'
@@ -55,6 +56,7 @@ node{
                 }
             }, failFast: true
         }
+        echo "Testing Stage is done \u2705"
     }
 
 }
