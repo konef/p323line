@@ -141,7 +141,7 @@ try {
         }
 
     }
-} catch (exc) {
+} catch (err) {
 
     currentBuild.result = "FAILURE"
     //err = caughtError
@@ -156,7 +156,7 @@ finally{
     } else
     {
         mail_to(stage_pipe, "FAILURE", step_pipe, user_mail)
-        throw exc
+        throw err
     }
 }
 
