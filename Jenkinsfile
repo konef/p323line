@@ -18,9 +18,9 @@ node("${SLAVE}") {
         } catch (err) {
             state = false
             desc += "interrupted"
+	    send_message(state,stage,desc)
 	    currentStage.result = "FAILED"
         }
-        send_message(state,stage,desc)
     }
     stage ('Building code') {
         def stage = STAGE_NAME
@@ -34,9 +34,9 @@ node("${SLAVE}") {
         } catch (err) {
             state = false
             desc += "interrupted"
+	    send_message(state,stage,desc)
 	    currentStage.result = "FAILED"
         }
-        send_message(state,stage,desc)
     }
     stage ('Testing') {
         def stage = STAGE_NAME
@@ -60,9 +60,9 @@ node("${SLAVE}") {
         } catch (err) {
             state = false
             desc += "interrupted"
+	    send_message(state,stage,desc)
 	    currentStage.result = "FAILED"
         }
-        send_message(state,stage,desc)
     }
     stage ('Triggering job and fetching artefact after finishing') {
         def stage = STAGE_NAME
@@ -77,9 +77,9 @@ node("${SLAVE}") {
         } catch (err) {
             state = false
             desc += "interrupted"
+	    send_message(state,stage,desc)
 	    currentStage.result = "FAILED"
         }
-        send_message(state,stage,desc)
     }
     stage ('Packaging and Publishing results') {
         def stage = STAGE_NAME
@@ -100,9 +100,9 @@ node("${SLAVE}") {
         } catch (err) {
             state = false
             desc += "interrupted"
+	    send_message(state,stage,desc)
 	    currentStage.result = "FAILED"
         }
-        send_message(state,stage,desc)
     }
     stage ('Asking for manual approval') {
         def userInput = true
@@ -123,8 +123,8 @@ node("${SLAVE}") {
             currentStage.result = 'ABORTED'
             state = false
             desc += "aborted"
+	    send_message(state,stage,desc)
         }
-        send_message(state,stage,desc)
     }
     stage ('Deployment') {
         def stage = STAGE_NAME
@@ -136,25 +136,23 @@ node("${SLAVE}") {
             export PATH=$PATH:$GROOVY_HOME/bin
             groovy push_pull.groovy pull
             tar -xzf pipeline*.tar.gz && rm -f pipeline*.tar.gz
-            ssh vagrant@tomcat
-            cd /opt/tomcat/webapps && rm -f helloworld-ws.war.old
-            mv helloworld-ws.war helloworld-ws.war.old
-            exit
+            ssh vagrant@tomcat "cd /opt/tomcat/webapps && rm -f helloworld-ws.war.old; mv helloworld-ws.war helloworld-ws.war.old"
             scp helloworld-ws.war vagrant@tomcat:/opt/tomcat/webapps/
             response=$( curl -I http://tomcat:8080/helloworld-ws/ 2>/dev/null | head -n 1 | cut -d$' ' -f2 )
             if [ "$response" != "200" ]; then
-            ssh vagrant@tomcat
-            cd /opt/tomcat/webapps && rm -f helloworld-ws.war
-            cp helloworld-ws.war.old helloworld-ws.war
-            exit
+            ssh vagrant@tomcat "cd /opt/tomcat/webapps && rm -f helloworld-ws.war; cp helloworld-ws.war.old helloworld-ws.war"
             fi
             rm -f helloworld-ws.war'''
             desc += "finished"
         } catch (err) {
             state = false
             desc += "interrupted"
+	    send_message(state,stage,desc)
 	    currentStage.result = "FAILED"
         }
-        send_message(state,stage,desc)
     }
+	def stage = "Continuous deployment"
+	def state = true
+	def desc = "The process of deployment to the production finished successfully"
+	send_message(state,stage,desc)
 }
