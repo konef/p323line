@@ -1,4 +1,4 @@
-def maven = "maven: 'mavenLocal'"
+def maven = "maven: \'mavenLocal\'"
 node("${SLAVE}") {
     stage('Preparation (Checking out)') {
         git branch: 'stsitou', url: 'https://github.com/MNT-Lab/p323line.git'
