@@ -48,7 +48,7 @@ void pull(String[] gavv) {
     restClient.auth.basic 'nexus-service-user', 'nexus'
     def url = restClient.get(path: "http://epbyminw1374/nexus/repository/project-releases/${groupId}/${artifactId}/${version}/${artifactName}"
     )
-    new File("./${artifactId}.tar.gz") << url.data
+    new File("./artifact.tar.gz") << url.data
 }
 
 def arguments = new CliBuilder().parse(args).arguments()
