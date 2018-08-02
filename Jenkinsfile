@@ -11,14 +11,14 @@ node {
        }
    }
    
-   stage('Testing') {
+   /*stage('Testing') {
        withMaven(maven: 'mavenLocal')
        {
            parallel ("Pre-integration test" : {sh "mvn pre-integration-test -f helloworld-ws"},
            "Integration test" : {sh "mvn integration-test -f helloworld-ws"},
            "Post-integration test" : {sh "mvn post-integration-test -f helloworld-ws"})
        }
-   }
+   }*/
    
    stage('Triggering job and fetching artefact after finishing') {
        build job: 'MNTLAB-ypapkou-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: 'ypapkou')]
@@ -26,7 +26,10 @@ node {
    }
    
    stage('Packaging and Publishing results') {
-       
+       sh "tar -zxvf ypapkou_dsl_script.tar.gz"
+       sh 'tar -zcvf pipeline-ypapkou-$BUILD_NUMBER.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war'
+       archiveArtifacts 'pipeline-ypapkou-$BUILD_NUMBER.tar.gz'
+       sh 'GROOVY_HOME=/root/.jenkins/tools/hudson.plugins.groovy.GroovyInstallation/groovy_interpreter/bin; PATH=$PATH:$GROOVY_HOME; groovy push.groovy'
    }
    
    stage('Asking for manual approval') {
@@ -37,3 +40,4 @@ node {
        
    }
 }
+
