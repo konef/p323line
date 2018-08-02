@@ -16,7 +16,9 @@ def upload() {
    def repo = "maven-helloworld"
    def gav = parse_gav()
    def file = new File("pipeline-dzhukova-${BUILD_NUMBER}.tar.gz")
-   def rest = new RESTClient( "http://192.168.17.4/nexus/repository/${repo}/")
+   def rest = new RESTClient( "http://EPBYMINW1969/nexus/repository/${repo}/")
+
+node
         rest.auth.basic 'admin', 'admin'
         rest.encoder.'application/tar.gz' = this.&encodeTarFile
         rest.put(path: "${gav[1]}/${BUILD_NUMBER}/${gav[1]}-${BUILD_NUMBER}.tar.gz", body: file, requestContentType: 'application/tar.gz')
@@ -35,7 +37,7 @@ def download() {
    def gav = parse_gav()
    def BUILD_NUMBER = System.getenv('BUILD_NUMBER')
    def repo = "maven-helloworld"
-   def rest = new RESTClient( "http://192.168.17.4/nexus/repository/${repo}")
+   def rest = new RESTClient( "http://EPBYMINW1969/nexus/repository/${repo}")
         rest.auth.basic 'admin', 'admin'
         def resp = rest.get( path:  "${gav[1]}/${BUILD_NUMBER}/${gav[1]}-${BUILD_NUMBER}.tar.gz")
    new File("./app.tar.gz") << resp.data
