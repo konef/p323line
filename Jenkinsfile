@@ -5,11 +5,11 @@ node("${SLAVE}")  {
         git branch: 'ymaniukevich',
                 url: 'https://github.com/MNT-Lab/p323line'
         stage('Building code')
-        withMaven(maven: 'mavenLocal') {
+        with2Maven(maven: 'mavenLocal') {
             sh "mvn -f ./helloworld-ws/pom.xml clean install"
         }
     } catch(err) {
-        mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
+        mail bcc: '', body: "${env.BUILD_URL} has failed ${STAGE_NAME}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
     try{
