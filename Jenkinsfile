@@ -1,6 +1,5 @@
 node("${SLAVE}")  {
     try {
-    try {
         stage('Preparating (Checking out)')
         git branch: 'ymaniukevich',
                 url: 'https://github.com/MNT-Lab/p323line'
@@ -71,9 +70,7 @@ node("${SLAVE}")  {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
 }
 }
-  catch (err) {
-    	    currentBuild.result = 'FAILURE'
-  }
+ }
   finally {
 	mail to: 'manukevich96@gmail.com',
       subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
