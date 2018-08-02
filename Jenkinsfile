@@ -23,8 +23,8 @@ node("${SLAVE}") {
     }
     stage("Triggering job and fetching artefact after finishing"){
         echo "Starting another job"
-        def pipelinejob  = build job: 'EPBYMINW2466/MNTLAB-stsitou-child1-build-job'
-        echo "Pipeline job status: ${pipelinejob.result}"
+        def childjob  = build job: 'EPBYMINW2466/MNTLAB-stsitou-child1-build-job', parameters: string(name: 'BRANCH_NAME', value: "stsitou"),
+        echo "Job status: ${childjob.result}"
     }
 
 }
