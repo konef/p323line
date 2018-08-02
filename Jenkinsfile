@@ -18,26 +18,7 @@ node{
         echo "Building code is done \u2705"
     }
     stage('Testing'){
-        parallel firstBranch: {
-            sh 'echo "Build pre-integration-test parallel stage"'
-            withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                sh 'mvn -f helloworld-ws/pom.xml pre-integration-test'
-            }
-        }, secondBranch: {
-            sh 'echo "Build integration-test parallel stage"'
-            withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                sh 'mvn -f helloworld-ws/pom.xml integration-test'
-            }
-        }, thirdBranch: {
-            sh 'echo "Build post-integration-test parallel stage"'
-            withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
-            }
-        },
-        failFast: true
-
-
-        /*parallel pre-integration-test {
+        parallel PreIntegrationTest: {
             try {
                 sh 'echo "Build pre-integration-test parallel stage"'
                 withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
@@ -46,9 +27,9 @@ node{
             }
             finally {
                 sh 'echo "Finished this stage"'
+                echo "PreIntegrationTest is done \u2705"
             }
-
-        }, integration-test {
+        }, IntegrationTest: {
             try {
                 sh 'echo "Build integration-test parallel stage"'
                 withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
@@ -57,9 +38,9 @@ node{
             }
             finally {
                 sh 'echo "Finished this stage"'
+                echo "IntegrationTest is done \u2705"
             }
-
-        }, post-integration-test {
+        }, PostIntegrationTest: {
             try {
                 sh 'echo "Build post-integration-test parallel stage"'
                 withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
@@ -68,9 +49,12 @@ node{
             }
             finally {
                 sh 'echo "Finished this stage"'
+                echo "PostIntegrationTest is done \u2705"
             }
-        }*/
+        }, failFast: true
+
     }
+
 }
 
 /*
