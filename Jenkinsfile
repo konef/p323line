@@ -19,11 +19,11 @@ node {
                     sh "mvn -f helloworld-ws/pom.xml pre-integration-test"
                 },
                 'integration-test': {
-                    sleep 10
+                    sleep 3
                     sh "mvn -f helloworld-ws/pom.xml integration-test"
                 },
                 'post-integration-test': {
-                    sleep 20
+                    sleep 15
                     sh "mvn -f helloworld-ws/pom.xml post-integration-test"
                 }
         )
@@ -41,6 +41,7 @@ node {
     stage("Asking for manual approval"){
         input 'Approve?'
     }
+    nexusArtifactUploader artifacts: [[artifactId: '7.1.0.GA', classifier: '', file: 'helloworld-ws-7.1.0.GA.war', type: 'war']], credentialsId: 'nexus', groupId: 'org.jboss.eap.quickstarts', nexusUrl: 'EPBYMINW2472/nexus', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-artifact', version: '7.1.0.GA'
     archiveArtifacts 'pipeline-hviniarski-${BUILD_NUMBER}.tar.gz'
     cleanWs()
 }
