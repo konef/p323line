@@ -143,15 +143,15 @@ try {
 } catch (exc) {
 
     err = caughtError
-    mail_to(stage_pipe, "TROUBLE", step_pipe, user_mail)
+    mail_to(stage_pipe, "FAILURE", step_pipe, user_mail)
     currentBuild.result = "FAILURE"
     throw err
 }
 
 finally{
 
-    if (currentBuild.result != "ABORTED") {
-        echo 'df'
+    if (currentBuild.result == "SUCCESS") {
+        mail_to("Deployment", "SUCCESS", "Application has been deployed on the JBOSS Server", user_mail)
     }
 }
 
