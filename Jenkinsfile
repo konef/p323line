@@ -1,6 +1,7 @@
 node("${SLAVE}") {
 
     try {
+        cleanWs()
         stage('Clone repository')
         git branch: 'hviniarski', url: 'https://github.com/MNT-Lab/p323line'
 
@@ -60,7 +61,7 @@ node("${SLAVE}") {
         '''
         }
         archiveArtifacts 'pipeline-hviniarski-${BUILD_NUMBER}.tar.gz'
-        cleanWs()
+
         currentBuild.result = 'SUCCESS'
     }
     catch (err) {
