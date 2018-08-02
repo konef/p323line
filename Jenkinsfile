@@ -1,3 +1,8 @@
+def SendEmail(Status) {
+    def date = new Date()
+    mail bcc: '', body: "$date: ${env.JOB_NAME} Build_Id ${env.BUILD_ID} - $Status", cc: '', from: 'Jenkins', replyTo: '', subject: 'Build status', to: 'oleg_monko@epam.com, dev@ep.am'
+}
+
 node() {
 	stage ('Preparation (Checking out)') {
 		git branch: 'omonko', url: 'https://github.com/MNT-Lab/p323line.git'
@@ -39,14 +44,19 @@ node() {
 	   nexusArtifactUploader artifacts: [[artifactId: 'pipeline-omonko', classifier: '', file: 'pipeline-omonko-${BUILD_NUMBER}.tar.gz', type: 'tar.gz']], credentialsId: 'nexus', groupId: 'Task11', nexusUrl: 'nexus', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '$BUILD_NUMBER'
 
 	}
-	stage ('Asking for manual approval') {
-	    input "Deploy to prod?"
+	/*stage ('Asking for manual approval') {
+	    //input "Deploy to prod?"
 	    timeout(time: 3, unit: 'MINUTES') {
             input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
         }
-	}
+	}*/
 	stage ('Deployment') {
+	    sh 'wget http://nexus/repository/maven-releases/Task11/pipeline-omonko/${BUILD_NUMBER}/pipeline-omonko-${BUILD_NUMBER}.tar.gz'
 	    sh 'tar -xzvf pipeline-omonko-${BUILD_NUMBER}.tar.gz helloworld-ws.war'
-	    sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat', transfers: [sshTransfer(excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'helloworld-ws.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+	    //sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat', transfers: [sshTransfer(excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'helloworld-ws.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+	    sh 'scp helloworld-ws.war root@tomcat:/share/tomcat/webapps'
+	    SendEmail('Success')
+	    
 	}
 }
+
