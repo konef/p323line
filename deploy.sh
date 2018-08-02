@@ -16,14 +16,14 @@ cp /tmp/jenkins_tmp/war/helloworld-ws.war /opt/cd-proc/jboss/server/default/depl
 
 echo "Making of the backup and deploy new build version"
 
-sleep 55
+sleep 5
 
 curl http://epbyminw7423/helloworld/status-page.html | grep "Build Number:$BUILD_NUMBER"
 a=$?
 curl -I http://epbyminw7423/helloworld/ | awk '{print $2}' | head -n 1 | grep 200
 b=$?
 
-sleep 2
+sleep 1
 
 if [ "$a" -eq 0 ] && [ "$b" -eq 0 ];then
     [[ -f /tmp/jenkins_tmp/war/helloworld.war_old_old  ]] && rm -rf /tmp/jenkins_tmp/war/helloworld.war_old_old
@@ -31,9 +31,9 @@ if [ "$a" -eq 0 ] && [ "$b" -eq 0 ];then
     exit 0
 else
     rm -rf /opt/cd-proc/jboss/server/default/deploy/helloworld.war
-    sleep 2
+    sleep 1
     mv /tmp/jenkins_tmp/war/helloworld.war_old /opt/cd-proc/jboss/server/default/deploy/helloworld.war
-    sleep 2
+    sleep 1
     [[ -f /tmp/jenkins_tmp/war/helloworld.war_old_old  ]] && mv /tmp/jenkins_tmp/war/helloworld.war_old_old /tmp/jenkins_tmp/war/helloworld.war_old
     echo "FAIL - return to previous version. $a,$b"
     exit 1

@@ -55,7 +55,7 @@ node{
                 try {
                     echo "\u27A1 Build integration-test parallel stage"
 
-                        sleep 30
+                        sleep 5
                         sh 'mvn -f helloworld-ws/pom.xml integration-test'
 
                 }
@@ -67,7 +67,7 @@ node{
                 try {
                     echo "\u27A1 Build post-integration-test parallel stage"
 
-                        sleep 60
+                        sleep 10
                         sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
 
                 }
@@ -94,7 +94,7 @@ node{
         echo "\u277a: Packaging and Publishing results Stage is done \u2705"
     }
     stage('Asking for manual approval'){
-        timeout(time: 160, unit: 'SECONDS') {
+        timeout(time: 30, unit: 'SECONDS') {
             input 'Deploy to prod?'
         }
         echo "\u277b: Asking for manual approval Stage is done \u2705"
