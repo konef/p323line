@@ -31,13 +31,13 @@ node("${SLAVE}")  {
     stage("Packaging and Publishing results"){
         sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
         sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
-        sh "groovy ./push.groovy"
+        sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
     }
 
 	stage("Deployment"){
-	    sh "groovy ./pull.groovy"
-	    sh "scp -P2200 jboss-parent-23.tar.gz  jboss-parent-23.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
-	    sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf jboss-parent-23.tar.gz && rm -rf jboss-parent-23.tar.gz Jenkinsfile jobs.groovy'"
+	    sh "/usr/local/groovy/latest/bin/groovy ./pull.groovy"
+	    sh "scp -P2200 pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
+	    sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz && rm -rf jboss-parent-23.tar.gz Jenkinsfile jobs.groovy'"
 	    }
     currentBuild.result = 'SUCCESS'
 }
