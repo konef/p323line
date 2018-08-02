@@ -36,15 +36,13 @@ def encodingZipFile(Object data) throws UnsupportedEncodingException {
     return entity
 }
 
-def cli = new CliBuilder()
-def options = cli.parse(args)
-def arguments = options.arguments()
+def arguments = new CliBuilder().parse(args).arguments()
 def workspace = System.getenv('WORKSPACE')
 def gav = parsing(workspace)
 
-if (arguments.size() != 0 && arguments[0] == 'pull' ){
+if (arguments.size() != 0 && arguments[0] == 'pull') {
     pull(gav)
 }
-else if (arguments.size() != 0 && arguments[0] == 'push' ){
+else if (arguments.size() != 0 && arguments[0] == 'push') {
     push(gav)
 }
