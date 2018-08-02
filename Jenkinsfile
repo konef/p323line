@@ -1,4 +1,7 @@
 
+
+
+
 node{
 
     tool name: 'mavenLocal', type: 'maven'
@@ -18,13 +21,14 @@ node{
         echo "\u2777: Building code Stage is done \u2705"
     }
     stage('Testing'){
+        sh 'mkdir PreIntegrationTest IntegrationTest PostIntegrationTest'
         withEnv(["JAVA_HOME=${tool java_version}"]) {
             parallel PreIntegrationTest: {
                 try {
                     echo "\u27A1 Build pre-integration-test parallel stage"
                     sh 'echo "Build pre-integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                        sh 'mvn -f helloworld-ws/pom.xml pre-integration-test'
+                        sh 'mvn -DtestSourceDirectory=PreIntegrationTest -f helloworld-ws/pom.xml pre-integration-test'
                     }
                 }
                 finally {
@@ -36,7 +40,7 @@ node{
                     echo "\u27A1 Build integration-test parallel stage"
                     sh 'echo "Build integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                        sh 'mvn -f helloworld-ws/pom.xml integration-test'
+                        sh 'mvn -DtestSourceDirectory=IntegrationTest -f helloworld-ws/pom.xml integration-test'
                     }
                 }
                 finally {
@@ -48,7 +52,7 @@ node{
                     echo "\u27A1 Build post-integration-test parallel stage"
                     sh 'echo "Build post-integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                        sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
+                        sh 'mvn -DtestSourceDirectory=PostIntegrationTest -f helloworld-ws/pom.xml post-integration-test'
                     }
                 }
                 finally {
