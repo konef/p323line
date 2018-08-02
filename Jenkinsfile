@@ -38,6 +38,7 @@ node{
                 try {
                     echo "\u27A1 Build integration-test parallel stage"
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+                        sh 'sleep 30'
                         sh 'mvn -f helloworld-ws/pom.xml integration-test'
                     }
                 }
@@ -49,7 +50,7 @@ node{
                 try {
                     echo "\u27A1 Build post-integration-test parallel stage"
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                        sh 'sleep 30'
+                        sh 'sleep 60'
                         sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
                     }
                 }
