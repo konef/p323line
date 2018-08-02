@@ -33,7 +33,9 @@ node("${SLAVE}")  {
         sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
         sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
     }
-
+     stage('Asking for manual approval') {
+         input 'Would you like to continue?'
+	}
 	stage("Deployment"){
 	    sh "/usr/local/groovy/latest/bin/groovy ./pull.groovy"
 	    sh "scp -P2200 pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
