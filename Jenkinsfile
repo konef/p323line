@@ -1,4 +1,4 @@
-node{
+node(${SLAVE}){
     try{
         stage('Checkout'){
             checkout([$class: 'GitSCM', branches: [[name: 'mznak']],
