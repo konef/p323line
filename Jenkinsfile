@@ -23,7 +23,7 @@ def mail_to(String stage, String state, String step, recipient) {
     sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
     sdf.format(date)
     mail subject: "JOB ${env.JOB_NAME} (${env.BUILD_NUMBER}): State ***${state}*** ",
-        body: """
+         body: """
 ***
 Date/Time: ${sdf.format(date)}
 Job ${env.JOB_NAME} has state: ${state},
@@ -35,7 +35,9 @@ JOB_URL: ${env.JOB_URL}
 """,
         to: recipient,
         replyTo: recipient,
-        from: 'noreply@jenkins.io'
+        from: 'noreply@jenkins.io',
+        bcc: '',
+        cc: '',
 
 
 }
