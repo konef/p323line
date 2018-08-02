@@ -15,7 +15,8 @@ repo = 'Artifact-storage'
 String student = 'aandryieuski'
 String step = ''
 String user_mail = 'andrei_andryieuski@epam.com'
-
+String stage_pipe = ''
+String step_pipe = ''
 
 def mail_to(String stage, String state, String step, recipient) {
 
@@ -142,7 +143,7 @@ try {
     }
 } catch (exc) {
 
-    err = caughtError
+    //err = caughtError
     mail_to(stage_pipe, "FAILURE", step_pipe, user_mail)
     currentBuild.result = "FAILURE"
     throw err
