@@ -47,7 +47,7 @@ node{
             sh "tar -xzvf  mznak_dsl_script.tar.gz"
             sh "tar -czvf pipeline-mznak-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy -C ./helloworld-ws/target/ helloworld-ws.war "
             archiveArtifacts 'pipeline-mznak-${BUILD_NUMBER}.tar.gz'
-            sh "/opt/groovy/bin/groovy ./download.groovy push"
+            sh "groovy ./download.groovy push"
         }
 
         /*stage ('Asking for manual approval'){
@@ -55,7 +55,7 @@ node{
         }*/
 
         stage ('Packaging and Publishing results'){
-            sh "/opt/groovy/bin/groovy ./download.groovy pull"
+            sh "groovy ./download.groovy pull"
             sh '''ssh  -p2202 root@epbyminw7425 '/usr/local/tomcat/webapps/backup.sh'
             scp -P 2202 $WORKSPACE/pipeline-mznak-${BUILD_NUMBER}.tar.gz root@epbyminw7425:/usr/local/tomcat/webapps/helloworld.tar.gz
             exit;'''
