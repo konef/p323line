@@ -18,7 +18,7 @@ echo "Making of the backup and deploy new build version"
 
 sleep 55
 
-curl http://epbyminw7423/helloworld/status-page.html | grep "Build-Number:$BUILD_NUMBER"
+curl http://epbyminw7423/helloworld/status-page.html | grep "Build Number:$BUILD_NUMBER"
 a=$?
 curl -I http://epbyminw7423/helloworld/ | awk '{print $2}' | head -n 1 | grep 200
 b=$?
