@@ -26,7 +26,6 @@ node{
             parallel PreIntegrationTest: {
                 try {
                     echo "\u27A1 Build pre-integration-test parallel stage"
-                    sh 'echo "Build pre-integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
                         sh 'mvn -DtestSourceDirectory=PreIntegrationTest -f helloworld-ws/pom.xml pre-integration-test'
                     }
@@ -38,7 +37,6 @@ node{
             }, IntegrationTest: {
                 try {
                     echo "\u27A1 Build integration-test parallel stage"
-                    sh 'echo "Build integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
                         sh 'mvn -DtestSourceDirectory=IntegrationTest -f helloworld-ws/pom.xml integration-test'
                     }
@@ -50,8 +48,8 @@ node{
             }, PostIntegrationTest: {
                 try {
                     echo "\u27A1 Build post-integration-test parallel stage"
-                    sh 'echo "Build post-integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+                        sh 'sleep 30'
                         sh 'mvn -DtestSourceDirectory=PostIntegrationTest -f helloworld-ws/pom.xml post-integration-test'
                     }
                 }
