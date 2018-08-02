@@ -1,15 +1,14 @@
-def maven = "maven: \'mavenLocal\'"
 node("${SLAVE}") {
     stage('Preparation (Checking out)') {
         git branch: 'stsitou', url: 'https://github.com/MNT-Lab/p323line.git'
     }
     stage('Building code') {
-        withMaven(maven) {
+        withMaven(maven: 'mavenLocal') {
             sh "mvn -f ./helloworld-ws/pom.xml package"
         }
     }
     stage("Testing")
-    withMaven(maven) {
+    withMaven(maven: 'mavenLocal') {
         parallel(
                 'pre-integration-test': {
                     sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
