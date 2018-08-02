@@ -1,8 +1,7 @@
-@Library('lib')_
-
 serv = 'http://EPBYMINW7423/nexus/repository/'
-username = "admin"
-password = "admin123"
+username = 'admin'
+password = 'admin123'
+repo = 'Artifact-storage'
 
 // Pipeline variables
 
@@ -20,14 +19,12 @@ node{
         echo "\u2776: Preparation Stage is done \u2705"
     }
     stage('Building code'){
-        //def mvn_version = 'mavenLocal'
         withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-            sh 'mvn -f helloworld-ws/pom.xml clean package'
+            sh 'mvn -f helloworld-ws/pom.xml package'
         }
         echo "\u2777: Building code Stage is done \u2705"
     }
     stage('Testing'){
-        //sh 'mkdir PreIntegrationTest IntegrationTest PostIntegrationTest'
         withEnv(["JAVA_HOME=${tool java_version}"]) {
             parallel PreIntegrationTest: {
                 try {
@@ -78,7 +75,8 @@ node{
         sh "tar -xzf ${student}_dsl_script.tar.gz "
         sh "tar -czf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz Jenkinsfile helloworld-ws/target/helloworld-ws.war jobs.groovy"
         archiveArtifacts "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
-        nexus(serv, username, password, "Artifact-storage", "test-aandr-100.tar.gz", "push")
+        sh "groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
+
     }
 
 }
