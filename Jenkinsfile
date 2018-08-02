@@ -9,9 +9,7 @@ String student = 'aandryieuski'
 String step = ''
 
 node{
-    tool name: 'mavenLocal', type: 'maven'
-    //tool name: 'java8', type: 'jdk'
-    //def mvn_version = 'mavenLocal'
+    def mvn_version = 'mavenLocal'
     def java_version = 'java8'
     def groovy_version = 'groovy4'
     stage('Preparation') {
