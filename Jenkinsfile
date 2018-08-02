@@ -35,11 +35,7 @@ node("${SLAVE}")  {
     }
 
 	stage("Deployment"){
-	    sh '''
-        export GROOVY_HOME=/usr/local/groovy/latest
-        export PATH=$PATH:$GROOVY_HOME/bin
-        groovy ./pull.groovy
-    	'''
+	    sh '/usr/local/groovy/latest/bin/groovy ./pull.groovy'
 	    sh "scp -P2200 jboss-parent-23.tar.gz  jboss-parent-23.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
 	    sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf jboss-parent-23.tar.gz && rm -rf jboss-parent-23.tar.gz Jenkinsfile jobs.groovy'"
 	    }
