@@ -65,7 +65,7 @@ node("${SLAVE}") {
             try{
                 build job: 'MNTLAB-hviniarski-child1-build-job', parameters: [[$class: 'GitParameterValue', name: 'BRANCH_NAME', value: 'hviniarski']]
                 copyArtifacts filter: 'hviniarski_dsl_script.tar.gz', projectName: 'MNTLAB-hviniarski-child1-build-job', selector: lastSuccessful()
-            } catch {
+            } catch (err) {
                 currentStage.result = "FAILED"
                 send_message(stage,desc)
             }
