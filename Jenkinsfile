@@ -9,8 +9,8 @@ String student = 'aandryieuski'
 String step = ''
 
 node{
-    tool name: 'mavenLocal', type: 'maven'
-    tool name: 'java8', type: 'jdk'
+    //tool name: 'mavenLocal', type: 'maven'
+    //tool name: 'java8', type: 'jdk'
     def mvn_version = 'mavenLocal'
     def java_version = 'java8'
     def groovy_version = 'groovy4'
@@ -26,13 +26,13 @@ node{
         echo "\u2777: Building code Stage is done \u2705"
     }
     stage('Testing'){
-        withEnv(["JAVA_HOME=${tool java_version}"]) {
+        withEnv(["JAVA_HOME=${tool java_version}","PATH+MAVEN=${tool mvn_version}/bin"]) {
             parallel PreIntegrationTest: {
                 try {
                     echo "\u27A1 Build pre-integration-test parallel stage"
-                    withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+
                         sh 'mvn -f helloworld-ws/pom.xml pre-integration-test'
-                    }
+
                 }
                 finally {
                     sh 'echo "Finished this stage"'
@@ -41,10 +41,10 @@ node{
             }, IntegrationTest: {
                 try {
                     echo "\u27A1 Build integration-test parallel stage"
-                    withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+
                         sleep 30
                         sh 'mvn -f helloworld-ws/pom.xml integration-test'
-                    }
+
                 }
                 finally {
                     sh 'echo "Finished this stage"'
@@ -53,10 +53,10 @@ node{
             }, PostIntegrationTest: {
                 try {
                     echo "\u27A1 Build post-integration-test parallel stage"
-                    withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+
                         sleep 60
                         sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
-                    }
+
                 }
                 finally {
                     sh 'echo "Finished this stage"'
@@ -78,12 +78,20 @@ node{
         withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
             sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
         }
+        echo "\u277a: Triggering job and fetching artefact after finishing Stage is done \u2705"
     }
     stage('Asking for manual approval'){
         input 'Deploy to prod?'
+        echo "\u277b: Asking for manual approval Stage is done \u2705"
     }
     stage('Deployment'){
-        sh 'echo 123'
+        withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
+            sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz pull"
+        }
+        deleteDir()
+        sh 'ls -la'
+
+        echo "\u2780: Asking for manual approval Stage is done \u2705"
     }
 
 }
