@@ -68,7 +68,7 @@ node{
             '''
             sh '''
             status=$( curl -I http://epbyminw7425/helloworld-ws/ | grep HTTP | awk '{print $2;}' )
-            if [ $( echo $status )  == '200' ]
+            if [ $( echo $status )  != '200' ]
             then
                 ssh -p2202 root@epbyminw7425 """
                 rm -f /usr/local/tomcat/webapps/helloworld-ws.war 
