@@ -4,6 +4,7 @@ node{
     tool name: 'mavenLocal', type: 'maven'
     tool name: 'java8', type: 'jdk'
     def mvn_version = 'mavenLocal'
+    def java_version = 'java8'
     stage('Preparation') {
         deleteDir()
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
@@ -18,41 +19,42 @@ node{
         echo "Building code is done \u2705"
     }
     stage('Testing'){
-        parallel PreIntegrationTest: {
-            try {
-                sh 'echo "Build pre-integration-test parallel stage"'
-                withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                    sh 'mvn -f helloworld-ws/pom.xml pre-integration-test'
+        withEnv(["JAVA_HOME=${tool java_version}/bin"]) {
+            parallel PreIntegrationTest: {
+                try {
+                    sh 'echo "Build pre-integration-test parallel stage"'
+                    withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+                        sh 'mvn -f helloworld-ws/pom.xml pre-integration-test'
+                    }
                 }
-            }
-            finally {
-                sh 'echo "Finished this stage"'
-                echo "PreIntegrationTest is done \u2705"
-            }
-        }, IntegrationTest: {
-            try {
-                sh 'echo "Build integration-test parallel stage"'
-                withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                    sh 'mvn -f helloworld-ws/pom.xml integration-test'
+                finally {
+                    sh 'echo "Finished this stage"'
+                    echo "PreIntegrationTest is done \u2705"
                 }
-            }
-            finally {
-                sh 'echo "Finished this stage"'
-                echo "IntegrationTest is done \u2705"
-            }
-        }, PostIntegrationTest: {
-            try {
-                sh 'echo "Build post-integration-test parallel stage"'
-                withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                    sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
+            }, IntegrationTest: {
+                try {
+                    sh 'echo "Build integration-test parallel stage"'
+                    withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+                        sh 'mvn -f helloworld-ws/pom.xml integration-test'
+                    }
                 }
-            }
-            finally {
-                sh 'echo "Finished this stage"'
-                echo "PostIntegrationTest is done \u2705"
-            }
-        }, failFast: true
-
+                finally {
+                    sh 'echo "Finished this stage"'
+                    echo "IntegrationTest is done \u2705"
+                }
+            }, PostIntegrationTest: {
+                try {
+                    sh 'echo "Build post-integration-test parallel stage"'
+                    withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+                        sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
+                    }
+                }
+                finally {
+                    sh 'echo "Finished this stage"'
+                    echo "PostIntegrationTest is done \u2705"
+                }
+            }, failFast: true
+        }
     }
 
 }
