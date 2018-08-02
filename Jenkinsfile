@@ -12,9 +12,12 @@ node{
     def mvn_version = 'mavenLocal'
     def java_version = 'java8'
     def groovy_version = 'groovy4'
+    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), disableConcurrentBuilds()])
     stage('Preparation') {
         deleteDir()
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
+        sh "sed -i 's/##BUILD##/${env.BUILD_NUMBER}/' helloworld-ws/src/main/webapp/status-page.html"
+        sh "sed -i 's/##AUTHOR##/${env.BUILD_USER}/' helloworld-ws/src/main/webapp/status-page.html"
         echo "\u2776: Preparation Stage is done \u2705"
     }
     stage('Building code'){
