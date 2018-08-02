@@ -47,11 +47,15 @@ node("${SLAVE}") {
             input 'Approve?'
         }
         stage("Deployment"){
-            sh "groovy ./push_pull.groovy pull"
             sh '''
         export GROOVY_HOME=/home/student/groovy-2.5.1
         export PATH=$PATH:$GROOVY_HOME/bin
         groovy push_pull.groovy pull
+        tar -xzf pipeline*.tar.gz && rm -f pipeline*.tar.gz
+        ssh tomcat@tomcat mv -f /opt/tomcat/webapps/helloworld-ws.war /opt/tomcat/helloworld-ws.war.old
+        scp helloworld-ws.war tomcat@tomcat:/opt/tomcat/webapps/
+        
+        
         '''
         }
         archiveArtifacts 'pipeline-hviniarski-${BUILD_NUMBER}.tar.gz'
