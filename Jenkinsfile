@@ -22,7 +22,7 @@ node ("${SLAVE}") {
     try{
     parallel('pre-integration-test': {
     stage('pre-integration-test') {
-           withMaven(maven: 'mavenLocal1')
+           withMaven(maven: 'mavenLocal')
         {
            sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
         }
