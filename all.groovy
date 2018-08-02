@@ -19,7 +19,6 @@ def upload() {
    def rest = new RESTClient( "http://192.168.17.4/nexus/repository/${repo}/")
         rest.auth.basic 'admin', 'admin'
         rest.encoder.'application/zip' = this.&encodeZipFile
-        println "http://192.168.17.4/nexus/repository/${repo}/${gav[1]}/${BUILD_NUMBER}/${gav[1]}-${BUILD_NUMBER}.tar.gz"
         rest.put(path: "${gav[1]}/${BUILD_NUMBER}/${gav[1]}-${BUILD_NUMBER}.tar.gz", body: file, requestContentType: 'application/zip')
 
 }
