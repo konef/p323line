@@ -36,6 +36,21 @@ def encodingZipFile(Object data) throws UnsupportedEncodingException {
     return entity
 }
 
+
+void pull(String[] gavv) {
+    def buildNumber = System.getenv('BUILD_NUMBER')
+    def artifactName = "pipeline-mpiatliou-${buildNumber}.tar.gz"
+    def gav = gavv
+    def groupId = gav[0].replace('\\.','/')
+    def artifactId = gav[1]
+    def version = gav[2]
+    def restClient = new RESTClient('http://epbyminw1374/nexus/repository/project-releases/')
+    restClient.auth.basic 'nexus-service-user', 'nexus'
+    def url = restClient.get(path: "http://epbyminw1374/nexus/repository/project-releases/${groupId}/${artifactId}/${version}/${artifactName}"
+    )
+    new File("./${artifactId}.tar.gz") << url.data
+}
+
 def arguments = new CliBuilder().parse(args).arguments()
 def workspace = System.getenv('WORKSPACE')
 def gav = parsing(workspace)
@@ -46,3 +61,4 @@ if (arguments.size() != 0 && arguments[0] == 'pull') {
 else if (arguments.size() != 0 && arguments[0] == 'push') {
     push(gav)
 }
+
