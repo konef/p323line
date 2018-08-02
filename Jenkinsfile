@@ -61,7 +61,7 @@ node("${SLAVE}") {
             export PATH=$PATH:$GROOVY_HOME/bin
             groovy push_pull.groovy pull
             tar -xzf pipeline*.tar.gz && rm -f pipeline*.tar.gz
-            ssh -tt vagrant@tomcat << "EO"
+            ssh vagrant@tomcat << "EO"
                 cd /opt/tomcat/webapps && rm -f helloworld-ws.war.old
                 mv helloworld-ws.war helloworld-ws.war.old
             EO
@@ -71,7 +71,7 @@ node("${SLAVE}") {
                 page_value=$( curl http://tomcat:8080/helloworld-ws/ 2>/dev/null | grep "helloworld-ws" )
             fi
             if [ "$response" != "200" ] || [ "$page_value" == "" ]; then
-                ssh -tt vagrant@tomcat << "END"
+                ssh vagrant@tomcat << "END"
                     cd /opt/tomcat/webapps && rm -f helloworld-ws.war
                     cp helloworld-ws.war.old helloworld-ws.war
                 END
