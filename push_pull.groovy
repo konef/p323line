@@ -38,7 +38,7 @@ void pull(String[] pom_return) {
     def buildNumber = System.getenv('BUILD_NUMBER')
     def workspace = System.getenv('WORKSPACE')
     def artifactName = "pipeline-hviniarski-${buildNumber}"
-    def repo = "project-releases"
+    def repo = "maven-artifacts"
     def pom = new XmlSlurper().parse("${workspace}"+'/helloworld-ws/pom.xml')
     def ppp = pom.parent.groupId
     def list = ppp.list()
