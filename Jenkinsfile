@@ -13,7 +13,7 @@ node{
     stage('Building code'){
         //def mvn_version = 'mavenLocal'
         withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-            sh 'mvn -f helloworld-ws/pom.xml package'
+            sh 'mvn -f helloworld-ws/pom.xml clean package'
         }
         echo "\u2777: Building code Stage is done \u2705"
     }
