@@ -81,8 +81,12 @@ node("${SLAVE}"){
             fi
             '''            
         }
+        
+        stage ('Successful deploy'){
+            mail bcc: '', body: 'Ura', cc: '', from: '', replyTo: '', subject: 'Success', to: 'mikhailznak@gmail.com'
+        }
     }
     catch(all) {
-        mail bcc: '', body: 'Tuttu', cc: '', from: '', replyTo: '', subject: 'Problem', to: 'mikhailznak@gmail.com'
+        mail bcc: '', body: 'Problem in ', cc: '', from: '', replyTo: '', subject: 'Problem', to: 'mikhailznak@gmail.com'
     }
 }
