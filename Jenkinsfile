@@ -79,12 +79,13 @@ node("${SLAVE}"){
             else
                 ssh -p2202 root@epbyminw7425  'rm -f /usr/local/tomcat/webapps/backup.tar.gz'
             fi
-            '''            
+            '''
         }
-        
-        stage ('Successful deploy'){
-            mail bcc: '', body: 'Ura', cc: '', from: '', replyTo: '', subject: 'Success', to: 'mikhailznak@gmail.com'
-        }
+
+        stage ('Successful deployment'){
+                    mail bcc: '', body: 'Success ', cc: '', from: '', replyTo: '', subject: 'Success', to: 'mikhailznak@gmail.com'
+
+                }
     }
     catch(all) {
         mail bcc: '', body: 'Problem in ', cc: '', from: '', replyTo: '', subject: 'Problem', to: 'mikhailznak@gmail.com'
