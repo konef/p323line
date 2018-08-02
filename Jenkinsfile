@@ -35,7 +35,7 @@ node("${SLAVE}") {
         """
         archiveArtifacts artifacts: "pipeline-aaranski-${BUILD_NUMBER}.tar.gz"
         sh '''
-        export GROOVY_HOME=/opt/jenkins/master/tools/hudson.plugins.groovy.GroovyInstallation/Groovy2.5.1
+        export GROOVY_HOME=/home/student/groovy-2.5.1
         export PATH=$PATH:$GROOVY_HOME/bin
         groovy push_pull.groovy push
         '''
@@ -57,9 +57,6 @@ node("${SLAVE}") {
     }
     stage ('Deployment') {
         sh '''
-        ssh -tt -p 2200 vagrant@epbyminw2695 << ENDOF
-            export GROOVY_HOME=/opt/jenkins/master/tools/hudson.plugins.groovy.GroovyInstallation/Groovy2.5.1
-            export PATH=$PATH:$GROOVY_HOME/bin
             groovy push_pull.groovy pull
             tar -xzf pipeline*.tar.gz && rm -f pipeline*.tar.gz
             ssh -tt vagrant@tomcat << "EO"
@@ -78,7 +75,6 @@ node("${SLAVE}") {
                 END
             fi
             rm -f helloworld-ws.war
-        ENDOF
         '''
     }
 }
