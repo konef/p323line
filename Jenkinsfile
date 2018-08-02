@@ -99,13 +99,9 @@ node{
             sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz pull"
         }
 
-        //sh returnStatus: true, script: 'ssh -i id_rsa -P 2222 jboss@EPBYMINW7423 "command"'
-        sh returnStatus: true, script:'ssh -i id_rsa -P 2222 jboss@EPBYMINW7423 "mkdir /tmp/jenkins_tmp"'
-        sh returnStatus: true, script: "scp -i id_rsa -P 2222 pipeline-${student}-${env.BUILD_NUMBER}.tar.gz jboss@EPBYMINW7423:/tmp/jenkins_tmp"
-        sh returnStatus: true, script:'ssh -i id_rsa -P 2222 jboss@EPBYMINW7423 'bash -s' < deploy.sh'
-
-
-
+        sh returnStatus: true, script:'ssh -i id_rsa -p2201 jboss@EPBYMINW7423 "mkdir /tmp/jenkins_tmp"'
+        sh returnStatus: true, script: "scp -i id_rsa -P2201 pipeline-${student}-${env.BUILD_NUMBER}.tar.gz jboss@EPBYMINW7423:/tmp/jenkins_tmp"
+        sh returnStatus: true, script:'ssh -i id_rsa -p 2201 jboss@EPBYMINW7423 'bash -s' < deploy.sh'
 
         echo "\u277c: Deployment Stage is done \u2705"
     }
