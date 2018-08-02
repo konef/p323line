@@ -48,7 +48,7 @@ node{
                     echo "\u27A1 Build post-integration-test parallel stage"
                     sh 'echo "Build post-integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                        sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
+                        //sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
                     }
                 }
                 finally {
