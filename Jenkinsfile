@@ -1,9 +1,9 @@
 
 
+String student = 'aandryieuski'
 
 
 node{
-
     tool name: 'mavenLocal', type: 'maven'
     tool name: 'java8', type: 'jdk'
     def mvn_version = 'mavenLocal'
@@ -38,7 +38,7 @@ node{
                 try {
                     echo "\u27A1 Build integration-test parallel stage"
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                        sh 'sleep 30'
+                        sleep 30
                         sh 'mvn -f helloworld-ws/pom.xml integration-test'
                     }
                 }
@@ -50,7 +50,7 @@ node{
                 try {
                     echo "\u27A1 Build post-integration-test parallel stage"
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
-                        sh 'sleep 60'
+                        sleep 60
                         sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
                     }
                 }
@@ -58,9 +58,16 @@ node{
                     sh 'echo "Finished this stage"'
 
                 }
-            } //, failFast: false
+            }, failFast: true
         }
         echo "\u2778: Testing Stage is done \u2705"
+    }
+    stage('Triggering job and fetching artefact after finishing'){
+        build job: "MNTLAB-${student}-child1-build-job", parameters: [[$class: 'StringParameterValue', name: 'BRANCH_NAME', value: student]]
+
+
+
+        echo "\u2779: Triggering job and fetching artefact after finishing Stage is done \u2705"
     }
 
 }
