@@ -1,3 +1,4 @@
+
 // Nexus attributes
 serv = 'http://EPBYMINW7423/nexus/repository/'
 username = 'admin'
@@ -9,11 +10,14 @@ String student = 'aandryieuski'
 String step = ''
 
 node{
+
     def mvn_version = 'mavenLocal'
     def java_version = 'java8'
     def groovy_version = 'groovy4'
+
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), disableConcurrentBuilds()])
     stage('Preparation') {
+        deleteDir()
         def USER_J = wrap([$class: 'BuildUser']) {
             return env.BUILD_USER
         }
