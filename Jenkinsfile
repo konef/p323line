@@ -1,7 +1,7 @@
 
 
 String student = 'aandryieuski'
-
+String step = ''
 
 node{
     tool name: 'mavenLocal', type: 'maven'
@@ -67,6 +67,12 @@ node{
         copyArtifacts filter: "${student}_dsl_script.tar.gz", projectName: "MNTLAB-${student}-child1-build-job", selector: lastSuccessful()
         sh 'ls -la'
         echo "\u2779: Triggering job and fetching artefact after finishing Stage is done \u2705"
+    }
+    stage('Packaging and Publishing results'){
+        sh "tar -xzf ${student}_dsl_script.tar.gz "
+        sh "tar -czf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz Jenkinsfile helloworld-ws/target/helloworld-ws.war jobs.groovy"
+
+
     }
 
 }
