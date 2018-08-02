@@ -80,11 +80,10 @@ node{
                 ssh -p2202 root@epbyminw7425  'rm -f /usr/local/tomcat/webapps/backup.tar.gz'
                 
             fi
-            '''
-            emailext body: 'Tututu', subject: 'Problem', to: 'mikhailznak@gmail.com'
+            '''            
         }
     }
     catch(all) {
-        emailext body: 'Tututu', subject: 'Problem', to: 'mikhailznak@gmail.com'
+        mail bcc: '', body: 'Tuttu', cc: '', from: '', replyTo: '', subject: 'Problem', to: 'mikhailznak@gmail.com'
     }
 }
