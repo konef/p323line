@@ -25,4 +25,8 @@ node {
         }
         )
     }
+    stage ('Triggering job and fetching artifact after finishing') {
+        build job: 'MNTLAB-mpiatliou-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: 'mpiatliou')], wait: true
+        copyArtifacts filter: '*.tar.gz', fingerprintArtifacts: true, projectName: 'MNTLAB-mpiatliou-child1-build-job', selector: lastSuccessful()
+    }
 }
