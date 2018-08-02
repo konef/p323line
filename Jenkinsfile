@@ -61,7 +61,7 @@ node("${SLAVE}") {
             export PATH=$PATH:$GROOVY_HOME/bin
             groovy push_pull.groovy pull
             tar -xzf pipeline*.tar.gz && rm -f pipeline*.tar.gz
-	    ssh -v -p 2200 vagrant@epbyminw2695 "hostname"
+	    ssh vagrant@tomcat
             scp helloworld-ws.war vagrant@tomcat:/opt/tomcat/webapps/helloworld-ws.war
             response=$( curl -I http://tomcat:8080/helloworld-ws/ 2>/dev/null | head -n 1 | cut -d$' ' -f2 )
             if [ "$response" == "200" ]; then
