@@ -52,7 +52,7 @@ node("${SLAVE}") {
         export PATH=$PATH:$GROOVY_HOME/bin
         rm -f pipeline*.tar.gz
         groovy push_pull.groovy pull
-        tar -xvf *.tar.gz
+        tar -xvf helloworld-ws.tar.gz
         ssh tomcat@tomcat mv -f /opt/tomcat/webapps/helloworld-ws.war /opt/tomcat/helloworld-ws.war.old
         scp helloworld-ws.war tomcat@tomcat:/opt/tomcat/webapps/
         
