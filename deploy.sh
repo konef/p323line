@@ -7,7 +7,8 @@ echo "Build Number ==> $BUILD_NUMBER"
 
 [[ -d /tmp/jenkins_tmp/war ]] || mkdir /tmp/jenkins_tmp/war
 
-tar xfz /tmp/jenkins_tmp/$FILE helloworld-ws.war -C /tmp/jenkins_tmp/war
+cd /tmp/jenkins_tmp/war
+tar xfz /tmp/jenkins_tmp/$FILE helloworld-ws.war 
 
 [[ -f /tmp/jenkins_tmp/war/helloworld.war_old ]] &&  mv /tmp/jenkins_tmp/war/helloworld.war_old /tmp/jenkins_tmp/war/helloworld.war_old_old
 [[ -f /opt/cd-proc/jboss/server/default/deploy/helloworld.war  ]] && mv /opt/cd-proc/jboss/server/default/deploy/helloworld.war /tmp/jenkins_tmp/war/helloworld.war_old
