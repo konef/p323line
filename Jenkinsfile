@@ -9,7 +9,7 @@ def send_message(Boolean state, String stage, String desc) {
 
 node("${SLAVE}") {
     stage ('Preparation (Checking out)') {
-        def stage = currentStage.name
+        def stage = STAGE_NAME
         def state = true
         def desc = "Cloning from ${url} was"
         try {
@@ -22,7 +22,7 @@ node("${SLAVE}") {
         send_message(state,stage,desc)
     }
     stage ('Building code') {
-        def stage = currentStage.name
+        def stage = STAGE_NAME
         def state = true
         def desc = "Building of the code was "
         try {
@@ -37,7 +37,7 @@ node("${SLAVE}") {
         send_message(state,stage,desc)
     }
     stage ('Testing') {
-        def stage = currentStage.name
+        def stage = STAGE_NAME
         def state = true
         def desc = "Testing of the code was "
         try {
@@ -62,7 +62,7 @@ node("${SLAVE}") {
         send_message(state,stage,desc)
     }
     stage ('Triggering job and fetching artefact after finishing') {
-        def stage = currentStage.name
+        def stage = STAGE_NAME
         def state = true
         def desc = "Triggering the child job and copying an artifact were "
         try {
@@ -78,7 +78,7 @@ node("${SLAVE}") {
         send_message(state,stage,desc)
     }
     stage ('Packaging and Publishing results') {
-        def stage = currentStage.name
+        def stage = STAGE_NAME
         def state = true
         def desc = "Packaging and publishing results were "
         try {
@@ -101,7 +101,7 @@ node("${SLAVE}") {
     }
     stage ('Asking for manual approval') {
         def userInput = true
-        def stage = currentStage.name
+        def stage = STAGE_NAME
         def state = true
         def desc = "Manual approval was "
         try {
@@ -122,7 +122,7 @@ node("${SLAVE}") {
         send_message(state,stage,desc)
     }
     stage ('Deployment') {
-        def stage = currentStage.name
+        def stage = STAGE_NAME
         def state = true
         def desc = "The deployment was "
         try {
