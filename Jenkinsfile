@@ -1,6 +1,7 @@
 node {
+       try{
        stage('Clone sources') {
-        git url: 'https://github.com/MNT-Lab/p323line.git', branch: 'dzhukova';}
+       git url: 'https://github.com/MNT-Lab/p323line.git', branch: 'dzhukova';}
 stage('Build') {
            withMaven(maven: 'mavenLocal')
         {
@@ -44,8 +45,13 @@ stage('Copy Artifact') {
 stage('Deploy Artifact') {
     sh 'groovy all.groovy -c pull'
     sh 'tar -xvf app.tar.gz'
-sh 'scp -P 2200 *.war root@EPBYMINW1969:/usr/local/bin/apache-tomcat-8.5.31/webapps/helloapp.war'
+sh 'scp -v -P 2200 *.war root@EPBYMINW1969:/usr/local/bin/apache-tomcat-8.5.31/webapps/helloapp.war'
 }
-
+} catch(e) {
+        mail bcc: '', body: 'failed stage at ', cc: '', from: '', replyTo: '', subject: "stage failed ", to: 'zhukova.darya@gmail.com'
+    }
+       finally 
+       { mail bcc: '', body: 'failed stage at ', cc: '', from: '', replyTo: '', subject: "stage failed ${currentBuild.fullDisplayName}", to: 'zhukova.darya@gmail.com'
+	}
 }
 
