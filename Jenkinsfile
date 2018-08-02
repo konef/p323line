@@ -64,14 +64,15 @@ node("${SLAVE}")  {
             sh "/usr/local/groovy/latest/bin/groovy ./pull.groovy"
             sh "scp -P2200 pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
             sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
-        }
+   	}
+	    currentBuild.result = 'SUCCESS'
     }
     catch(err) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
 }
 }
   catch (err) {
-    currentBuild.result = 'FAILURE'
+    	    currentBuild.result = 'FAILURE'
   }
   finally {
 	mail to: 'manukevich96@gmail.com',
