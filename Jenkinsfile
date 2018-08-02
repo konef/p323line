@@ -140,21 +140,18 @@ try {
         }
 
     }
-}
-catch (exc) {
+} catch (exc) {
 
     err = caughtError
+    mail_to(stage_pipe, "TROUBLE", step_pipe, user_mail)
     currentBuild.result = "FAILURE"
+    throw err
+}
 
-
-} finally {
+finally{
 
     if (currentBuild.result != "ABORTED") {
-        mail_to(stage_pipe, "TROUBLE", step_pipe, user_mail)
-    }
-
-    if (err) {
-        throw err
+        echo 'df'
     }
 }
 
