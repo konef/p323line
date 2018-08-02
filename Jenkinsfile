@@ -1,7 +1,7 @@
 node("${SLAVE}") {
 
     try {
-        cleanWs()
+
         stage('Clone repository')
         git branch: 'hviniarski', url: 'https://github.com/MNT-Lab/p323line'
 
@@ -54,15 +54,16 @@ node("${SLAVE}") {
         rm -f pipeline*.tar.gz
         groovy push_pull.groovy pull
         tar -xvf helloworld-ws.tar.gz
-        ssh tomcat@tomcat mv -f /opt/tomcat/webapps/helloworld-ws.war /opt/tomcat/helloworld-ws.war.old
+        
         scp helloworld-ws.war tomcat@tomcat:/opt/tomcat/webapps/
         
         
         '''
         }
-        archiveArtifacts 'pipeline-hviniarski-${BUILD_NUMBER}.tar.gz'
+        archiveArtifacts '*.tar.gz'
 
         currentBuild.result = 'SUCCESS'
+        cleanWs()
     }
     catch (err) {
         currentBuild.result = 'FAILURE'
