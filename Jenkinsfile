@@ -5,7 +5,7 @@ node("${SLAVE}")  {
         git branch: 'ymaniukevich',
                 url: 'https://github.com/MNT-Lab/p323line'
         stage('Building code')
-        withgdfgdfgdfgMaven(maven: 'mavenLocal') {
+        withMaven(maven: 'mavenLocal') {
             sh "mvn -f ./helloworld-ws/pom.xml clean install"
         }
     } catch(err) {
