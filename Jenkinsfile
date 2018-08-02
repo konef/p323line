@@ -98,7 +98,11 @@ node{
         withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
             sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz pull"
         }
-        sh 'ls -la'
+
+        //sh returnStatus: true, script: 'echo'
+        sh "ssh -i id_rsa -p 2222 student@EPBYMINW7423 "
+
+
         echo "\u277c: Deployment Stage is done \u2705"
     }
 
