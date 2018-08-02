@@ -156,7 +156,7 @@ try {
 }
 
 finally{
-    if (currentBuild.result == "completeBuild") {
+    if (currentBuild.result != "FAILURE") {
         mail_to("Deployment", "SUCCESS", "Application has been deployed on the JBOSS Server", user_mail)
     } else
     {
