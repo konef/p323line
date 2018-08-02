@@ -9,8 +9,8 @@ node("${SLAVE}")  {
         }
     } catch(err) {
         mail to: 'manukevich96@gmail.com',
-                subject: "stage failed ${failed}",
-                body: "${env.BUILD_URL} has failed ${failed}"
+        subject: "stage failed ${failed}",
+        body: "${env.BUILD_URL} has failed ${failed}"
     }
 
     try{
@@ -29,10 +29,9 @@ node("${SLAVE}")  {
         }
     } catch(err) {
         mail to: 'manukevich96@gmail.com',
-                subject: "stage failed ${failed}",
-                body: "${env.BUILD_URL} has failed ${failed}"
+        subject: "stage failed ${failed}",
+        body: "${env.BUILD_URL} has failed ${failed}"
     }
-
     try{
         stage("Triggering job and fetching"){
             build job: 'MNTLAB-ymaniukevich-child1-build-job',
@@ -44,8 +43,8 @@ node("${SLAVE}")  {
         }
     } catch(err) {
         mail to: 'manukevich96@gmail.com',
-                subject: "stage failed ${failed}",
-                body: "${env.BUILD_URL} has failed ${failed}"
+        subject: "stage failed ${failed}",
+        body: "${env.BUILD_URL} has failed ${failed}"
     }
 
     try{
@@ -56,32 +55,29 @@ node("${SLAVE}")  {
         }
     } catch(err) {
         mail to: 'manukevich96@gmail.com',
-                subject: "stage failed ${failed}",
-                body: "${env.BUILD_URL} has failed ${failed}"
+        subject: "stage failed ${failed}",
+        body: "${env.BUILD_URL} has failed ${failed}"
     }
 
     try{
         stage('Asking for manual approval') {
-            input 'Would you like to continue?'
+            input 'Would you like to move on ?'
         }
     } catch(err) {
         mail to: 'manukevich96@gmail.com',
-                subject: "stage failed ${failed}",
-                body: "${env.BUILD_URL} has failed ${failed}"
+        subject: "stage failed ${failed}",
+        body: "${env.BUILD_URL} has failed ${failed}"
     }
-
     try{
         stage("Deployment"){
             sh "/usr/local/groovy/latest/bin/groovy ./pull.groovy"
             sh "scp -P2200 pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
             sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
         }
-
     }
     catch(err) {
         mail to: 'manukevich96@gmail.com',
                 subject: "stage failed ${failed}",
                 body: "${env.BUILD_URL} has failed ${failed}"
 }
-
 }
