@@ -75,7 +75,7 @@ node{
         sh "tar -xzf ${student}_dsl_script.tar.gz "
         sh "tar -czf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz Jenkinsfile helloworld-ws/target/helloworld-ws.war jobs.groovy"
         archiveArtifacts "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
-        sh "groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
+        sh "/usr/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
 
     }
 
