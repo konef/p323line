@@ -64,7 +64,7 @@ node{
     }
     stage('Triggering job and fetching artefact after finishing'){
         build job: "MNTLAB-${student}-child1-build-job", parameters: [[$class: 'StringParameterValue', name: 'BRANCH_NAME', value: student]]
-
+        sh 'ls -la'
 
 
         echo "\u2779: Triggering job and fetching artefact after finishing Stage is done \u2705"
