@@ -69,7 +69,6 @@ node{
     stage('Triggering job and fetching artefact after finishing'){
         build job: "MNTLAB-${student}-child1-build-job", parameters: [string(name: 'BRANCH_NAME', value: student)]
         copyArtifacts filter: "${student}_dsl_script.tar.gz", projectName: "MNTLAB-${student}-child1-build-job", selector: lastSuccessful()
-        sh 'ls -la'
         echo "\u2779: Triggering job and fetching artefact after finishing Stage is done \u2705"
     }
     stage('Packaging and Publishing results'){
@@ -81,7 +80,10 @@ node{
         }
     }
     stage('Asking for manual approval'){
-        input 'Pipeline has paused and needs your input before proceeding'
+        input 'Deploy to prod?'
+    }
+    stage('Deployment'){
+        sh 'echo 123'
     }
 
 }
