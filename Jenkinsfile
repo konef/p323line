@@ -23,7 +23,7 @@ node("${SLAVE}") {
     }
     stage("Triggering job and fetching artifact after finishing"){
         echo "Starting another job"
-        def childjob  = build job: 'EPBYMINW2466/MNTLAB-stsitou-child1-build-job', parameters: [$class: 'ExtendedChoiceParameterValue', name: 'BRANCH_NAME', value: 'stsitou']
+        def childjob  = build job: 'EPBYMINW2466/MNTLAB-stsitou-child1-build-job', parameters: [$class: 'ChoiceParameterValue', name: 'BRANCH_NAME', value: 'stsitou']
         echo "Job status: ${childjob.result}"
     }
 
