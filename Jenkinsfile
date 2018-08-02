@@ -18,9 +18,9 @@ node{
         echo "\u2776: Preparation Stage is done \u2705"
     }
     stage('Building code'){
-        //withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+        withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
             sh 'mvn -f helloworld-ws/pom.xml package'
-        //}
+        }
         echo "\u2777: Building code Stage is done \u2705"
     }
     stage('Testing'){
