@@ -59,17 +59,17 @@ node("${SLAVE}") {
             }
         }
 
-        stage('Triggering job')
+        stage('Triggering job') {
             def stage = STAGE_NAME
             def desc = "Triggering child job failed"
-            try{
+            try {
                 build job: 'MNTLAB-hviniarski-child1-build-job', parameters: [[$class: 'GitParameterValue', name: 'BRANCH_NAME', value: 'hviniarski']]
                 copyArtifacts filter: 'hviniarski_dsl_script.tar.gz', projectName: 'MNTLAB-hviniarski-child1-build-job', selector: lastSuccessful()
             } catch (err) {
                 currentStage.result = "FAILED"
-                send_message(stage,desc)
+                send_message(stage, desc)
             }
-
+        }
         stage("Packaging and Publishing artifact"){
             def stage = STAGE_NAME
             def desc = "Packaging or publishing of artifact was failed"
