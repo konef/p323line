@@ -8,9 +8,9 @@ def send_message(Boolean state, String stage, String desc) {
 }
 
 node("${SLAVE}") {
+    def state = true
     stage ('Preparation (Checking out)') {
         def stage = STAGE_NAME
-        def state = true
         def desc = "Cloning from github was "
         try {
             git branch: 'aaranski', url: 'https://github.com/MNT-Lab/p323line.git'
@@ -24,7 +24,6 @@ node("${SLAVE}") {
     }
     stage ('Building code') {
         def stage = STAGE_NAME
-        def state = true
         def desc = "Building of the code was "
         try {
             withMaven(maven: 'mavenLocal') {
@@ -40,7 +39,6 @@ node("${SLAVE}") {
     }
     stage ('Testing') {
         def stage = STAGE_NAME
-        def state = true
         def desc = "Testing of the code was "
         try {
             withMaven(maven: 'mavenLocal') {
@@ -66,7 +64,6 @@ node("${SLAVE}") {
     }
     stage ('Triggering job and fetching artefact after finishing') {
         def stage = STAGE_NAME
-        def state = true
         def desc = "Triggering the child job and copying an artifact were "
         try {
             build job: "MNTLAB-aaranski-child1-build-job", parameters: [
@@ -83,7 +80,6 @@ node("${SLAVE}") {
     }
     stage ('Packaging and Publishing results') {
         def stage = STAGE_NAME
-        def state = true
         def desc = "Packaging and publishing results were "
         try {
             sh """
@@ -107,7 +103,6 @@ node("${SLAVE}") {
     stage ('Asking for manual approval') {
         def userInput = true
         def stage = STAGE_NAME
-        def state = true
         def desc = "Manual approval was "
         try {
             timeout(time: 60, unit: 'SECONDS') {
@@ -128,7 +123,6 @@ node("${SLAVE}") {
     }
     stage ('Deployment') {
         def stage = STAGE_NAME
-        def state = true
         def desc = "The deployment was "
         try {
             sh '''
@@ -147,7 +141,8 @@ node("${SLAVE}") {
         }
     }
 	def stage = "Continuous deployment"
-	def state = true
-	def desc = "The process of deployment to the production finished successfully"
-	send_message(state,stage,desc)
+	def desc = "The process of deployment to the production "
+	if (state) {
+	    send_message(state,stage,desc)
+	}
 }
