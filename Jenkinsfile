@@ -7,27 +7,22 @@ node {
             sh "mvn -f ./helloworld-ws/pom.xml package"
         }
     }
-    parallel('pre-integration-test': {
-    stage ('pre-integration-test') {
-        withMaven(maven: 'mavenLocal') {
-            sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
+    stage ('Testing') {
+        parallel ('pre-integration-test': {
+            withMaven(maven: 'mavenLocal') {
+                sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
+            }
+        },
+        'integration-test': {
+            withMaven(maven: 'mavenLocal') {
+                sh "mvn -f ./helloworld-ws/pom.xml integration-test"
+            }
+        },
+        'post-integration-test': {
+            withMaven(maven: 'mavenLocal') {
+                sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
+            }
         }
+        )
     }
-    },
-    'integration-test': {
-    stage ('integration-test') {
-        withMaven(maven: 'mavenLocal') {
-            sh "mvn -f ./helloworld-ws/pom.xml integration-test"
-        }
-    }
-    },
-    'post-integration-test': {
-    stage ('post-integration-test') {
-        withMaven(maven: 'mavenLocal') {
-            sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
-        }
-    }
-    }
-    )
 }
-
