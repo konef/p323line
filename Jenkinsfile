@@ -145,18 +145,15 @@ try {
 
     currentBuild.result = "FAILURE"
     //err = caughtError
-
+    throw err
 }
 
 finally{
-
-
     if (currentBuild.result == "SUCCESS") {
         mail_to("Deployment", "SUCCESS", "Application has been deployed on the JBOSS Server", user_mail)
     } else
     {
         mail_to(stage_pipe, "FAILURE", step_pipe, user_mail)
-        throw err
     }
 }
 
