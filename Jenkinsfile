@@ -32,6 +32,7 @@ node("${SLAVE}") {
         sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
         sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
         sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
+	sh "which groovy"
     }
 
 	stage("Deployment"){
