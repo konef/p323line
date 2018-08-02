@@ -137,7 +137,7 @@ node("${SLAVE}") {
             groovy push_pull.groovy pull
             tar -xzf pipeline*.tar.gz && rm -f pipeline*.tar.gz
             ssh vagrant@tomcat "cd /opt/tomcat/webapps && rm -f helloworld-ws.war.old; mv helloworld-ws.war helloworld-ws.war.old"
-            scp helloworld-ws.war vagrant@tomcat:/opt/tomcat/webapps/
+            scp helloworld-ws.war vagrant@tomcat:/opt/tomcat/webapps/helloworld-ws.war
             response=$( curl -I http://tomcat:8080/helloworld-ws/ 2>/dev/null | head -n 1 | cut -d$' ' -f2 )
             if [ "$response" != "200" ]; then
             ssh vagrant@tomcat "cd /opt/tomcat/webapps && rm -f helloworld-ws.war; cp helloworld-ws.war.old helloworld-ws.war"
@@ -148,7 +148,7 @@ node("${SLAVE}") {
             state = false
             desc += "interrupted"
 	    send_message(state,stage,desc)
-	    currentStage.result = "FAILED"
+	    currentBuild.result = "FAILED"
         }
     }
 	def stage = "Continuous deployment"
