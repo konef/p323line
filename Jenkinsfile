@@ -54,7 +54,7 @@ node{
             input "Deploy artefact?"
         }*/
 
-        stage ('Packaging and Publishing results'){
+        stage ('Deployment'){
             sh "groovy ./download.groovy pull"
             sh '''ssh  -p2202 root@epbyminw7425 '/usr/local/tomcat/webapps/backup.sh'
             scp -P 2202 $WORKSPACE/pipeline-mznak-${BUILD_NUMBER}.tar.gz root@epbyminw7425:/usr/local/tomcat/webapps/helloworld.tar.gz
