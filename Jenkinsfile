@@ -76,4 +76,4 @@ node("${SLAVE}")  {
       subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
       body: "${env.BUILD_URL} has result ${currentBuild.result}"
 }
-}
+
