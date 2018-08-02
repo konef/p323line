@@ -41,5 +41,6 @@ node {
     stage("Asking for manual approval"){
         input 'Approve?'
     }
+    archiveArtifacts 'pipeline-hviniarski-${BUILD_NUMBER}.tar.gz'
     cleanWs()
 }
