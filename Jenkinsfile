@@ -56,7 +56,7 @@ node("${SLAVE}") {
         }
     }
     stage ('Deployment') {
-	sh "ssh vagrant@tomcat"
+	sh "ssh root@tomcat"
         sh '''
             export GROOVY_HOME=/home/student/groovy-2.5.1
             export PATH=$PATH:$GROOVY_HOME/bin
