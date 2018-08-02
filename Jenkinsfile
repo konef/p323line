@@ -62,6 +62,6 @@ node("${SLAVE}") {
         currentBuild.result = 'FAILURE'
     }
     finally {
-        mail bcc: '', body: "${env.BUILD_URL} has resulted in ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'glebko123@gmail.com'
+       // mail bcc: '', body: "${env.BUILD_URL} has resulted in ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'glebko123@gmail.com'
     }
 }
