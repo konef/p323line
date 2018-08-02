@@ -26,7 +26,7 @@ b=$?
 sleep 2
 
 if [ "$a" -eq 0 ] && [ "$b" -eq 0 ];then
-    rm -rf /tmp/jenkins_tmp/war/helloworld.war_old_old
+    [[ -f /tmp/jenkins_tmp/war/helloworld.war_old_old  ]] && rm -rf /tmp/jenkins_tmp/war/helloworld.war_old_old
     echo "OK. $a,$b"
     exit 0
 else
@@ -34,7 +34,7 @@ else
     sleep 2
     mv /tmp/jenkins_tmp/war/helloworld.war_old /opt/cd-proc/jboss/server/default/deploy/helloworld.war
     sleep 2
-    mv /tmp/jenkins_tmp/war/helloworld.war_old_old /tmp/jenkins_tmp/war/helloworld.war_old
+    [[ -f /tmp/jenkins_tmp/war/helloworld.war_old_old  ]] && mv /tmp/jenkins_tmp/war/helloworld.war_old_old /tmp/jenkins_tmp/war/helloworld.war_old
     echo "FAIL - return to previous version. $a,$b"
     exit 1
 fi
