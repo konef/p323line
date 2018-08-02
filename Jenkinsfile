@@ -51,6 +51,7 @@ try {
 
         properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), disableConcurrentBuilds()])
         stage('Preparation') {
+            stage_pipe = 'Preparation'
             deleteDir()
             def USER_J = wrap([$class: 'BuildUser']) {
                 return env.BUILD_USER
@@ -61,12 +62,14 @@ try {
             echo "\u2776: Preparation Stage is done \u2705"
         }
         stage('Building code') {
+            stage_pipe = 'Building code'
             withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
                 sh 'mvn -f helloworld-ws/pom.xml package'
             }
             echo "\u2777: Building code Stage is done \u2705"
         }
         stage('Testing') {
+            stage_pipe = 'Testing'
             withEnv(["JAVA_HOME=${tool java_version}", "PATH+MAVEN=${tool mvn_version}/bin"]) {
                 parallel PreIntegrationTest: {
                     try {
@@ -108,11 +111,13 @@ try {
             echo "\u2778: Testing Stage is done \u2705"
         }
         stage('Triggering job and fetching artefact after finishing') {
+            stage_pipe = 'Triggering job and fetching artefact after finishing'
             build job: "MNTLAB-${student}-child1-build-job", parameters: [string(name: 'BRANCH_NAME', value: student)]
             copyArtifacts filter: "${student}_dsl_script.tar.gz", projectName: "MNTLAB-${student}-child1-build-job", selector: lastSuccessful()
             echo "\u2779: Triggering job and fetching artefact after finishing Stage is done \u2705"
         }
         stage('Packaging and Publishing results') {
+            stage_pipe = 'Packaging and Publishing results'
             sh "tar -xzf ${student}_dsl_script.tar.gz "
             sh "tar -czf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy -C helloworld-ws/target/ helloworld-ws.war"
             archiveArtifacts "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
@@ -122,12 +127,14 @@ try {
             echo "\u277a: Packaging and Publishing results Stage is done \u2705"
         }
         stage('Asking for manual approval') {
+            stage_pipe = 'Asking for manual approval'
             timeout(time: 30, unit: 'SECONDS') {
                 input 'Deploy to prod?'
             }
             echo "\u277b: Asking for manual approval Stage is done \u2705"
         }
         stage('Deployment') {
+            stage_pipe = 'Deployment'
             sh "rm -rf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
             withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
                 sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz pull"
