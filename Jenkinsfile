@@ -8,9 +8,7 @@ node{
     stage('Preparation') {
         deleteDir()
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
-        echo "Preparation Stage is done \u2705"
-        echo "Preparation Stage is done \u2776"
-
+        echo "Preparation Stage is done \u2776 \u2705"
     }
     stage('Building code'){
         //def mvn_version = 'mavenLocal'
@@ -18,7 +16,7 @@ node{
             sh 'mvn -f helloworld-ws/pom.xml package'
             sh 'ls -la helloworld-ws/'
         }
-        echo "Building code Stage is done \u2705"
+        echo "Building code Stage is done \u2777 \u2705"
     }
     stage('Testing'){
         withEnv(["JAVA_HOME=${tool java_version}"]) {
@@ -58,7 +56,7 @@ node{
                 }
             }, failFast: true
         }
-        echo "Testing Stage is done \u2705"
+        echo "Testing Stage is done \u2778 \u2705"
     }
 
 }
