@@ -1,4 +1,4 @@
-node() {
+node("${SLAVE}") {
     stage ('Preparation (Checking out)') {
         git branch: 'aaranski', url: 'https://github.com/MNT-Lab/p323line.git'
     }
@@ -54,5 +54,31 @@ node() {
             echo "Aborted by: [${user}]"
             currentStage.result = 'ABORTED'
         }
+    }
+    stage ('Deployment') {
+        sh '''
+        ssh -tt -p 2200 vagrant@epbyminw2695 << ENDOF
+            export GROOVY_HOME=/opt/jenkins/master/tools/hudson.plugins.groovy.GroovyInstallation/Groovy2.5.1
+            export PATH=$PATH:$GROOVY_HOME/bin
+            groovy push_pull.groovy pull
+            tar -xzf pipeline*.tar.gz && rm -f pipeline*.tar.gz
+            ssh -tt vagrant@tomcat << "EO"
+                cd /opt/tomcat/webapps && rm -f helloworld-ws.war.old
+                mv helloworld-ws.war helloworld-ws.war.old
+            EO
+            scp helloworld-ws.war vagrant@tomcat:/opt/tomcat/webapps/helloworld-ws.war
+            response=$( curl -I http://tomcat:8080/helloworld-ws/ 2>/dev/null | head -n 1 | cut -d$' ' -f2 )
+            if [ "$response" == "200" ]; then
+                page_value=$( curl http://tomcat:8080/helloworld-ws/ 2>/dev/null | grep "helloworld-ws" )
+            fi
+            if [ "$response" != "200" ] || [ "$page_value" == "" ]; then
+                ssh -tt vagrant@tomcat << "END"
+                    cd /opt/tomcat/webapps && rm -f helloworld-ws.war
+                    cp helloworld-ws.war.old helloworld-ws.war
+                END
+            fi
+            rm -f helloworld-ws.war
+        ENDOF
+        '''
     }
 }
