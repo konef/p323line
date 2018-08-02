@@ -50,7 +50,7 @@ void pull(String[] pom_gav) {
     def version = gav[2]
     def restClient = new RESTClient("http://EPBYMINW2695/nexus/repository/${repo}/")
     restClient.auth.basic 'nexus-service-user', 'nexus'
-    def response = restClient.get(path: "http://EPBYMINW2695/nexus/repository/${repo}/${correct_path}/${artifactId}/${version}/${artifactName}.tar.gz"
+    def response = restClient.get(path: "http://EPBYMINW2695/nexus/repository/${repo}/${correct_path}/${artifactId}/${version}/${artifactName}"
     )
     new File("./${artifactId}.tar.gz") << response.data
 }
