@@ -9,9 +9,6 @@ node {
     }
 
     stage('Build') {
-
-        git url: 'https://github.com/cyrille-leclerc/multi-module-maven-project'
-
         withMaven(maven: 'Maven3',) {
             // Run the maven build
             sh "mvn -f ./helloworld-ws/pom.xml package"
