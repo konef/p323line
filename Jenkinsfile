@@ -6,19 +6,18 @@ node{
     def mvn_version = 'mavenLocal'
     stage('Preparation') {
         deleteDir()
-        //checkout([$class: 'GitSCM', branches: [[name: '*/aandryieuski']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/MNT-Lab/p323line.git']]])
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
-        echo "\u2705"
+        echo "Preparation is done \u2705"
     }
     stage('Building code'){
-        def mvn_version = 'mavenLocal'
+        //def mvn_version = 'mavenLocal'
         withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
             sh 'mvn -f helloworld-ws/pom.xml package'
             sh 'ls -la helloworld-ws/'
         }
     }
     stage('Testing'){
-        parallel pre-integration-test: {
+        parallel pre-integration-test {
             try {
                 sh 'echo "Build pre-integration-test parallel stage"'
                 withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
@@ -29,7 +28,7 @@ node{
                 sh 'echo "Finished this stage"'
             }
 
-        }, integration-test: {
+        }, integration-test {
             try {
                 sh 'echo "Build integration-test parallel stage"'
                 withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
@@ -40,7 +39,7 @@ node{
                 sh 'echo "Finished this stage"'
             }
 
-        }, post-integration-test: {
+        }, post-integration-test {
             try {
                 sh 'echo "Build post-integration-test parallel stage"'
                 withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
