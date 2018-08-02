@@ -11,7 +11,7 @@ node("${SLAVE}") {
     stage ('Preparation (Checking out)') {
         def stage = STAGE_NAME
         def state = true
-        def desc = "Cloning from ${url} was"
+        def desc = "Cloning from github was "
         try {
             git branch: 'aaranski', url: 'https://github.com/MNT-Lab/p323line.git'
             desc += "finished"
