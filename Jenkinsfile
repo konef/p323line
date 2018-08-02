@@ -35,7 +35,7 @@ node("${SLAVE}") {
        sh 'tar -zxvf ${student}_dsl_script.tar.gz'
        sh 'tar -zcvf pipeline-$student-$BUILD_NUMBER.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war'
        archiveArtifacts 'pipeline-$student-$BUILD_NUMBER.tar.gz'
-       sh 'GROOVY_HOME=/root/.jenkins/tools/hudson.plugins.groovy.GroovyInstallation/groovy_interpreter/bin; PATH=$PATH:$GROOVY_HOME; groovy push.groovy'
+       sh 'GROOVY_HOME=/home/student/Downloads/groovy-2.5.1/bin/; PATH=$PATH:$GROOVY_HOME; groovy push.groovy'
    }
    
    stage('Asking for manual approval') {
@@ -44,7 +44,7 @@ node("${SLAVE}") {
    
    stage('Deployment'){
        env.art_name="pipeline-${student}-${BUILD_NUMBER}.tar.gz"
-       sh '[ -d tmp ] || mkdir tmp; echo $art_name; cd tmp; GROOVY_HOME=/root/.jenkins/tools/hudson.plugins.groovy.GroovyInstallation/groovy_interpreter/bin; PATH=$PATH:$GROOVY_HOME; groovy ../pull.groovy'
+       sh '[ -d tmp ] || mkdir tmp; echo $art_name; cd tmp; GROOVY_HOME=/home/student/Downloads/groovy-2.5.1/bin/; PATH=$PATH:$GROOVY_HOME; groovy ../pull.groovy'
        sh 'cd tmp; tar -zxvf pipeline-$student-$BUILD_NUMBER.tar.gz'
        sh 'cd tmp; scp -P 2201 helloworld-ws.war vagrant@epbyminw1766:/usr/local/tomcat/apache-tomcat-8.5.32/webapps/'
    }
