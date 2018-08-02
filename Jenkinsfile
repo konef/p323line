@@ -64,6 +64,7 @@ node{
     }
     stage('Triggering job and fetching artefact after finishing'){
         build job: "MNTLAB-${student}-child1-build-job", parameters: [string(name: 'BRANCH_NAME', value: student)]
+        copyArtifacts filter: "${student}_dsl_script.tar.gz", projectName: "MNTLAB-${student}-child1-build-job", selector: lastSuccessful()
         sh 'ls -la'
         echo "\u2779: Triggering job and fetching artefact after finishing Stage is done \u2705"
     }
