@@ -3,11 +3,11 @@ node("${SLAVE}")  {
     	git branch: 'ymaniukevich', 
     	url: 'https://github.com/MNT-Lab/p323line'
     stage('Building code')
-        withMaven(maven: 'maven') {
+        withMaven(maven: 'mavenLocal') {
             sh "mvn -f ./helloworld-ws/pom.xml clean install"
         }
     stage("Testing")
-        withMaven(maven: 'maven'){
+        withMaven(maven: 'mavenLocal'){
         parallel (
         "pre-Integration test": {
             sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
