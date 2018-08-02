@@ -11,7 +11,7 @@ node("${SLAVE}"){
                 sh "mvn -f helloworld-ws/pom.xml package"
             }
         }
-        /*parallel(
+        parallel(
                 'pre-integration-test':{
                     stage ('pre-integration-test')
                             {
@@ -36,7 +36,7 @@ node("${SLAVE}"){
                                 }
                             }
                 }
-        )*/
+        )
 
         stage ('Triggering job'){
             build job: 'MNTLAB-mznak-child1-build-job', parameters: [[$class: 'GitParameterValue', name: 'BRANCH_NAME', value: 'mznak']]
@@ -50,9 +50,9 @@ node("${SLAVE}"){
             sh "groovy ./download.groovy push"
         }
 
-        /*stage ('Asking for manual approval'){
+        stage ('Asking for manual approval'){
             input "Deploy artefact?"
-        }*/
+        }
 
         stage ('Deployment'){
             sh "groovy ./download.groovy pull"
