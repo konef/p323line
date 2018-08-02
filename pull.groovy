@@ -17,7 +17,8 @@ http.request(Method.GET) {
     }
 }
 def art_name = System.getenv("art_name")
-download_url="http://192.168.1.3/repository/project-releases/customgroup/1/1/${art_name}"
+
+download_url="http://epbyminw1766/nexus/repository/project-releases/pipeline/1/1/${art_name}"
 def download = new HTTPBuilder(download_url)
 download.headers['Authorization'] = "Basic " + "nexus-service-user:nexus-service-user".getBytes('iso-8859-1').encodeBase64()
 download.request(Method.GET, ContentType.BINARY) {
