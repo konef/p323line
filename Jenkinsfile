@@ -9,6 +9,8 @@ node{
         deleteDir()
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
         echo "Preparation Stage is done \u2705"
+        echo "Preparation Stage is done \u2776"
+
     }
     stage('Building code'){
         //def mvn_version = 'mavenLocal'
