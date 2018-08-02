@@ -4,7 +4,7 @@ import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
 import java.net.URL
-
+import java.text.SimpleDateFormat
 // Nexus attributes
 serv = 'http://EPBYMINW7423/nexus/repository/'
 username = 'admin'
@@ -14,7 +14,33 @@ repo = 'Artifact-storage'
 // Pipeline variables
 String student = 'aandryieuski'
 String step = ''
-String recipient = 'andrei_andryieuski@epam.com'
+String user_mail = 'andrei_andryieuski@epam.com'
+
+
+def mail_to(String stage, String state, String step, recipient) {
+
+    date = new Date()
+    sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
+    sdf.format(date)
+    mail subject: "JOB ${env.JOB_NAME} (${env.BUILD_NUMBER}): State ***${state}*** ",
+        body: """
+***
+Date/Time: ${sdf.format(date)}
+Job ${env.JOB_NAME} has state: ${state},
+Stage: ${stage},
+Step: ${step},
+***
+ 
+JOB_URL: ${env.JOB_URL}  
+""",
+        to: recipient,
+        replyTo: recipient,
+        from: 'noreply@jenkins.io'
+
+
+}
+
+
 try {
     node {
 
@@ -117,24 +143,15 @@ try {
 }
 catch (exc) {
 
- err = caughtError
- currentBuild.result = "FAILURE"
- mail subject: "${env.JOB_NAME}-${student} (${env.BUILD_NUMBER}) failed",
-         body: "It appears that ${env.BUILD_URL} is failing, somebody should do something about that",
-           to: recipient,
-      replyTo: recipient,
- from: 'noreply@jenkins.io'
+    err = caughtError
+    currentBuild.result = "FAILURE"
+
 
 } finally {
 
     if (currentBuild.result != "ABORTED") {
-
-        step([$class: 'Mailer',
-              notifyEveryUnstableBuild: true,
-              recipients: "${email_to}",
-              sendToIndividuals: true])
+        mail_to(stage_pipe, "TROUBLE", step_pipe, user_mail)
     }
-
 
     if (err) {
         throw err
