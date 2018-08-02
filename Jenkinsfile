@@ -1,3 +1,8 @@
+properties([
+  parameters([
+    string(name: 'student', defaultValue: 'ypapkou', description: 'Branch name.', )
+   ])
+])
 node {
    stage('Preparation (Checking out)') {
        checkout([$class: 'GitSCM', branches: [[name: '*/ypapkou']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/MNT-Lab/p323line/']]])
@@ -21,14 +26,14 @@ node {
    }*/
    
    stage('Triggering job and fetching artefact after finishing') {
-       build job: 'MNTLAB-ypapkou-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: 'ypapkou')]
-       copyArtifacts filter: 'ypapkou_dsl_script.tar.gz, output.txt', fingerprintArtifacts: true, projectName: 'MNTLAB-ypapkou-child1-build-job', selector: lastSuccessful()
+       build job: 'MNTLAB-ypapkou-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: "$student")]
+       copyArtifacts filter: '$student_dsl_script.tar.gz, output.txt', fingerprintArtifacts: true, projectName: 'MNTLAB-ypapkou-child1-build-job', selector: lastSuccessful()
    }
    
    stage('Packaging and Publishing results') {
-       sh "tar -zxvf ypapkou_dsl_script.tar.gz"
-       sh 'tar -zcvf pipeline-ypapkou-$BUILD_NUMBER.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war'
-       archiveArtifacts 'pipeline-ypapkou-$BUILD_NUMBER.tar.gz'
+       sh 'tar -zxvf ${student}_dsl_script.tar.gz'
+       sh 'tar -zcvf pipeline-$student-$BUILD_NUMBER.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war'
+       archiveArtifacts 'pipeline-$student-$BUILD_NUMBER.tar.gz'
        sh 'GROOVY_HOME=/root/.jenkins/tools/hudson.plugins.groovy.GroovyInstallation/groovy_interpreter/bin; PATH=$PATH:$GROOVY_HOME; groovy push.groovy'
    }
    
