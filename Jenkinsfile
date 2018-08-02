@@ -20,10 +20,8 @@ node("${SLAVE}") {
                 def stage = STAGE_NAME
                 def desc = "Build was failed"
                 try {
-                    sh "mvn -f ./helloworld-ws/pom.xml package"
+                    shdsa "mvn -f ./helloworld-ws/pom.xml package"
                 } catch (err){
-
-                    currentStage.result = "FAILED"
                     send_message(stage, desc)
                 }
             }
@@ -71,7 +69,7 @@ node("${SLAVE}") {
             def stage = STAGE_NAME
             def desc = "Packaging or publishing of artifact was failed"
             try {
-                sh "tarыфв -xvf hviniarski_dsl_script.tar.gz"
+                sh "tar -xvf hviniarski_dsl_script.tar.gz"
                 sh "tar -czf pipeline-hviniarski-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
                 sh '''
                     export GROOVY_HOME=/home/student/groovy-2.5.1
