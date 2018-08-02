@@ -9,7 +9,7 @@ node{
     def mvn_version = 'mavenLocal'
     def java_version = 'java8'
     stage('Preparation') {
-        //deleteDir()
+        deleteDir()
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
         echo "\u2776: Preparation Stage is done \u2705"
     }
