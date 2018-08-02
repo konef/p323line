@@ -13,20 +13,25 @@ node {
                 sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
             }
         },
-        'integration-test': {
-            withMaven(maven: 'mavenLocal') {
-                sh "mvn -f ./helloworld-ws/pom.xml integration-test"
-            }
-        },
-        'post-integration-test': {
-            withMaven(maven: 'mavenLocal') {
-                sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
-            }
-        }
+                'integration-test': {
+                    withMaven(maven: 'mavenLocal') {
+                        sh "mvn -f ./helloworld-ws/pom.xml integration-test"
+                    }
+                },
+                'post-integration-test': {
+                    withMaven(maven: 'mavenLocal') {
+                        sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
+                    }
+                }
         )
     }
     stage ('Triggering job and fetching artifact after finishing') {
         build job: 'MNTLAB-mpiatliou-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: 'mpiatliou')], wait: true
-        copyArtifacts filter: '*.tar.gz', fingerprintArtifacts: true, projectName: 'MNTLAB-mpiatliou-child1-build-job', selector: lastSuccessful()
+        copyArtifacts filter: '*.tar.gz', projectName: 'MNTLAB-mpiatliou-child1-build-job', selector: lastSuccessful()
+    }
+    stage ('Packaging and Publishing results') {
+        sh "tar -xzf mpiatliou_dsl_script.tar.gz"
+        sh "tar -czf pipeline-mpiatliou-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy -C helloworld-ws/target helloworld-ws.war"
+        archiveArtifacts artifacts: "pipeline-mpiatliou-${BUILD_NUMBER}.tar.gz", onlyIfSuccessful: true
     }
 }
