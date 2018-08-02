@@ -8,7 +8,7 @@ node("${SLAVE}")  {
         withMaven(maven: 'mavenLocal') {
             shsd "mvn -f ./helloworld-ws/pom.xml clean install"
         }
-    } catch(all) {
+    } catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
