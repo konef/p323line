@@ -81,17 +81,20 @@ node{
         echo "\u277a: Triggering job and fetching artefact after finishing Stage is done \u2705"
     }
     stage('Asking for manual approval'){
-        input 'Deploy to prod?'
+
+        timeout(time: 60, unit: 'SECONDS') {
+            input 'Deploy to prod?'
+        }
         echo "\u277b: Asking for manual approval Stage is done \u2705"
     }
     stage('Deployment'){
+        deleteDir()
         withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
             sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz pull"
         }
-        deleteDir()
         sh 'ls -la'
 
-        echo "\u2780: Asking for manual approval Stage is done \u2705"
+        echo "\u277c: Deployment Stage is done \u2705"
     }
 
 }
