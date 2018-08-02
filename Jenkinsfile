@@ -39,8 +39,8 @@ node{
         )*/
 
         stage ('Triggering job'){
-            build job: 'test/MNTLAB-mznak-child1-build-job', parameters: [[$class: 'GitParameterValue', name: 'BRANCH_NAME', value: 'mznak']]
-            copyArtifacts filter: 'mznak_dsl_script.tar.gz', projectName: 'test/MNTLAB-mznak-child1-build-job', selector: workspace()
+            build job: 'MNTLAB-mznak-child1-build-job', parameters: [[$class: 'GitParameterValue', name: 'BRANCH_NAME', value: 'mznak']]
+            copyArtifacts filter: 'mznak_dsl_script.tar.gz', projectName: 'MNTLAB-mznak-child1-build-job', selector: workspace()
         }
 
         stage ('Packaging and Publishing results'){
