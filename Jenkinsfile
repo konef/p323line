@@ -37,7 +37,7 @@ node("${SLAVE}")  {
 	stage("Deployment"){
 	    sh "/usr/local/groovy/latest/bin/groovy ./pull.groovy"
 	    sh "scp -P2200 pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
-	    sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz && rm -rf jboss-parent-23.tar.gz Jenkinsfile jobs.groovy'"
+	    sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
 	    }
     currentBuild.result = 'SUCCESS'
 }
