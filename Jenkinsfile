@@ -37,9 +37,7 @@ JOB_URL: ${env.JOB_URL}
         replyTo: recipient,
         from: 'noreply@jenkins.io',
         bcc: '',
-        cc: '',
-
-
+        cc: ''
 }
 
 
