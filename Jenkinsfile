@@ -71,7 +71,7 @@ node("${SLAVE}") {
             def stage = STAGE_NAME
             def desc = "Packaging or publishing of artifact was failed"
             try {
-                sh "tar -xvf hviniarski_dsl_script.tar.gz"
+                sh "tarыфв -xvf hviniarski_dsl_script.tar.gz"
                 sh "tar -czf pipeline-hviniarski-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
                 sh '''
                     export GROOVY_HOME=/home/student/groovy-2.5.1
