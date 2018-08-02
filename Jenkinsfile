@@ -9,7 +9,7 @@ node("${SLAVE}")  {
             sh "mvn -f ./helloworld-ws/pom.xml clean install"
         }
     } catch(err) {
-	    mail bcc: '', body: "${env.BUILD_URL} has failed ${current_stage}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
+	    mail bcc: '', body: "${env.BUILD_URL} has failed Preparating", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
     try{
