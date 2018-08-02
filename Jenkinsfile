@@ -6,7 +6,7 @@ node("${SLAVE}") {
     def groovy_v = 'groovy4'
 	
     try {
-	withEnv(["PATH+MAVEN=${tool mvn_v}/bin"],["JAVA_HOME=${tool java_version}"])
+	withEnv(["PATH+MAVEN=${tool mvn_v}/bin"],["JAVA_HOME=${tool java_version}"]){
 	    
 	stage('Preparating (Checking out)') 
     	git branch: 'ymaniukevich', 
@@ -57,5 +57,6 @@ node("${SLAVE}") {
 	mail to: 'manukevich96@gmail.com',
       subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
       body: "${env.BUILD_URL} has result ${currentBuild.result}"
+}
 }
 }
