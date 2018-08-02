@@ -26,7 +26,7 @@ def mail_to(String stage, String state, String step, recipient) {
     mail subject: "JOB ${env.JOB_NAME} (${env.BUILD_NUMBER}): State ***${state}*** ",
          body: """
 ***
-<b>Date/Time</b>: ${sdf.format(date)}
+Date/Time: ${sdf.format(date)}
 Job ${env.JOB_NAME} has state: ${state},
 Stage: ${stage},
 Step: ${step},
