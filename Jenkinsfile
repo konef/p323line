@@ -21,7 +21,8 @@ node {
    }
    
    stage('Triggering job and fetching artefact after finishing') {
-       
+       build job: 'MNTLAB-ypapkou-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: 'ypapkou')]
+       copyArtifacts filter: 'ypapkou_dsl_script.tar.gz, output.txt', fingerprintArtifacts: true, projectName: 'MNTLAB-ypapkou-child1-build-job', selector: lastSuccessful()
    }
    
    stage('Packaging and Publishing results') {
