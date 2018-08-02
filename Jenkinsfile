@@ -29,6 +29,8 @@ node("${SLAVE}")  {
         selector: lastSuccessful()
         }
     stage("Packaging and Publishing results"){
+	sh '''export JAVA_HOME = /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64/jre
+	export PATH=$PATH:$JAVA_HOME/bin'''
         sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
         sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
         sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
