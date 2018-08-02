@@ -8,9 +8,7 @@ node("${SLAVE}")  {
             sh "mvn -f ./helloworld-ws/pom.xml clean install"
         }
     } catch(err) {
-        mail to: 'manukevich96@gmail.com',
-        subject: "stage failed ${failed}",
-        body: "${env.BUILD_URL} has failed ${failed}"
+        mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
     try{
@@ -28,9 +26,7 @@ node("${SLAVE}")  {
                     })
         }
     } catch(err) {
-        mail to: 'manukevich96@gmail.com',
-        subject: "stage failed ${failed}",
-        body: "${env.BUILD_URL} has failed ${failed}"
+        mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
     try{
         stage("Triggering job and fetching"){
@@ -42,9 +38,7 @@ node("${SLAVE}")  {
                     selector: lastSuccessful()
         }
     } catch(err) {
-        mail to: 'manukevich96@gmail.com',
-        subject: "stage failed ${failed}",
-        body: "${env.BUILD_URL} has failed ${failed}"
+        mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
     try{
@@ -54,9 +48,7 @@ node("${SLAVE}")  {
             sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
         }
     } catch(err) {
-        mail to: 'manukevich96@gmail.com',
-        subject: "stage failed ${failed}",
-        body: "${env.BUILD_URL} has failed ${failed}"
+        mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
     try{
@@ -64,9 +56,7 @@ node("${SLAVE}")  {
             input 'Would you like to move on ?'
         }
     } catch(err) {
-        mail to: 'manukevich96@gmail.com',
-        subject: "stage failed ${failed}",
-        body: "${env.BUILD_URL} has failed ${failed}"
+        mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
     try{
         stage("Deployment"){
@@ -76,8 +66,6 @@ node("${SLAVE}")  {
         }
     }
     catch(err) {
-        mail to: 'manukevich96@gmail.com',
-                subject: "stage failed ${failed}",
-                body: "${env.BUILD_URL} has failed ${failed}"
+        mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
 }
 }
