@@ -1,4 +1,4 @@
-node {
+node "${SLAVE}" {
        try{
        stage('Clone sources') {
        git url: 'https://github.com/MNT-Lab/p323line.git', branch: 'dzhukova';}
