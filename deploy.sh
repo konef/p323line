@@ -2,21 +2,12 @@
 
 FILE=$(ls -la /tmp/jenkins_tmp/*.tar.gz | awk '{print $9}' | awk -F'/' '{print $NF}' )
 
-a=$(cat /tmp/jenkins_tmp/$FILE.md5)
-b=$(md5sum /tmp/jenkins_tmp/$FILE | awk '{print $1}')
-
-sleep 2
-
-if [[ "$a" != "$b" ]];then
-	exit 1
-fi
-
-BUILD_NUMBER=$(echo $FILE | awk -F'-' '{print $2}')
+BUILD_NUMBER=$(echo $FILE | awk -F'-' '{print $NF}' | awk -F'.tar.gz' '{print $1}')
 echo "Build Number ==> $BUILD_NUMBER"
 
 [[ -d /tmp/jenkins_tmp/war ]] || mkdir /tmp/jenkins_tmp/war
 
-tar xfz /tmp/jenkins_tmp/$FILE -C /tmp/jenkins_tmp/war --strip=8
+tar xfz /tmp/jenkins_tmp/$FILE helloworld-ws.war -C /tmp/jenkins_tmp/war
 
 [[ -f /tmp/jenkins_tmp/war/helloworld.war_old ]] &&  mv /tmp/jenkins_tmp/war/helloworld.war_old /tmp/jenkins_tmp/war/helloworld.war_old_old
 [[ -f /opt/cd-proc/jboss/server/default/deploy/helloworld.war  ]] && mv /opt/cd-proc/jboss/server/default/deploy/helloworld.war /tmp/jenkins_tmp/war/helloworld.war_old
@@ -24,11 +15,11 @@ cp /tmp/jenkins_tmp/war/helloworld-ws.war /opt/cd-proc/jboss/server/default/depl
 
 echo "Making of the backup and deploy new build version"
 
-sleep 5
+sleep 15
 
-curl http://localhost:8080/helloworld/status-page.html | grep "Build-Number:$BUILD_NUMBER"
+curl http://epbyminw7423/helloworld/status-page.html | grep "Build-Number:$BUILD_NUMBER"
 a=$?
-curl -I http://localhost:8080/helloworld/ | awk '{print $2}' | head -n 1 | grep 200
+curl -I http://epbyminw7423/helloworld/ | awk '{print $2}' | head -n 1 | grep 200
 b=$?
 
 sleep 2
@@ -46,3 +37,4 @@ else
     echo "FAIL - return to previous version. $a,$b"
     exit 1
 fi
+
