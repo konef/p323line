@@ -39,14 +39,13 @@ def encodingZipFile(Object data) throws UnsupportedEncodingException {
 
 void pull(String[] gavv) {
     def buildNumber = System.getenv('BUILD_NUMBER')
-    def artifactName = "pipeline-mpiatliou-${buildNumber}.tar.gz"
     def gav = gavv
     def groupId = gav[0].replace('\\.','/')
     def artifactId = gav[1]
     def version = gav[2]
     def restClient = new RESTClient('http://epbyminw1374/nexus/repository/project-releases/')
     restClient.auth.basic 'nexus-service-user', 'nexus'
-    def url = restClient.get(path: "http://epbyminw1374/nexus/repository/project-releases/${groupId}/${artifactId}/${version}/${artifactName}"
+    def url = restClient.get(path: "http://epbyminw1374/nexus/repository/project-releases/${groupId}/${artifactId}/${version}/pipeline-mpiatliou-${buildNumber}.tar.gz"
     )
     new File("./artifact.tar.gz") << url.data
 }
