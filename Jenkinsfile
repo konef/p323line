@@ -19,11 +19,11 @@ node {
                         sh "mvn -f helloworld-ws/pom.xml pre-integration-test"
                     },
                     'integration-test': {
-                        sleep 3
+                        sleep 15
                         sh "mvn -f helloworld-ws/pom.xml integration-test"
                     },
                     'post-integration-test': {
-                        sleep 15
+                        sleep 30
                         sh "mvn -f helloworld-ws/pom.xml post-integration-test"
                     }
             )
@@ -37,11 +37,15 @@ node {
         stage("Packaging and Publishing artifact") {
             sh "tar -xvf hviniarski_dsl_script.tar.gz"
             sh "tar -czf pipeline-hviniarski-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
+            sh "groovy ./push_pull.groovy push"
         }
         stage("Asking for manual approval") {
             input 'Approve?'
         }
-
+        stage("Deployment"){
+            sh "groovy ./push_pull.groovy pull"
+            sh "ls -la"
+        }
         archiveArtifacts 'pipeline-hviniarski-${BUILD_NUMBER}.tar.gz'
         cleanWs()
         currentBuild.result = 'SUCCESS'
@@ -50,6 +54,6 @@ node {
         currentBuild.result = 'FAILURE'
     }
     finally {
-        mail bcc: '', body: '"${env.BUILD_URL} has resulted in ${currentBuild.result}"', cc: '', from: '', replyTo: '', subject: '"Status of pipeline: ${currentBuild.fullDisplayName}"', to: 'glebko123@gmail.com'
+        mail bcc: '', body: "${env.BUILD_URL} has resulted in ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'glebko123@gmail.com'
     }
 }
