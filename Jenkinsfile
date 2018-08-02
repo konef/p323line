@@ -4,7 +4,7 @@ properties([
     string(name: 'student', defaultValue: 'ypapkou', description: 'Branch name.', )
    ])
 ])
-node {
+node("EPBYMINW2629") {
    stage('Preparation (Checking out)') {
        checkout([$class: 'GitSCM', branches: [[name: '*/ypapkou']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/MNT-Lab/p323line/']]])
 
@@ -44,8 +44,8 @@ node {
    
    stage('Deployment'){
        env.art_name="pipeline-${student}-${BUILD_NUMBER}.tar.gz"
-       sh 'echo $art_name; cd tmp; GROOVY_HOME=/root/.jenkins/tools/hudson.plugins.groovy.GroovyInstallation/groovy_interpreter/bin; PATH=$PATH:$GROOVY_HOME; groovy ../pull.groovy'
-       sh '[ -d tmp ] || mkdir tmp; cd tmp; tar -zxvf pipeline-$student-$BUILD_NUMBER.tar.gz'
+       sh '[ -d tmp ] || mkdir tmp; echo $art_name; cd tmp; GROOVY_HOME=/root/.jenkins/tools/hudson.plugins.groovy.GroovyInstallation/groovy_interpreter/bin; PATH=$PATH:$GROOVY_HOME; groovy ../pull.groovy'
+       sh 'cd tmp; tar -zxvf pipeline-$student-$BUILD_NUMBER.tar.gz'
        sh 'cd tmp; scp -P 2201 helloworld-ws.war vagrant@epbyminw1766:/usr/local/tomcat/apache-tomcat-8.5.32/webapps/'
    }
 }
