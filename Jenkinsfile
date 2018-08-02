@@ -78,7 +78,6 @@ node{
                 """
             else
                 ssh -p2202 root@epbyminw7425  'rm -f /usr/local/tomcat/webapps/backup.tar.gz'
-                
             fi
             '''            
         }
