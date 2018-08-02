@@ -16,7 +16,7 @@ cp /tmp/jenkins_tmp/war/helloworld-ws.war /opt/cd-proc/jboss/server/default/depl
 
 echo "Making of the backup and deploy new build version"
 
-sleep 15
+sleep 55
 
 curl http://epbyminw7423/helloworld/status-page.html | grep "Build-Number:$BUILD_NUMBER"
 a=$?
