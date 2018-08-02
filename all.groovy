@@ -18,8 +18,8 @@ def upload() {
    def file = new File("pipeline-dzhukova-${BUILD_NUMBER}.tar.gz")
    def rest = new RESTClient( "http://192.168.17.4/nexus/repository/${repo}/")
         rest.auth.basic 'admin', 'admin'
-        rest.encoder.'application/zip' = this.&encodeZipFile
-        rest.put(path: "${gav[1]}/${BUILD_NUMBER}/${gav[1]}-${BUILD_NUMBER}.tar.gz", body: file, requestContentType: 'application/zip')
+        rest.encoder.'application/tar.gz' = this.&encodeTarFile
+        rest.put(path: "${gav[1]}/${BUILD_NUMBER}/${gav[1]}-${BUILD_NUMBER}.tar.gz", body: file, requestContentType: 'application/tar.gz')
 
 }
 def parse_gav() {
