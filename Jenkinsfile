@@ -1,5 +1,5 @@
 node("${SLAVE}")  {
-	try {
+    try {
     try {
         stage('Preparating (Checking out)')
         git branch: 'ymaniukevich',
@@ -8,7 +8,7 @@ node("${SLAVE}")  {
         withMaven(maven: 'mavenLocal') {
             sh "mvn -f ./helloworld-ws/pom.xml clean install"
         }
-    } catch(err) {
+    } catch(e) {
 	    mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
@@ -26,7 +26,7 @@ node("${SLAVE}")  {
                         sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
                     })
         }
-    } catch(err) {
+    } catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
     try{
@@ -38,7 +38,7 @@ node("${SLAVE}")  {
                     projectName: 'MNTLAB-ymaniukevich-child1-build-job',
                     selector: lastSuccessful()
         }
-    } catch(err) {
+    } catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
@@ -48,7 +48,7 @@ node("${SLAVE}")  {
             sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
             sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
         }
-    } catch(err) {
+    } catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
 
@@ -56,7 +56,7 @@ node("${SLAVE}")  {
         stage('Asking for manual approval') {
             input 'Would you like to move on ?'
         }
-    } catch(err) {
+    } catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
     }
     try{
@@ -67,17 +67,16 @@ node("${SLAVE}")  {
    	}
 	    currentBuild.result = 'SUCCESS'
     }
-    catch(err) {
+    catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
 }
 }
-	catch(err) {
-		currentBuild.result = 'FAILURE'
- }
+  catch (e) {
+    	    currentBuild.result = 'FAILURE'
+  }
   finally {
 	mail to: 'manukevich96@gmail.com',
       subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
       body: "${env.BUILD_URL} has result ${currentBuild.result}"
 }
 }
-
