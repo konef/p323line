@@ -14,7 +14,7 @@ node{
     def groovy_version = 'groovy4'
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), disableConcurrentBuilds()])
     stage('Preparation') {
-        deleteDir()
+
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
         sh "sed -i 's/##BUILD##/${env.BUILD_NUMBER}/' helloworld-ws/src/main/webapp/status-page.html"
         sh "sed -i 's/##AUTHOR##/${env.BUILD_USER}/' helloworld-ws/src/main/webapp/status-page.html"
@@ -88,12 +88,11 @@ node{
         echo "\u277b: Asking for manual approval Stage is done \u2705"
     }
     stage('Deployment'){
-        deleteDir()
+        sh "rm -rf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
         withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
             sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz pull"
         }
         sh 'ls -la'
-
         echo "\u277c: Deployment Stage is done \u2705"
     }
 
