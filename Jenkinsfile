@@ -3,23 +3,16 @@ node("${SLAVE}")  {
         stage('Preparating (Checking out)')
         git branch: 'ymaniukevich',
                 url: 'https://github.com/MNT-Lab/p323line'
+        stage('Building code')
+        withMaven(maven: 'mavenLocal') {
+            sh "mvn -f ./helloworld-ws/pom.xml clean install"
+        }
     }
     catch (err) {
         mail to: 'manukevich96@gmail.com',
                 subject: "stage failed ${failed}",
                 body: "${env.BUILD_URL} has failed ${failed}"
     }
-    try {
-        stage('Building code')
-        withMaven(maven: 'mavenLocal') {
-            sh "mvn -f ./helloworld-ws/pom.xml clean install"
-        }
-}
-    catch (err) {
-        mail to: 'manukevich96@gmail.com',
-            subject: "stage failed ${failed}",
-            body: "${env.BUILD_URL} has failed ${failed}"
-}
     try {
         stage("Testing")
         withMaven(maven: 'mavenLocal'){
@@ -35,11 +28,11 @@ node("${SLAVE}")  {
                     })
         }
     }
-catch (err) {
-    mail to: 'manukevich96@gmail.com',
-            subject: "stage failed ${failed}",
-            body: "${env.BUILD_URL} has failed ${failed}"
-}
+    catch (err) {
+        mail to: 'manukevich96@gmail.com',
+                subject: "stage failed ${failed}",
+                body: "${env.BUILD_URL} has failed ${failed}"
+    }
     try {
         stage("Triggering job and fetching"){
             build job: 'MNTLAB-ymaniukevich-child1-build-job',
@@ -61,6 +54,13 @@ catch (err) {
             sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
             sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
         }
+    }
+    catch (err) {
+        mail to: 'manukevich96@gmail.com',
+                subject: "stage failed ${failed}",
+                body: "${env.BUILD_URL} has failed ${failed}"
+    }
+    try {
         stage('Asking for manual approval') {
             input 'Would you like to continue?'
         }
@@ -69,8 +69,8 @@ catch (err) {
             sh "scp -P2200 pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
             sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
         }
-        currentBuild.result = 'SUCCESS'
     }
+
     catch (err) {
         mail to: 'manukevich96@gmail.com',
                 subject: "stage failed ${failed}",
