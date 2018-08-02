@@ -14,9 +14,25 @@ node {
    stage('Testing') {
        withMaven(maven: 'mavenLocal')
        {
-           sh "mvn pre-integration-test -f helloworld-ws"
-           sh "mvn integration-test -f helloworld-ws"
-           sh "mvn post-integration-test -f helloworld-ws"
+           parallel ("Pre-integration test" : {sh "mvn pre-integration-test -f helloworld-ws"},
+           "Integration test" : {sh "mvn integration-test -f helloworld-ws"},
+           "Post-integration test" : {sh "mvn post-integration-test -f helloworld-ws"})
        }
+   }
+   
+   stage('Triggering job and fetching artefact after finishing') {
+       
+   }
+   
+   stage('Packaging and Publishing results') {
+       
+   }
+   
+   stage('Asking for manual approval') {
+       
+   }
+   
+   stage('Deployment'){
+       
    }
 }
