@@ -1,7 +1,7 @@
 @Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7')
+import groovyx.net.http.RESTClient
 import groovyx.net.http.*
 import org.apache.http.entity.*
-
 	
 void push() {
   	def pom = new XmlSlurper().parse(System.getenv("WORKSPACE") +'/helloworld-ws/pom.xml')
