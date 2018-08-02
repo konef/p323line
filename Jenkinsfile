@@ -1,6 +1,6 @@
 def SendEmail(status, stag, err) {
     def date = new Date()
-    mail bcc: '', body: "$date: ${env.JOB_NAME} Build_Id ${env.BUILD_ID} - $status\n$stag: $err", cc: '', from: 'Jenkins', replyTo: '', subject: 'Build status', to: 'oleg_monko@epam.com, dev@ep.am'
+    mail bcc: '', body: "$date: ${env.JOB_NAME} Build_Id ${env.BUILD_ID} - $status\n$stag: $err", cc: '', from: 'Jenkins', replyTo: '', subject: 'Build status', to: 'mastslon@gmail.com, dev@ep.am'
 }
 
 node("${SLAVE}") {
