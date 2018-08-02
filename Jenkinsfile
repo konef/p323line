@@ -1,17 +1,17 @@
+// Nexus attributes
 serv = 'http://EPBYMINW7423/nexus/repository/'
 username = 'admin'
 password = 'admin123'
 repo = 'Artifact-storage'
 
 // Pipeline variables
-
 String student = 'aandryieuski'
 String step = ''
 
 node{
-    //tool name: 'mavenLocal', type: 'maven'
+    tool name: 'mavenLocal', type: 'maven'
     //tool name: 'java8', type: 'jdk'
-    def mvn_version = 'mavenLocal'
+    //def mvn_version = 'mavenLocal'
     def java_version = 'java8'
     def groovy_version = 'groovy4'
     stage('Preparation') {
@@ -20,9 +20,9 @@ node{
         echo "\u2776: Preparation Stage is done \u2705"
     }
     stage('Building code'){
-        withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
+        //withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
             sh 'mvn -f helloworld-ws/pom.xml package'
-        }
+        //}
         echo "\u2777: Building code Stage is done \u2705"
     }
     stage('Testing'){
@@ -78,10 +78,9 @@ node{
         withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
             sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
         }
-        echo "\u277a: Triggering job and fetching artefact after finishing Stage is done \u2705"
+        echo "\u277a: Packaging and Publishing results Stage is done \u2705"
     }
     stage('Asking for manual approval'){
-
         timeout(time: 60, unit: 'SECONDS') {
             input 'Deploy to prod?'
         }
