@@ -6,7 +6,7 @@ node{
     def mvn_version = 'mavenLocal'
     def java_version = 'java8'
     stage('Preparation') {
-        deleteDir()
+        //deleteDir()
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
         echo "Preparation Stage is done \u2776 \u2705"
     }
@@ -14,13 +14,11 @@ node{
         //def mvn_version = 'mavenLocal'
         withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
             sh 'mvn -f helloworld-ws/pom.xml package'
-            sh 'ls -la helloworld-ws/'
         }
         echo "Building code Stage is done \u2777 \u2705"
     }
     stage('Testing'){
         withEnv(["JAVA_HOME=${tool java_version}"]) {
-            echo "${env.JAVA_HOME}"
             parallel PreIntegrationTest: {
                 try {
                     sh 'echo "Build pre-integration-test parallel stage"'
