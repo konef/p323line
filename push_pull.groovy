@@ -10,12 +10,15 @@ import hudson.model.*
 void push() {
     def workspace = System.getenv('WORKSPACE')
     def buildNumber = System.getenv('BUILD_NUMBER')
-    def pom = new XmlSlurper().parse("${workspace}"+'/helloworld-ws/pom.xml')
+    def pom = new XmlSlurper().parse('helloworld-ws/pom.xml')
     def repo = "maven-artifacts"
     def restClient = new RESTClient("http://nexus/repository/${repo}/")
     restClient.auth.basic 'nexus-service-user', 'nexus'
     restClient.encoder.'application/zip' = this.&encodingZipFile
-    def correct_path = (pom.parent.groupID).replaceAll('\\.','/')
+    def ppp = pom.parent.groupId
+    def list = ppp.list()
+    String s = list.get(0).toString()
+    def correct_path = s.replaceAll('\\.','/')
     def artifactId = pom.artifactId
     def version = pom.parent.version
     def launch = restClient.put(
@@ -37,7 +40,10 @@ void pull(String[] pom_return) {
     def artifactName = "pipeline-hviniarski-${buildNumber}"
     def repo = "project-releases"
     def pom = new XmlSlurper().parse("${workspace}"+'/helloworld-ws/pom.xml')
-    def correct_path = (pom.parent.groupID).replaceAll('\\.','/')
+    def ppp = pom.parent.groupId
+    def list = ppp.list()
+    String s = list.get(0).toString()
+    def correct_path = s.replaceAll('\\.','/')
     def artifactId = pom.artifactId
     def version = pom.parent.version
     def restClient = new RESTClient("http://EPBYMINW2472/nexus/repository/${repo}/")
