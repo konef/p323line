@@ -4,9 +4,6 @@ def send_message(String stage, String desc) {
 
 
 node("${SLAVE}") {
-
-    try {
-
         stage('Clone repository'){
             def stage = STAGE_NAME
             def desc = "Cloning from github was failed"
@@ -117,11 +114,5 @@ node("${SLAVE}") {
         archiveArtifacts '*.tar.gz'
         currentBuild.result = 'SUCCESS'
         cleanWs()
-    }
-    catch (err) {
-        currentBuild.result = 'FAILURE'
-    }
-    finally {
         mail bcc: '', body: "${env.BUILD_URL} has resulted in ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'glebko123@gmail.com'
     }
-}
