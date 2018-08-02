@@ -17,6 +17,7 @@ http.request(Method.GET) {
     }
 }
 def art_name = System.getenv("art_name")
+println(art_name)
 
 download_url="http://epbyminw1766/nexus/repository/project-releases/pipeline/1/1/${art_name}"
 def download = new HTTPBuilder(download_url)
