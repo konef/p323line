@@ -8,19 +8,20 @@ node{
     stage('Preparation') {
         //deleteDir()
         git branch: 'aandryieuski', poll: false, url: 'https://github.com/MNT-Lab/p323line.git'
-        echo "Preparation Stage is done \u2776 \u2705"
+        echo "\u2776: Preparation Stage is done \u2705"
     }
     stage('Building code'){
         //def mvn_version = 'mavenLocal'
         withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
             sh 'mvn -f helloworld-ws/pom.xml package'
         }
-        echo "Building code Stage is done \u2777 \u2705"
+        echo "\u2777: Building code Stage is done \u2705"
     }
     stage('Testing'){
         withEnv(["JAVA_HOME=${tool java_version}"]) {
             parallel PreIntegrationTest: {
                 try {
+                    echo "\u27A1 Build pre-integration-test parallel stage"
                     sh 'echo "Build pre-integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
                         sh 'mvn -f helloworld-ws/pom.xml pre-integration-test'
@@ -28,10 +29,11 @@ node{
                 }
                 finally {
                     sh 'echo "Finished this stage"'
-                    echo "PreIntegrationTest is done \u2705"
+
                 }
             }, IntegrationTest: {
                 try {
+                    echo "\u27A1 Build integration-test parallel stage"
                     sh 'echo "Build integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
                         sh 'mvn -f helloworld-ws/pom.xml integration-test'
@@ -39,10 +41,11 @@ node{
                 }
                 finally {
                     sh 'echo "Finished this stage"'
-                    echo "IntegrationTest is done \u2705"
+
                 }
             }, PostIntegrationTest: {
                 try {
+                    echo "\u27A1 Build post-integration-test parallel stage"
                     sh 'echo "Build post-integration-test parallel stage"'
                     withEnv(["PATH+MAVEN=${tool mvn_version}/bin"]) {
                         sh 'mvn -f helloworld-ws/pom.xml post-integration-test'
@@ -50,11 +53,11 @@ node{
                 }
                 finally {
                     sh 'echo "Finished this stage"'
-                    echo "PostIntegrationTest is done \u2705"
+
                 }
             }, failFast: true
         }
-        echo "Testing Stage is done \u2778 \u2705"
+        echo "\u2778: Testing Stage is done \u2705"
     }
 
 }
