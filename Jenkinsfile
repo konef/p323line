@@ -1,3 +1,4 @@
+env.art_name="pipeline-ypapkou-111.tar.gz"
 properties([
   parameters([
     string(name: 'student', defaultValue: 'ypapkou', description: 'Branch name.', )
@@ -16,14 +17,14 @@ node {
        }
    }
    
-   /*stage('Testing') {
+   stage('Testing') {
        withMaven(maven: 'mavenLocal')
        {
            parallel ("Pre-integration test" : {sh "mvn pre-integration-test -f helloworld-ws"},
            "Integration test" : {sh "mvn integration-test -f helloworld-ws"},
            "Post-integration test" : {sh "mvn post-integration-test -f helloworld-ws"})
        }
-   }*/
+   }
    
    stage('Triggering job and fetching artefact after finishing') {
        build job: 'MNTLAB-ypapkou-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: "$student")]
@@ -42,7 +43,10 @@ node {
    }
    
    stage('Deployment'){
-       
+       env.art_name="pipeline-${student}-${BUILD_NUMBER}.tar.gz"
+       sh 'echo $art_name; cd tmp; GROOVY_HOME=/root/.jenkins/tools/hudson.plugins.groovy.GroovyInstallation/groovy_interpreter/bin; PATH=$PATH:$GROOVY_HOME; groovy ../pull.groovy'
+       sh 'cd tmp; tar -zxvf pipeline-$student-$BUILD_NUMBER.tar.gz'
+       sh 'cd tmp; scp -P 2201 helloworld-ws.war vagrant@epbyminw1766:/usr/local/tomcat/apache-tomcat-8.5.32/webapps/'
    }
 }
 
