@@ -6,14 +6,14 @@ node("${SLAVE}") {
 
 
         stage('Build') {
-            withMaven(maven: 'Maven3',) {
+            withMaven(maven: 'mavenLocal',) {
                 // Run the maven build
                 sh "mvn -f ./helloworld-ws/pom.xml package"
             }
         }
 
         stage("Testing")
-        withMaven(maven: 'Maven3') {
+        withMaven(maven: 'mavenLocal') {
             parallel(
                     'pre-integration-test': {
                         sh "mvn -f helloworld-ws/pom.xml pre-integration-test"
