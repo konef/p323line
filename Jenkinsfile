@@ -76,9 +76,12 @@ node{
         sh "tar -xzf ${student}_dsl_script.tar.gz "
         sh "tar -czf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz Jenkinsfile helloworld-ws/target/helloworld-ws.war jobs.groovy"
         archiveArtifacts "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
-        withEnv(["GROOVY_HOME=${tool groovy_version}/bin"]) {
-            sh "groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
+        withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
+            sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
         }
+    }
+    stage('Asking for manual approval'){
+        input 'Pipeline has paused and needs your input before proceeding'
     }
 
 }
