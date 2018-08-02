@@ -35,7 +35,7 @@ def download() {
    def gav = parse_gav()
    def BUILD_NUMBER = System.getenv('BUILD_NUMBER')
    def repo = "maven-helloworld"
-   def rest = new RESTClient( "http://EPBYMINW1969/nexus/repository/${repo}")
+   def rest = new RESTClient( "http://EPBYMINW1969/nexus/repository/${repo}/")
         rest.auth.basic 'admin', 'admin'
         def resp = rest.get( path:  "${gav[1]}/${BUILD_NUMBER}/${gav[1]}-${BUILD_NUMBER}.tar.gz")
    new File("./app.tar.gz") << resp.data
