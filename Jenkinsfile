@@ -37,14 +37,22 @@ node {
         stage("Packaging and Publishing artifact") {
             sh "tar -xvf hviniarski_dsl_script.tar.gz"
             sh "tar -czf pipeline-hviniarski-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
-            sh "groovy ./push_pull.groovy push"
+            sh '''
+        export GROOVY_HOME=/home/student/groovy-2.5.1
+        export PATH=$PATH:$GROOVY_HOME/bin
+        groovy push_pull.groovy push
+        '''
         }
         stage("Asking for manual approval") {
             input 'Approve?'
         }
         stage("Deployment"){
             sh "groovy ./push_pull.groovy pull"
-            sh "ls -la"
+            sh '''
+        export GROOVY_HOME=/home/student/groovy-2.5.1
+        export PATH=$PATH:$GROOVY_HOME/bin
+        groovy push_pull.groovy pull
+        '''
         }
         archiveArtifacts 'pipeline-hviniarski-${BUILD_NUMBER}.tar.gz'
         cleanWs()
