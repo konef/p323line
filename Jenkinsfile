@@ -88,7 +88,7 @@ node{
         echo "\u277a: Packaging and Publishing results Stage is done \u2705"
     }
     stage('Asking for manual approval'){
-        timeout(time: 60, unit: 'SECONDS') {
+        timeout(time: 160, unit: 'SECONDS') {
             input 'Deploy to prod?'
         }
         echo "\u277b: Asking for manual approval Stage is done \u2705"
