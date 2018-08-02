@@ -146,7 +146,7 @@ try {
     //err = caughtError
     mail_to(stage_pipe, "FAILURE", step_pipe, user_mail)
     currentBuild.result = "FAILURE"
-    throw err
+    throw exc
 }
 
 finally{
