@@ -1,5 +1,6 @@
 node("${SLAVE}"){
     result = ""
+    test_result = ""
     try{
         try{
             stage('Checkout'){
@@ -55,7 +56,7 @@ node("${SLAVE}"){
             )
         }
         catch(all){
-            result = "FAIL Fail Tests"
+            test_result = "FAIL Fail Tests"
         }
 
         try{
@@ -130,7 +131,7 @@ node("${SLAVE}"){
 
         try{
             stage ('Successful deployment report'){
-                        mail bcc: '', body: "Success ${result}", cc: '', from: '', replyTo: '', subject: 'Success', to: 'mikhailznak@gmail.com'
+                        mail bcc: '', body: "Success ${test_result}", cc: '', from: '', replyTo: '', subject: 'Success', to: 'mikhailznak@gmail.com'
 
             }
         }
