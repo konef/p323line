@@ -20,7 +20,7 @@ node("${SLAVE}") {
                 def stage = STAGE_NAME
                 def desc = "Build was failed"
                 try {
-                    sh "mvnasd -f ./helloworld-ws/pom.xml package"
+                    sh "mvn -f ./helloworld-ws/pom.xml package"
                 } catch (err){
                     send_message(stage, desc)
                 }
