@@ -1,13 +1,14 @@
 node("${SLAVE}")  {
+    try {
 	stage('Preparating (Checking out)') 
     	git branch: 'ymaniukevich', 
     	url: 'https://github.com/MNT-Lab/p323line'
     stage('Building code')
-        withMaven(maven: 'mavenLocal') {
+        withMaven(maven: 'maven') {
             sh "mvn -f ./helloworld-ws/pom.xml clean install"
         }
     stage("Testing")
-        withMaven(maven: 'mavenLocal'){
+        withMaven(maven: 'maven'){
         parallel (
         "pre-Integration test": {
             sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
@@ -28,15 +29,24 @@ node("${SLAVE}")  {
         selector: lastSuccessful()
         }
     stage("Packaging and Publishing results"){
-	n
         sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
         sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
-        sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
+        sh "groovy ./push.groovy"
     }
 
 	stage("Deployment"){
-	    sh "/usr/local/groovy/latest/bin/groovy ./pull.groovy"
+	    sh "groovy ./pull.groovy"
 	    sh "scp -P2200 jboss-parent-23.tar.gz  jboss-parent-23.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
 	    sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf jboss-parent-23.tar.gz && rm -rf jboss-parent-23.tar.gz Jenkinsfile jobs.groovy'"
 	    }
+    currentBuild.result = 'SUCCESS'
+}
+  catch (err) {
+    currentBuild.result = 'FAILURE'
+  }
+  finally {
+	mail to: 'manukevich96@gmail.com',
+      subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
+      body: "${env.BUILD_URL} has result ${currentBuild.result}"
+}
 }
