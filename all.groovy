@@ -1,6 +1,5 @@
-@Grapes(
+
 @Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7')
-)
 import groovyx.net.http.RESTClient
 import org.apache.http.entity.*
 import hudson.model.*
