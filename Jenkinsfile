@@ -12,22 +12,22 @@ step_name = ""
 
 
 
-def notification(stage_name, step_name, message, to) {
-    mail subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message",
-            body: """
-------------------
-Stage: "$stage_name",
-Step: "$step_name",
-Date/Time: ${date_time.format(date)},
-Pipeline "$JOB_NAME" is $message!
-------------------
- 
-You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME  
-""",
-            to: to, replyTo: '',
-            from: 'noreply@jenkins.io',
-            bcc: '', cc: ''
-}
+//def notification(stage_name, step_name, message, to) {
+//    mail subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message",
+//            body: """
+//------------------
+//Stage: "$stage_name",
+//Step: "$step_name",
+//Date/Time: ${date_time.format(date)},
+//Pipeline "$JOB_NAME" is $message!
+//------------------
+// 
+//You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME  
+//""",
+//            to: to, replyTo: '',
+//            from: 'noreply@jenkins.io',
+//            bcc: '', cc: ''
+//}
 
 
 try {
@@ -141,7 +141,7 @@ try {
             junit '**/target/surefire-reports/TEST-*.xml'
             archive 'target/*.jar'
         }
-        
+
         stage('Send notification') {
             notification("Deployment", "Application has been deployed on http://EPBYMINW3088/tomcat/helloworld-ws/index.html", "COMPLETED", DL)
         }
