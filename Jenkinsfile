@@ -110,8 +110,6 @@ node("${SLAVE}") {
          //       send_message(stage,desc)
             }
         }
-        archiveArtifacts '*.tar.gz'
 //        currentBuild.result = 'SUCCESS'
-        cleanWs()
        // mail bcc: '', body: "${env.BUILD_URL} has resulted in ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'glebko123@gmail.com'
     }
