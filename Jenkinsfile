@@ -40,7 +40,7 @@ def mail_to(String stage, String state, String step, recipient) {
 Date/Time: ${sdf.format(date)},
 Stage: "${stage}",
 Step: "${step}",
-Job "${env.JOB_NAME}" has status: "${state}" ${symb} \u274E
+Job "${env.JOB_NAME}" has status: "${state}" ${symb}
 ***
  
 JOB_URL: ${env.JOB_URL}  
