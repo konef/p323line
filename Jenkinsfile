@@ -31,9 +31,9 @@ node("${SLAVE}") {
                 selector: lastSuccessful()
     }
      stage ('Packaging and Publishing results') {
-           sh "tar -xf disakau_dsl_script.tar.gz jobs.groovy"
-           sh "tar -czf pipeline-disakau-${BUILD_NUMBER}.tar.gz.tar.gz jobs.groovy Jenkinsfile -C build/libs gradle-simple.jar"
+           sh "tar -xvf disakau_dsl_script.tar.gz"
+           sh "tar -czf pipeline-disakau-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
            archiveArtifacts "pipeline-disakau-${BUILD_NUMBER}.tar.gz.tar.gz"
-           sh "groovy pull_push.groovy -p push -a pipeline-disakau-${BUILD_NUMBER}.tar.gz.tar.gz"
+           sh "groovy pull_push.groovy -p push -a pipeline-disakau-${BUILD_NUMBER}.tar.gz"
     }
 }
