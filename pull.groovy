@@ -6,7 +6,7 @@ import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 
 
-def http = new HTTPBuilder("http://192.168.1.3/service/siesta/rest/beta/search?repository=project-releases&group=customgroup&version=1")
+def http = new HTTPBuilder("http://epbyminw1766/nexus/service/siesta/rest/beta/search?repository=project-releases&group=customgroup&version=1")
 http.headers['Authorization'] = "Basic " + "nexus-service-user:nexus-service-user".getBytes('iso-8859-1').encodeBase64()
 http.request(Method.GET) {
     response.success = { resp, json ->
@@ -19,7 +19,7 @@ http.request(Method.GET) {
 def art_name = System.getenv("art_name")
 println(art_name)
 
-download_url="http://epbyminw1766/nexus/repository/project-releases/pipeline/1/1/${art_name}"
+download_url="http://epbyminw1766/nexus/repository/project-releases/pipeline2/1/1/${art_name}"
 def download = new HTTPBuilder(download_url)
 download.headers['Authorization'] = "Basic " + "nexus-service-user:nexus-service-user".getBytes('iso-8859-1').encodeBase64()
 download.request(Method.GET, ContentType.BINARY) {
