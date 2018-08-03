@@ -20,7 +20,7 @@ Date/Time: ${date_time.format(date)},
 Pipeline "$JOB_NAME" is $message!
 ------------------
 
-You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME""", cc: '', from: '', replyTo: '', subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message", to: 'yauheni_sokal@epam.com'
+You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME""", cc: '', from: '', replyTo: '', subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message", to: "${to}"
 
 }
 
@@ -138,7 +138,7 @@ try {
         }
 
         stage('Send notification') {
-            notification("Deployment", "Application has been deployed on http://EPBYMINW3088/tomcat/helloworld-ws/index.html", "COMPLETED", DL)
+            notification("Deployment", "Application has been deployed on http://EPBYMINW3088/tomcat/helloworld-ws/index.html", "COMPLETED", "$DL")
         }
     }
 } catch (Exception e) {
