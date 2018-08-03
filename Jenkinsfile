@@ -67,8 +67,8 @@ stage("Packaging and Publishing results"){
 	try{
 		sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
 		sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
-		/*nexus_ymaniukevich.nexus("push")*/
-		sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
+		nexus_ymaniukevich.nexus("push")
+		/*sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"*/
 	}
 	catch(err) {
 		Notification('Failure', 'Packaging and Publishing results', err)
