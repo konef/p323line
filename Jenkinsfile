@@ -97,6 +97,6 @@ stage("Deployment"){
 		Notification('Failure', 'Deployment', err)
 		throw err;
 	}
-	Notification('Success', 'Deployment', 'Good job!')
+	/*Notification('Success', 'Deployment', 'Good job!')*/
 	}
 }
