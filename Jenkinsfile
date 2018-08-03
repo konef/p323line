@@ -12,22 +12,18 @@ step_name = ""
 
 
 
-//def notification(stage_name, step_name, message, to) {
-//    mail subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message",
-//            body: """
-//------------------
-//Stage: "$stage_name",
-//Step: "$step_name",
-//Date/Time: ${date_time.format(date)},
-//Pipeline "$JOB_NAME" is $message!
-//------------------
-// 
-//You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME  
-//""",
-//            to: to, replyTo: '',
-//            from: 'noreply@jenkins.io',
-//            bcc: '', cc: ''
-//}
+def notification(stage_name, step_name, message, to) {
+    mail bcc: '', body: """------------------
+                           Stage: "$stage_name",
+                           Step: "$step_name",
+                           Date/Time: ${date_time.format(date)},
+                           Pipeline "$JOB_NAME" is $message!
+                           ------------------
+
+                           You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME""", 
+            cc: '', from: '', replyTo: '', subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message", 
+            to: 'yauheni_sokal@epam.com'
+}
 
 
 try {
@@ -143,12 +139,10 @@ try {
         }
 
         stage('Send notification') {
-            echo "send"
-           // notification("Deployment", "Application has been deployed on http://EPBYMINW3088/tomcat/helloworld-ws/index.html", "COMPLETED", DL)
+            notification("Deployment", "Application has been deployed on http://EPBYMINW3088/tomcat/helloworld-ws/index.html", "COMPLETED", DL)
         }
     }
 } catch (Exception e) {
-    echo "error"
-  //  notification("$stage_name", "$step_name", "FAIL", "$DL")
+    notification("$stage_name", "$step_name", "FAIL", "$DL")
     currentBuild.result = "FAILURE"
 }
