@@ -14,7 +14,6 @@ repo = 'Artifact-storage'
 
 // Pipeline variables
 String student = 'aandryieuski'
-String step = ''
 String user_mail = 'andrei_andryieuski@epam.com'
 String stage_pipe = ''
 String step_pipe = ''
@@ -42,7 +41,7 @@ JOB_URL: ${env.JOB_URL}
 }
 
 try {
-    node {
+    node ("${SLAVE}"){
         def mvn_version = 'mavenLocal'
         def java_version = 'java8'
         def groovy_version = 'groovy4'
