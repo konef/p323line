@@ -1,3 +1,5 @@
+@Library('global-libs') _
+
 def Notification(status, stage_n, err) {
     	def date = new Date()
    	mail to: 'manukevich96@gmail.com',
@@ -65,7 +67,8 @@ stage("Packaging and Publishing results"){
 	try{
 		sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
 		sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
-		sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
+		nexus_ymaniukevich.nexus("push")
+		/*sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"*/
 	}
 	catch(err) {
 		Notification('Failure', 'Packaging and Publishing results', err)
