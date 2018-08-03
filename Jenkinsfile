@@ -1,4 +1,4 @@
-String student = "knovichuk"
+String STUDENT = "knovichuk"
 String MAVEN = "mavenLocal"
 String JDK = "java8"
 
@@ -6,7 +6,7 @@ node() {
 
     try {
         stage('Preparation (Checking out)') {
-            git branch: "$student", url: 'https://github.com/MNT-Lab/p323line.git'
+            git branch: "$STUDENT", url: 'https://github.com/MNT-Lab/p323line.git'
         }
     }
 
@@ -49,4 +49,18 @@ node() {
     catch (Exception ex) {
         println("Tests failed")
     }
+
+    try {
+        stage('Triggering job and fetching artefact after finishing'){
+            step_name = "Triggering job"
+            build job: "MNTLAB-$STUDENT-child1-build-job", parameters: [string(name: 'BRANCH_NAME', value: "$STUDENT")], wait: true
+
+            step_name = "Fetching the artefact"
+            copyArtifacts filter: "${STUDENT}_dsl_script.tar.gz", projectName: "MNTLAB-$STUDENT-child1-build-job", selector: lastSuccessful()
+        }
+    }
+
+    catch (Exception ex) {
+        println("Triggering job failed")
+    }    
 }
