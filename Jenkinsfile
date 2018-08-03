@@ -1,4 +1,23 @@
 @Library('global-libs') _
+@Grapes(
+@Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7')
+)
+import groovyx.net.http.RESTClient
+import org.apache.http.entity.*
+import hudson.model.*
+def encodeTarFile( Object data ) throws UnsupportedEncodingException {
+   def entity = new FileEntity( (File) data, "application/tar.gz" );
+   entity.setContentType( "application/tar.gz" );
+   return entity
+   }
+String[] parse_gav(path) {
+        def pom = new XmlSlurper().parse(new File("${path}/pom.xml"))
+        def gavs = []
+        gavs.add(pom.groupId)
+        gavs.add(pom.artifactId)
+        gavs.add(pom.version)
+        return gavs
+}
 node ("${SLAVE}") {
     try{
     stage('Preparation (Checking out)') {
