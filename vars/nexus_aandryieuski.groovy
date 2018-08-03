@@ -7,7 +7,7 @@ def nexus(String server_url, String user, String passw, String repo, String f_na
     
     version = f_name.split('.tar.gz')[0].split('-')[-1]
     groupid = artifactid = f_name.split("-${version}.tar.gz")[0]
-    rest = new RESTClient(server_url)
+    rest = new RESTClient("${server_url}")
     rest.auth.basic "${user}", "${passw}"
 
     if (command == 'push') {
