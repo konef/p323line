@@ -1,5 +1,4 @@
-//"${SLAVE}"
-node(){
+node("${SLAVE}"){
     result = ""
     test_result = ""
     try{
