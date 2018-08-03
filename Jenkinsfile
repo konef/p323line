@@ -38,12 +38,12 @@ node ("${SLAVE}") {
             },
                     'integration-test': {
                         withMaven(maven: 'mavenLocal') {
-                            sh "mvn -f ./helloworld-ws/pom.xml integration-test"
+                            sh "mvn -f ./helloworld-ws/pom.xml integration-test; sleep 15"
                         }
                     },
                     'post-integration-test': {
                         withMaven(maven: 'mavenLocal') {
-                            sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
+                            sh "mvn -f ./helloworld-ws/pom.xml post-integration-test; sleep 30"
                         }
                     }
             )
@@ -115,6 +115,7 @@ node ("${SLAVE}") {
             throw err
         }
     }
-    currentBuild.result = 'SUCCESS'
-   // mail bcc: '', body: "the result of ${env.BUILD_URL} is ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "pipeline status is ${currentBuild.result}", to: 'mishok26@gmail.com'
+//    currentBuild.result = 'SUCCESS'
+//    mail bcc: '', body: "the result of ${env.BUILD_URL} is ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "pipeline status is ${currentBuild.result}", to: 'mishok26@gmail.com'
 }
+
