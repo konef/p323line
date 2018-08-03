@@ -1,3 +1,4 @@
+@Library('global-libs') _
 node ("${SLAVE}") {
     try{
     stage('Preparation (Checking out)') {
@@ -62,7 +63,8 @@ node ("${SLAVE}") {
     failed = STAGE_NAME
         sh 'tar -xvf dzhukova_dsl_script.tar.gz';
     sh "tar -czvf pipeline-dzhukova-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy -C helloworld-ws/target/ helloworld-ws.war "
-    sh 'groovy all.groovy -c push'
+    //sh 'groovy all.groovy -c push'
+    nexus_dzhukova.upload()
     }
     } catch(e) {
         mail bcc: '', body: 'failed stage at ', cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'zhukova.darya@gmail.com'
@@ -81,7 +83,8 @@ node ("${SLAVE}") {
     try{
     stage('Deployment') {
     failed = STAGE_NAME
-    sh 'groovy all.groovy -c pull'
+    nexus_dzhukova.download()
+    //sh 'groovy all.groovy -c pull'
     sh 'tar -xvf app.tar.gz'
     sh 'scp -v -P 2200 *.war root@EPBYMINW1969:/usr/local/bin/apache-tomcat-8.5.31/webapps/helloapp.war'
     }
