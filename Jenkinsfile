@@ -10,7 +10,7 @@ import groovyx.net.http.RESTClient
 import org.apache.http.entity.*
 import hudson.model.*
 */
-@Library('lib') _
+@Library('global-libs') _
 import java.text.SimpleDateFormat
 
 // Nexus attributes
