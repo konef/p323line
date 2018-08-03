@@ -143,10 +143,12 @@ try {
         }
 
         stage('Send notification') {
-            notification("Deployment", "Application has been deployed on http://EPBYMINW3088/tomcat/helloworld-ws/index.html", "COMPLETED", DL)
+            echo "send"
+           // notification("Deployment", "Application has been deployed on http://EPBYMINW3088/tomcat/helloworld-ws/index.html", "COMPLETED", DL)
         }
     }
 } catch (Exception e) {
-    notification("$stage_name", "$step_name", "FAIL", "$DL")
+    echo "error"
+  //  notification("$stage_name", "$step_name", "FAIL", "$DL")
     currentBuild.result = "FAILURE"
 }
