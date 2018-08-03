@@ -1,10 +1,4 @@
 @Library('global-libs') _
-@Grapes(
-@Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7')
-)
-import groovyx.net.http.RESTClient
-import org.apache.http.entity.*
-import hudson.model.*
 def encodeTarFile( Object data ) throws UnsupportedEncodingException {
    def entity = new FileEntity( (File) data, "application/tar.gz" );
    entity.setContentType( "application/tar.gz" );
