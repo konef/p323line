@@ -13,16 +13,15 @@ step_name = ""
 
 
 def notification(stage_name, step_name, message, to) {
-    mail bcc: '', body: """------------------
-                           Stage: "$stage_name",
-                           Step: "$step_name",
-                           Date/Time: ${date_time.format(date)},
-                           Pipeline "$JOB_NAME" is $message!
-                           ------------------
+mail bcc: '', body: """------------------
+Stage: "$stage_name",
+Step: "$step_name",
+Date/Time: ${date_time.format(date)},
+Pipeline "$JOB_NAME" is $message!
+------------------
 
-                           You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME""", 
-            cc: '', from: '', replyTo: '', subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message", 
-            to: 'yauheni_sokal@epam.com'
+You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME""", cc: '', from: '', replyTo: '', subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message", to: 'yauheni_sokal@epam.com'
+
 }
 
 
