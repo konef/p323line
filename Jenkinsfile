@@ -19,9 +19,18 @@ node("EPBYMINW1766") {
    stage('Testing') {
        withMaven(maven: 'mavenLocal')
        {
-           parallel ("Pre-integration test" : {sh "mvn pre-integration-test -f helloworld-ws"},
-           "Integration test" : {sh "mvn integration-test -f helloworld-ws"},
-           "Post-integration test" : {sh "mvn post-integration-test -f helloworld-ws"})
+           parallel (
+               "Pre-integration test" : {
+               sh "mvn pre-integration-test -f helloworld-ws"
+               },
+               "Integration test" : {
+                   sleep 15
+                   sh "mvn integration-test -f helloworld-ws"
+               },
+               "Post-integration test" : {
+                   sleep 30
+                   sh "mvn post-integration-test -f helloworld-ws"
+               })
        }
    }
    
