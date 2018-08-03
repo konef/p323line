@@ -10,7 +10,7 @@ node("${SLAVE}") {
             try {
                 git branch: 'hviniarski', url: 'https://github.com/MNT-Lab/p323line'
             } catch (err) {
-                currentStage.result = "FAILED"
+                currentBuild.result = "FAILED"
                 send_message(stage,desc)
             }
         }
@@ -49,7 +49,7 @@ node("${SLAVE}") {
                     )
                 }
             } catch (err) {
-                currentStage.result = "FAILED"
+                currentBuild.result = "FAILED"
                 send_message(stage,desc)
             }
         }
@@ -61,7 +61,7 @@ node("${SLAVE}") {
                 build job: 'MNTLAB-hviniarski-child1-build-job', parameters: [[$class: 'GitParameterValue', name: 'BRANCH_NAME', value: 'hviniarski']]
                 copyArtifacts filter: 'hviniarski_dsl_script.tar.gz', projectName: 'MNTLAB-hviniarski-child1-build-job', selector: lastSuccessful()
             } catch (err) {
-                currentStage.result = "FAILED"
+                currentBuild.result = "FAILED"
                 send_message(stage, desc)
             }
         }
@@ -77,7 +77,7 @@ node("${SLAVE}") {
                     groovy push_pull.groovy push
                     '''
             }catch (err) {
-                currentStage.result = "FAILED"
+                currentBuild.result = "FAILED"
                 send_message(stage,desc)
             }
         }
@@ -89,7 +89,7 @@ node("${SLAVE}") {
             try {
                 input 'Approve?'
             } catch (err) {
-                currentStage.result = "FAILED"
+                currentBuild.result = "FAILED"
                 send_message(stage,desc)
             }
         }
@@ -106,7 +106,7 @@ node("${SLAVE}") {
                     scp helloworld-ws.war tomcat@tomcat:/opt/tomcat/webapps/
                   '''
             } catch (err) {
-                currentStage.result = "FAILED"
+                currentBuild.result = "FAILED"
                 send_message(stage,desc)
             }
         }
