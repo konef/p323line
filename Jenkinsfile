@@ -85,9 +85,9 @@ node("${SLAVE}") {
         stage("Asking for manual approval") {
             def stage = STAGE_NAME
             def desc = "Package wasnt approved"
-            timeout(time: 10, unit: 'MINUTES')
             try {
-                input 'Approve?'
+                timeout(time: 60, unit: 'SECONDS') {
+                input ('Approve?')}
             } catch (err) {
                 currentBuild.result = "FAILED"
            //     send_message(stage,desc)
@@ -111,7 +111,7 @@ node("${SLAVE}") {
             }
         }
         archiveArtifacts '*.tar.gz'
-        currentBuild.result = 'SUCCESS'
+//        currentBuild.result = 'SUCCESS'
         cleanWs()
        // mail bcc: '', body: "${env.BUILD_URL} has resulted in ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'glebko123@gmail.com'
     }
