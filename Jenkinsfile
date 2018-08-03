@@ -32,8 +32,8 @@ node("${SLAVE}") {
     }
      stage ('Packaging and Publishing results') {
            sh "tar -xf ${student}_dsl_script.tar.gz jobs.groovy"
-           sh "tar -czf pipeline-${student}-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C build/libs gradle-simple.jar"
-           archiveArtifacts "pipeline-${student}-${BUILD_NUMBER}.tar.gz"
-           sh "groovy pull_push.groovy -p push -a pipeline-${student}-${BUILD_NUMBER}.tar.gz"
+           sh "tar -czf pipeline-disakau-${BUILD_NUMBER}.tar.gz.tar.gz jobs.groovy Jenkinsfile -C build/libs gradle-simple.jar"
+           archiveArtifacts "pipeline-disakau-${BUILD_NUMBER}.tar.gz.tar.gz"
+           sh "groovy pull_push.groovy -p push -a pipeline-disakau-${BUILD_NUMBER}.tar.gz.tar.gz"
     }
 }
