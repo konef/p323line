@@ -8,9 +8,9 @@ node("${SLAVE}")  {
         withMaven(maven: 'mavenLocal') {
             sh "mvn -f ./helloworld-ws/pom.xml clean install"
         }
-    } catch(err) {
+    } catch(e) {
 	mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
-   	throw err;
+   	throw e;
     }
 
     try{
@@ -27,9 +27,9 @@ node("${SLAVE}")  {
                         sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
                     })
         }
-    } catch(err) {
+    } catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
-        throw err;
+        throw e;
     }
     try{
         stage("Triggering job and fetching"){
@@ -40,9 +40,9 @@ node("${SLAVE}")  {
                     projectName: 'MNTLAB-ymaniukevich-child1-build-job',
                     selector: lastSuccessful()
         }
-    } catch(err) {
+    } catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
-        throw err;
+        throw e;
     }
 
     try{
@@ -51,18 +51,18 @@ node("${SLAVE}")  {
             sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
             sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
         }
-    } catch(err) {
+    } catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
-   	throw err;
+   	throw e;
     }
 
     try{
         stage('Asking for manual approval') {
             input 'Would you like to move on ?'
         }
-    } catch(err) {
+    } catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
-   	throw err;
+   	throw e;
     }
     try{
         stage("Deployment"){
@@ -72,14 +72,14 @@ node("${SLAVE}")  {
    	}
 	    currentBuild.result = 'SUCCESS'
     }
-    catch(err) {
+    catch(e) {
         mail bcc: '', body: "${env.BUILD_URL} has failed ${failed}", cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'manukevich96@gmail.com'
-	throw err;
+	throw e;
     }
 }
-  catch (err) {
+  catch (e) {
     	  currentBuild.result = 'FAILURE'
-	  throw err;
+	  throw e;
   }
   finally {
 	mail to: 'manukevich96@gmail.com',
