@@ -37,34 +37,19 @@ def encodeZipFile( Object data ) throws UnsupportedEncodingException {
 }
 
 def upload() {
-    try {
         request.encoder.'application/zip' = this.&encodeZipFile
-        println("${argument.r}/${groupId}/${artifactId}/${version}/${name}.tar.gz")
-
         respons_up = request.put(
                 uri: "${server}${argument.r}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz",
                 body: new File(argument.n),
-                requestContentType: 'application/zip'
-        )
+                requestContentType: 'application/zip')
         assert respons_up.status == 201
-
-
-    }
-    catch (Exception ex) {
-        println ex.getMessage()
-    }
 }
 
 def download() {
-    try {
         respons_down = request.get(
                 uri: "${server}${argument.r}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz")
         new File("/home/student/Downloads/${argument.n}") << respons_down.data
         assert respons_down.status == 200
-    }
-    catch (Exception ex) {
-        println ex.getMessage()
-    }
 }
 
 if (argument.c) {
