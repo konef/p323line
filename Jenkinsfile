@@ -10,7 +10,7 @@ import groovyx.net.http.RESTClient
 import org.apache.http.entity.*
 import hudson.model.*
 */
-@Library('lib') _
+
 import java.text.SimpleDateFormat
 
 // Nexus attributes
@@ -66,6 +66,7 @@ try {
             step_pipe = 'Prepare of the status-page.html'
             sh "sed -i 's/##BUILD##/${env.BUILD_NUMBER}/' helloworld-ws/src/main/webapp/status-page.html"
             sh "sed -i 's/##AUTHOR##/${USER_J}/' helloworld-ws/src/main/webapp/status-page.html"
+            @Library('lib') _
             echo "\u2776: Preparation Stage is done \u2705"
         }
         stage('Building code') {
