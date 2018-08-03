@@ -1,4 +1,4 @@
-def Nexus(stap) {
+def nexus(stap) {
 
     def nexus_path = "192.168.1.2:8081"
     def group = "project"
