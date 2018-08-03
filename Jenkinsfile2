@@ -1,54 +1,99 @@
+def SendEmail(status, stag, err) {
+    	def date = new Date()
+   	mail to: 'manukevich96@gmail.com',
+        	subject: "Status of build: $stag",
+        	body: "$date: ${env.BUILD_URL} has result - $status\n$stag: $err"
+}
+
 node("${SLAVE}")  {
-    try {
-	stage('Preparating (Checking out)') 
-    	git branch: 'ymaniukevich', 
-    	url: 'https://github.com/MNT-Lab/p323line'
-    stage('Building code')
-        withMaven(maven: 'mavenLocal') {
-            sh "mvn -f ./helloworld-ws/pom.xml clean install"
-        }
-    stage("Testing")
-        withMaven(maven: 'mavenLocal'){
-        parallel (
-        "pre-Integration test": {
-            sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
-        },
-        "Integration test": {
-            sh "mvn -f ./helloworld-ws/pom.xml integration-test"
-        },
-        "post-Integration test": {
-            sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
-        })
-        }
-    stage("Triggering job and fetching"){
-        build job: 'MNTLAB-ymaniukevich-child1-build-job', 
-        parameters: [string(name: 'BRANCH_NAME', value: 'ymaniukevich')]
-        copyArtifacts filter: 'ymaniukevich_dsl_script.tar.gz',
-        fingerprintArtifacts: true, 
-        projectName: 'MNTLAB-ymaniukevich-child1-build-job', 
-        selector: lastSuccessful()
-        }
-    stage("Packaging and Publishing results"){
-	sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
-        sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
-        sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
-    }
-     stage('Asking for manual approval') {
-         input 'Would you like to continue?'
+stage('Preparating (Checking out)'){
+	try {
+		git branch: 'ymaniukevich',
+		url: 'https://github.com/MNT-Lab/p323line'
+	} 
+	catch (err) {
+		SendEmail('Failure', 'Preparation (Checking out)', err)
+		throw err;
 	}
-	stage("Deployment"){
-	    sh "/usr/local/groovy/latest/bin/groovy ./pull.groovy"
-	    sh "scp -P2200 pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
-	    sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
-	    }
-    currentBuild.result = 'SUCCESS'
+}	
+stage('Building code'){
+	try {
+		withMaven(maven: 'mavenLocal') {
+			sh "mvn -f ./helloworld-ws/pom.xml clean install"
+		}
+	}
+	catch (err) {
+		SendEmail('Failure', 'Building code', err)
+		throw err;
+	}
 }
-  catch (err) {
-    currentBuild.result = 'FAILURE'
-  }
-  finally {
-	mail to: 'manukevich96@gmail.com',
-      subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
-      body: "${env.BUILD_URL} has result ${currentBuild.result}"
+stage("Testing"){
+	try{
+		withMaven(maven: 'mavenLocal'){
+			parallel (
+				"pre-Integration test": {
+					sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
+				},
+				"Integration test": {
+					sh "mvn -f ./helloworld-ws/pom.xml integration-test"
+				},
+				"post-Integration test": {
+					sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
+				})
+			}
+	}
+	catch(e) {
+		SendEmail('Failure', 'Testing', err)
+		throw err;
+		}
 }
+stage("Triggering job and fetching"){
+	try{
+		build job: 'MNTLAB-ymaniukevich-child1-build-job',
+		parameters: [string(name: 'BRANCH_NAME', value: 'ymaniukevich')]
+		copyArtifacts filter: 'ymaniukevich_dsl_script.tar.gz',
+		fingerprintArtifacts: true,
+		projectName: 'MNTLAB-ymaniukevich-child1-build-job',
+		selector: lastSuccessful()
+	}
+	catch(e) {
+		SendEmail('Failure', 'Triggering job and fetching artefact after finishing', err)
+		throw err;
+	}
+}
+stage("Packaging and Publishing results"){
+	try{
+		sh "tar -xvf ymaniukevich_dsl_script.tar.gz"
+		sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
+		sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
+	}
+	catch(e) {
+		SendEmail('Failure', 'Packaging and Publishing results', err)
+		throw err;
+	}
+}
+stage('Asking for manual approval') {
+	try{
+		timeout(time: 3, unit: 'MINUTES'){
+			input 'Would you like to move on ?'
+		}
+	}
+	catch(e) {
+		SendEmail('Failure', 'Asking for manual approval', err)
+		throw err;
+		}
+	}
+}
+stage("Deployment"){
+	try{
+		sh "/usr/local/groovy/latest/bin/groovy ./pull.groovy"
+		sh "scp -P2200 pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW7296:/opt/tomcat/latest/webapps"
+		sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
+	}
+	catch (err) {
+		SendEmail('Failure', 'Deployment', err)
+		throw err;
+	}
+	SendEmail('Success', 'Deployment', 'Well done!')
+	}
 }
