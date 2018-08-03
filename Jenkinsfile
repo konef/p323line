@@ -1,14 +1,18 @@
-/*import hudson.model.*
+/*
+import hudson.model.*
 import hudson.EnvVars
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
-import java.net.URL*/
-import java.text.SimpleDateFormat
+import java.net.URL
 @Grapes(@Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7'))
 import groovyx.net.http.RESTClient
 import org.apache.http.entity.*
 import hudson.model.*
+*/
+
+import java.text.SimpleDateFormat
+
 // Nexus attributes
 serv = 'http://EPBYMINW7423/nexus/repository/'
 username = 'admin'
