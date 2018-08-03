@@ -87,6 +87,7 @@ node("${SLAVE}") {
         stage("Asking for manual approval") {
             def stage = STAGE_NAME
             def desc = "Package wasnt approved"
+            timeout(time: 10, unit: 'MINUTES')
             try {
                 input 'Approve?'
             } catch (err) {
