@@ -100,6 +100,6 @@ node("${SLAVE}") {
             SendEmail('Failure', 'Deployment', err)
             throw err;
 		}
-	    SendEmail('Success', 'Deployment', 'Well done!')
+	    //SendEmail('Success', 'Deployment', 'Well done!')
 	}
 }
