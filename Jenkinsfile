@@ -48,7 +48,7 @@ JOB_URL: ${env.JOB_URL}
 }
 
 try {
-    node ("${SLAVE}"){
+    node (){
         def mvn_version = 'mavenLocal'
         def java_version = 'java8'
         def groovy_version = 'groovy4'
