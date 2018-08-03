@@ -83,7 +83,7 @@ node("${SLAVE}"){
             throw new Exception()
         }
 
-        try{
+       /* try{
             stage ('Asking for manual approval'){
                 input "Deploy artefact?"
             }
@@ -91,8 +91,7 @@ node("${SLAVE}"){
         catch (all){
             result = "FAIL Asking for manual approval"
             throw new Exception()
-        }
-
+        }*/
 
         try{
             stage ('Deployment'){
