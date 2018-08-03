@@ -29,13 +29,18 @@ def mail_to(String stage, String state, String step, recipient) {
     date = new Date()
     sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
     sdf.format(date)
+    if (state == 'SUCCESS') {
+        symb = '\u2705'
+    } else {
+        symb = '\u274E'
+    }
     mail subject: "JOB ${env.JOB_NAME} (${env.BUILD_NUMBER}): State ***${state}*** ",
          body: """
 ***
 Date/Time: ${sdf.format(date)},
 Stage: "${stage}",
 Step: "${step}",
-Job "${env.JOB_NAME}" has status: "${state}"
+Job "${env.JOB_NAME}" has status: "${state}" ${symb} \u274E
 ***
  
 JOB_URL: ${env.JOB_URL}  
