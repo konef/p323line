@@ -100,5 +100,5 @@ node("${SLAVE}") {
     } catch (err) {
         state = false
     }
-    send_message(state, stage_name, desc)
+//    send_message(state, stage_name, desc)
 }
