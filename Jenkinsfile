@@ -1,4 +1,3 @@
-env.art_name="pipeline-ypapkou-111.tar.gz"
 properties([
   parameters([
     string(name: 'student', defaultValue: 'ypapkou', description: 'Branch name.', )
@@ -39,7 +38,9 @@ node("${SLAVE}") {
    }
    
    stage('Asking for manual approval') {
-       input "This is a stage before deployment to production tomcat. Are sure to proceed?"
+       timeout(time: 10, unit: 'SECONDS') {
+           input "This is a stage before deployment to production tomcat. Are sure to proceed?"
+       }
    }
    
    stage('Deployment'){
