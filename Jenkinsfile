@@ -1,53 +1,33 @@
-node("${SLAVE}") {
-    try {
-	stage('Preparating (Checking out)')
-    	git branch: 'disakau',
-    	url: 'https://github.com/MNT-Lab/p323line'
-    stage('Building code')
-        withMaven(maven: 'maven') {
-            sh "mvn -f ./helloworld-ws/pom.xml clean install"
+node {
+    stage('Preparating (Checking out)'){
+        try {
+            git branch: 'disakau',
+            url: 'https://github.com/MNT-Lab/p323line'
         }
-    stage("Testing")
-        withMaven(maven: 'maven'){
-        parallel (
-        "pre-Integration test": {
-            sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
-        },
-        "Integration test": {
-            sh "mvn -f ./helloworld-ws/pom.xml integration-test"
-        },
-        "post-Integration test": {
-            sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
-        })
+        catch (err) {
+            Notification('Failure', 'Preparation (Checking out)', err)
+            throw err;
         }
-    stage("Triggering job and fetching"){
-        build job: 'MNTLAB-disakau-child1-build-job',
-        parameters: [string(name: 'BRANCH_NAME', value: 'disakau')]
-        copyArtifacts filter: 'disakau_dsl_script.tar.gz',
-        fingerprintArtifacts: true,
-        projectName: 'MNTLAB-disakau-child1-build-job',
-        selector: lastSuccessful()
-        }
-    stage("Packaging and Publishing results"){
-        sh "tar -xvf disakau_dsl_script.tar.gz"
-        sh "tar -czf pipeline-disakau-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
-        sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
-	sh "which groovy"
     }
-
-	stage("Deployment"){
-	    sh "/usr/local/groovy/latest/bin/groovy ./pull.groovy"
-	    sh "scp -P2200 jboss-parent-23.tar.gz  jboss-parent-23.tar.gz vagrant@EPBYMINW0501:/opt/tomcat/latest/webapps"
-	    sh "ssh -p2200 vagrant@EPBYMINW0501 'cd /opt/tomcat/latest/webapps/ && tar xzf jboss-parent-23.tar.gz && rm -rf jboss-parent-23.tar.gz Jenkinsfile jobs.groovy'"
-	    }
-    currentBuild.result = 'SUCCESS'
-}
-  catch (err) {
-    currentBuild.result = 'FAILURE'
-  }
-  finally {
-	mail to: 'danzisakau@gmail.com',
-      subject: "Status of pipeline: ${currentBuild.fullDisplayName}",
-      body: "${env.BUILD_URL} has result ${currentBuild.result}"
-}
+    stage("Testing")
+        withMaven(maven: 'mavenLocal'){
+            parallel (
+                    "pre-Integration test": {
+                        sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
+                    },
+                    "Integration test": {
+                        sh "mvn -f ./helloworld-ws/pom.xml integration-test"
+                    },
+                    "post-Integration test": {
+                        sh "mvn -f ./helloworld-ws/pom.xml post-integration-test"
+                    })
+        }
+        stage("Triggering job and fetching artefact after finishing"){
+            build job: 'MNTLAB-disakau-child-1-build-job',
+                parameters: [string(name: 'BRANCH_NAME', value: 'disakau')]
+        copyArtifacts filter: 'disakau_dsl_script.tar.gz',
+                fingerprintArtifacts: true,
+                projectName: 'MNTLAB-disakau-child-1-build-job',
+                selector: lastSuccessful()
+    }
 }
