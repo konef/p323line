@@ -1,17 +1,4 @@
 @Library('global-libs') _
-def encodeTarFile( Object data ) throws UnsupportedEncodingException {
-   def entity = new FileEntity( (File) data, "application/tar.gz" );
-   entity.setContentType( "application/tar.gz" );
-   return entity
-   }
-String[] parse_gav(path) {
-        def pom = new XmlSlurper().parse(new File("${path}/pom.xml"))
-        def gavs = []
-        gavs.add(pom.groupId)
-        gavs.add(pom.artifactId)
-        gavs.add(pom.version)
-        return gavs
-}
 node ("${SLAVE}") {
     try{
     stage('Preparation (Checking out)') {
