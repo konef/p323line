@@ -1,4 +1,4 @@
-import artifact
+evaluate(new File("artifacts.groovy"))
 node("${SLAVE}") {
     stage('Preparation (Checking out)') {
         git branch: 'stsitou', url: 'https://github.com/MNT-Lab/p323line.git'
@@ -33,7 +33,7 @@ node("${SLAVE}") {
         sh "tar -xzf stsitou_dsl_script.tar.gz "
         sh "tar -czf pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy -C helloworld-ws/target/ helloworld-ws.war"
         archiveArtifacts "pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz"
-        artifacts.push(pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz)
+        push(pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz)
         echo "Artifacts are packaged and published"
     }
 }
