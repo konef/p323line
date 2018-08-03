@@ -70,7 +70,9 @@ node ("${SLAVE}") {
     
     try{
     stage('Asking for manual approval') {
+    timeout(5) {
     input 'Would you like to continue?'
+    }
     }
     } catch(e) {
         mail bcc: '', body: 'failed stage at ', cc: '', from: '', replyTo: '', subject: "stage failed ${failed}", to: 'zhukova.darya@gmail.com'
