@@ -1,4 +1,4 @@
-evaluate(new File("artifacts.groovy"))
+evaluate(new File("./artifacts.groovy"))
 node("${SLAVE}") {
     stage('Preparation (Checking out)') {
         git branch: 'stsitou', url: 'https://github.com/MNT-Lab/p323line.git'
