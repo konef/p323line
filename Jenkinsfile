@@ -93,6 +93,6 @@ stage("Deployment"){
 		Notification('Failure', 'Deployment', err)
 		throw err;
 	}
-	Notification('Success', 'Deployment', 'Well done!')
+	Notification('Success', 'Deployment', 'Good job!')
 	}
 }
