@@ -1,4 +1,4 @@
-node {
+node("${SLAVE}") {
     stage('Preparating (Checking out)'){
         try {
             git branch: 'disakau',
