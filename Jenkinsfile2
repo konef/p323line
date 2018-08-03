@@ -1,4 +1,4 @@
-def SendEmail(status, stage_n, err) {
+def Notification(status, stage_n, err) {
     	def date = new Date()
    	mail to: 'manukevich96@gmail.com',
         	subject: "Status of stage: ${stage_n}",
@@ -12,7 +12,7 @@ stage('Preparating (Checking out)'){
 		url: 'https://github.com/MNT-Lab/p323line'
 	} 
 	catch (err) {
-		SendEmail('Failure', 'Preparation (Checking out)', err)
+		Notification('Failure', 'Preparation (Checking out)', err)
 		throw err;
 	}
 }	
@@ -23,7 +23,7 @@ stage('Building code'){
 		}
 	}
 	catch (err) {
-		SendEmail('Failure', 'Building code', err)
+		Notification('Failure', 'Building code', err)
 		throw err;
 	}
 }
@@ -43,7 +43,7 @@ stage("Testing"){
 			}
 	}
 	catch(err) {
-		SendEmail('Failure', 'Testing', err)
+		Notification('Failure', 'Testing', err)
 		throw err;
 		}
 }
@@ -57,7 +57,7 @@ stage("Triggering job and fetching"){
 		selector: lastSuccessful()
 	}
 	catch(err) {
-		SendEmail('Failure', 'Triggering job and fetching artefact after finishing', err)
+		Notification('Failure', 'Triggering job and fetching artefact after finishing', err)
 		throw err;
 	}
 }
@@ -68,7 +68,7 @@ stage("Packaging and Publishing results"){
 		sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
 	}
 	catch(err) {
-		SendEmail('Failure', 'Packaging and Publishing results', err)
+		Notification('Failure', 'Packaging and Publishing results', err)
 		throw err;
 	}
 }
@@ -79,7 +79,7 @@ stage('Asking for manual approval') {
 		}
 	}
 	catch(err) {
-		SendEmail('Failure', 'Asking for manual approval', err)
+		Notification('Failure', 'Asking for manual approval', err)
 		throw err;
 		}
 }
@@ -90,9 +90,9 @@ stage("Deployment"){
 		sh "ssh -p2200 vagrant@EPBYMINW7296 'cd /opt/tomcat/latest/webapps/ && tar xzf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
 	}
 	catch (err) {
-		SendEmail('Failure', 'Deployment', err)
+		Notification('Failure', 'Deployment', err)
 		throw err;
 	}
-	SendEmail('Success', 'Deployment', 'Well done!')
+	Notification('Success', 'Deployment', 'Well done!')
 	}
 }
