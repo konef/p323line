@@ -22,8 +22,6 @@ node("${SLAVE}") {
                 try {
                     sh "mvn -f ./helloworld-ws/pom.xml package"
                 } catch (err){
-
-                    currentStage.result = "FAILED"
                     send_message(stage, desc)
                 }
             }
