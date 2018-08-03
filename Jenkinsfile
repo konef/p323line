@@ -5,7 +5,10 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
 import java.net.URL*/
 import java.text.SimpleDateFormat
-
+@Grapes(@Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7'))
+import groovyx.net.http.RESTClient
+import org.apache.http.entity.*
+import hudson.model.*
 // Nexus attributes
 serv = 'http://EPBYMINW7423/nexus/repository/'
 username = 'admin'
