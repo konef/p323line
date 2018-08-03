@@ -2,7 +2,7 @@
 
 def Notification(status, stage_n, err) {
     	def date = new Date()
-   	mail to: 'manukevich96@gmail.com',
+   	mail to: 'manukevich96@gmail.comcom',
         	subject: "Status of stage: ${stage_n}",
         	body: "$date: ${env.BUILD_URL} has result - ${status}\n${stage_n}: $err"
 }
