@@ -10,7 +10,7 @@ import groovyx.net.http.RESTClient
 import org.apache.http.entity.*
 import hudson.model.*
 */
-@Library('global-libs') _
+//@Library('global-libs') _
 import java.text.SimpleDateFormat
 
 // Nexus attributes
@@ -139,10 +139,10 @@ try {
             step_pipe = 'Attach this artifact to current job'
             archiveArtifacts "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
             step_pipe = 'Pushing of the Artifact'
-            nexus_aandryieuski.nexus(serv, username, password, repo, "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz", "push")
-            //withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
-            //    sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
-            //}
+            //nexus_aandryieuski.nexus(serv, username, password, repo, "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz", "push")
+            withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
+                sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
+            }
             echo "\u277a: Packaging and Publishing results Stage is done \u2705"
         }
         stage('Asking for manual approval') {
@@ -158,10 +158,10 @@ try {
             step_pipe = 'Clear remote tmp dir'
             sh "rm -rf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
             step_pipe = 'Pull the Artifact'
-            nexus_aandryieuski.nexus(serv, username, password, repo, "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz", "pull")
-            //withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
-            //    sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz pull"
-            //}
+            //nexus_aandryieuski.nexus(serv, username, password, repo, "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz", "pull")
+            withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
+                sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz pull"
+            }
             step_pipe = 'Remote deployment through ssh'
             sh returnStatus: true, script: 'chmod 600 id_rsa'
             sh returnStatus: true, script: "scp -o StrictHostKeyChecking=no -i id_rsa -P2201 pipeline-${student}-${env.BUILD_NUMBER}.tar.gz jboss@EPBYMINW7423:/tmp/jenkins_tmp"
