@@ -16,13 +16,13 @@ if (!argument) or (argument.h) {
     return
 }
 
-server = "http://10.6.204.134/nexus/"
+server = "http://EPBYMINW3088/nexus/repository/"
 groupId = "pipeline"
 username = 'Jenkins'
 password = 'Yauheni1601'
 
-name = argument.n.split(".tar")[0]
-artifactId = name.split('-')[-2]
+name = argument.n.split('.tar')[0]
+artifactId = name.split('-')[1]
 version = name.split('-')[-1]
 command = [push: {->upload()}, pull: {->download()}]
 
@@ -39,8 +39,10 @@ def encodeZipFile( Object data ) throws UnsupportedEncodingException {
 def upload() {
     try {
         request.encoder.'application/zip' = this.&encodeZipFile
+        println("${argument.r}/${groupId}/${artifactId}/${version}/${name}.tar.gz")
+
         respons_up = request.put(
-                uri: "${server}repository/${argument.r}/${groupId}/${artifactId}/${version}/${argument.n}",
+                uri: "${server}${argument.r}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz",
                 body: new File(argument.n),
                 requestContentType: 'application/zip'
         )
@@ -56,7 +58,7 @@ def upload() {
 def download() {
     try {
         respons_down = request.get(
-                uri: "${server}repository/${argument.r}/${groupId}/${artifactId}/${version}/${argument.n}")
+                uri: "${server}${argument.r}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz")
         new File("/home/student/Downloads/${argument.n}") << respons_down.data
         assert respons_down.status == 200
     }
