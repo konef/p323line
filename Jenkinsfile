@@ -180,5 +180,3 @@ finally{
         mail_to(stage_pipe, "FAILURE", step_pipe, user_mail)
     }
 }
-
-
