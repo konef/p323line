@@ -116,5 +116,5 @@ node ("${SLAVE}") {
         }
     }
     currentBuild.result = 'SUCCESS'
-    mail bcc: '', body: "the result of ${env.BUILD_URL} is ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "pipeline status is ${currentBuild.result}", to: 'mishok26@gmail.com'
+   // mail bcc: '', body: "the result of ${env.BUILD_URL} is ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "pipeline status is ${currentBuild.result}", to: 'mishok26@gmail.com'
 }
