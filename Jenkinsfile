@@ -38,7 +38,7 @@ node() {
    }
    
    stage('Asking for manual approval') {
-       timeout(time: 10, unit: 'SECONDS') {
+       timeout(time: 1, unit: 'MINUTES') {
            input "This is a stage before deployment to production tomcat. Are sure to proceed?"
        }
    }
