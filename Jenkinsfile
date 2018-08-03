@@ -130,7 +130,7 @@ node("${SLAVE}"){
 
         try{
             stage ('Successful deployment report'){
-                        mail bcc: '', body: "Success ${test_result}", cc: '', from: '', replyTo: '', subject: 'Success', to: 'mikhailznak@gmail.com'
+                       // mail bcc: '', body: "Success ${test_result}", cc: '', from: '', replyTo: '', subject: 'Success', to: 'mikhailznak@gmail.com'
 
             }
         }
@@ -140,6 +140,6 @@ node("${SLAVE}"){
         }
     }
     catch(all) {
-        mail bcc: '', body: "Problem: ${result}", cc: '', from: '', replyTo: '', subject: 'Problem', to: 'mikhailznak@gmail.com'
+        //mail bcc: '', body: "Problem: ${result}", cc: '', from: '', replyTo: '', subject: 'Problem', to: 'mikhailznak@gmail.com'
     }
 }
