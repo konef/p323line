@@ -1,8 +1,8 @@
-def SendEmail(status, stag, err) {
+def SendEmail(status, stage_n, err) {
     	def date = new Date()
    	mail to: 'manukevich96@gmail.com',
         	subject: "Status of build: $stag",
-        	body: "$date: ${env.BUILD_URL} has result - $status\n$stag: $err"
+        	body: "$date: ${env.BUILD_URL} has result - ${status}\n${stage_n}: $err"
 }
 
 node("${SLAVE}")  {
@@ -42,7 +42,7 @@ stage("Testing"){
 				})
 			}
 	}
-	catch(e) {
+	catch(err) {
 		SendEmail('Failure', 'Testing', err)
 		throw err;
 		}
@@ -56,7 +56,7 @@ stage("Triggering job and fetching"){
 		projectName: 'MNTLAB-ymaniukevich-child1-build-job',
 		selector: lastSuccessful()
 	}
-	catch(e) {
+	catch(err) {
 		SendEmail('Failure', 'Triggering job and fetching artefact after finishing', err)
 		throw err;
 	}
@@ -67,7 +67,7 @@ stage("Packaging and Publishing results"){
 		sh "tar -czf pipeline-ymaniukevich-${BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C helloworld-ws/target/ helloworld-ws.war"
 		sh "/usr/local/groovy/latest/bin/groovy ./push.groovy"
 	}
-	catch(e) {
+	catch(err) {
 		SendEmail('Failure', 'Packaging and Publishing results', err)
 		throw err;
 	}
@@ -78,11 +78,10 @@ stage('Asking for manual approval') {
 			input 'Would you like to move on ?'
 		}
 	}
-	catch(e) {
+	catch(err) {
 		SendEmail('Failure', 'Asking for manual approval', err)
 		throw err;
 		}
-	}
 }
 stage("Deployment"){
 	try{
