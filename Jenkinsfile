@@ -40,9 +40,11 @@ node("${SLAVE}") {
                         sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test" 
                     },
                     'integration-test': { 
+			sleep 5
                         sh "mvn -f ./helloworld-ws/pom.xml integration-test" 
                     },
                     'post-integration-test': { 
+			sleep 10
                         sh "mvn -f ./helloworld-ws/pom.xml post-integration-test" 
                     }
                 )
