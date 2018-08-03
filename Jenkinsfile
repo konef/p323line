@@ -7,7 +7,7 @@ node ("${SLAVE}") {
         def stagex = STAGE_NAME
         def desc = "git clone was failed"
         try {
-            checkout([$class: 'GitSCM', branches: [[name: 'piatliou']], userRemoteConfigs: [[url: 'https://github.com/MNT-Lab/p323line.git']]])
+            checkout([$class: 'GitSCM', branches: [[name: 'mpiatliou']], userRemoteConfigs: [[url: 'https://github.com/MNT-Lab/p323line.git']]])
         }
         catch (err) {
             send_email(stagex, desc)
