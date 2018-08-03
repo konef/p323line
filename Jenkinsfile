@@ -139,7 +139,7 @@ try {
             step_pipe = 'Attach this artifact to current job'
             archiveArtifacts "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
             step_pipe = 'Pushing of the Artifact'
-            nexus.nexus(serv, username, password, repo, "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz", "push")
+            nexus.nexus_aandryieuski(serv, username, password, repo, "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz", "push")
             //withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
             //    sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz push"
             //}
@@ -158,7 +158,7 @@ try {
             step_pipe = 'Clear remote tmp dir'
             sh "rm -rf pipeline-${student}-${env.BUILD_NUMBER}.tar.gz"
             step_pipe = 'Pull the Artifact'
-            nexus.nexus(serv, username, password, repo, "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz", "pull")
+            nexus.nexus_aandryieuski(serv, username, password, repo, "pipeline-${student}-${env.BUILD_NUMBER}.tar.gz", "pull")
             //withEnv(["GROOVY_HOME=${tool groovy_version}"]) {
             //    sh "$GROOVY_HOME/bin/groovy push-pull.groovy ${serv} ${username} ${password} ${repo} pipeline-${student}-${env.BUILD_NUMBER}.tar.gz pull"
             //}
