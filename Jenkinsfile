@@ -11,7 +11,7 @@ node("${SLAVE}") {
                 git branch: 'hviniarski', url: 'https://github.com/MNT-Lab/p323line'
             } catch (err) {
                 currentBuild.result = "FAILED"
-                send_message(stage,desc)
+                //send_message(stage,desc)
             }
         }
 
@@ -22,7 +22,7 @@ node("${SLAVE}") {
                 try {
                     sh "mvn -f ./helloworld-ws/pom.xml package"
                 } catch (err){
-                    send_message(stage, desc)
+                  //  send_message(stage, desc)
                 }
             }
         }
@@ -50,7 +50,7 @@ node("${SLAVE}") {
                 }
             } catch (err) {
                 currentBuild.result = "FAILED"
-                send_message(stage,desc)
+                //send_message(stage,desc)
             }
         }
 
@@ -62,7 +62,7 @@ node("${SLAVE}") {
                 copyArtifacts filter: 'hviniarski_dsl_script.tar.gz', projectName: 'MNTLAB-hviniarski-child1-build-job', selector: lastSuccessful()
             } catch (err) {
                 currentBuild.result = "FAILED"
-                send_message(stage, desc)
+               // send_message(stage, desc)
             }
         }
         stage("Packaging and Publishing artifact"){
@@ -78,7 +78,7 @@ node("${SLAVE}") {
                     '''
             }catch (err) {
                 currentBuild.result = "FAILED"
-                send_message(stage,desc)
+             //   send_message(stage,desc)
             }
         }
 
@@ -90,7 +90,7 @@ node("${SLAVE}") {
                 input 'Approve?'
             } catch (err) {
                 currentBuild.result = "FAILED"
-                send_message(stage,desc)
+           //     send_message(stage,desc)
             }
         }
         stage("Deployment"){
@@ -107,11 +107,11 @@ node("${SLAVE}") {
                   '''
             } catch (err) {
                 currentBuild.result = "FAILED"
-                send_message(stage,desc)
+         //       send_message(stage,desc)
             }
         }
         archiveArtifacts '*.tar.gz'
         currentBuild.result = 'SUCCESS'
         cleanWs()
-        mail bcc: '', body: "${env.BUILD_URL} has resulted in ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'glebko123@gmail.com'
+       // mail bcc: '', body: "${env.BUILD_URL} has resulted in ${currentBuild.result}", cc: '', from: '', replyTo: '', subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'glebko123@gmail.com'
     }
