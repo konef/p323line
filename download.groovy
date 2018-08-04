@@ -38,7 +38,7 @@ void pull() {
 	def ver = pom.parent.version
   	def build = System.getenv("BUILD_NUMBER")
 	
-  	def restClient =  new RESTClient('http://epbyminw7425/nexus/repository/maven-archive/')
+  	//def restClient =  new RESTClient('http://epbyminw7425/nexus/repository/maven-archive/')
 	def workspace = System.getenv("WORKSPACE")
   
         def remoteUrl = 'http://epbyminw7425/nexus/repository/maven-archive/' + gr +
