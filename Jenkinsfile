@@ -1,6 +1,7 @@
 String STUDENT = "knovichuk"
 String MAVEN = "mavenLocal"
 String JDK = "java8"
+String GROOVY = "Groovy 251"
 
 node() {
 
@@ -62,5 +63,31 @@ node() {
 
     catch (Exception ex) {
         println("Triggering job failed")
-    }    
+    }
+
+    try {
+        stage('Packaging and Publishing results'){
+            step_name = "Creating archive"
+            sh """tar -xf ${STUDENT}_dsl_script.tar.gz jobs.groovy
+                  tar -czvf pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz jobs.groovy Jenkinsfile -C ./helloworld-ws/target/ helloworld-ws.war"""
+
+            step_name = "Creating artefact"
+            archiveArtifacts "pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz"
+
+            step_name = "Publishing to Nexus"
+            sh "groovy pushpull.groovy push pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz" 
+
+        }
+    }
+
+    catch (Exception ex) {
+        println("Publishing artefact failed")
+    }
+
+    stage('Asking for manual approval') {
+        step_name = "Waiting 1 minute."
+        timeout(time: 60) {
+            input 'Do you approve the deployment?'
+        }
+    }
 }
