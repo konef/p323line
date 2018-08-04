@@ -75,7 +75,9 @@ node() {
             archiveArtifacts "pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz"
 
             step_name = "Publishing to Nexus"
-            sh "groovy pushpull.groovy push pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz" 
+            withEnv(["JAVA_HOME=${tool JDK}","GROOVY_HOME=${tool GROOVY}"]) {
+                sh "$GROOVY_HOME/bin/groovy pushpull.groovy push pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz" 
+            }
 
         }
     }
