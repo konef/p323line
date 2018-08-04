@@ -10,7 +10,7 @@ def pull_tar() {
 }
 
 
-node {
+node("${SLAVE}"){
     def giturl = 'https://github.com/MNT-Lab/p323line.git'
 
     stage('Clone sources') {
