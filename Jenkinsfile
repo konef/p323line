@@ -1,4 +1,4 @@
-/*node("${SLAVE}"){
+node("${SLAVE}"){
     result = ""
     test_result = ""
     try{
@@ -142,4 +142,4 @@
     catch(all) {
         //mail bcc: '', body: "Problem: ${result}", cc: '', from: '', replyTo: '', subject: 'Problem', to: 'mikhailznak@gmail.com'
     }
-}*/
+}
