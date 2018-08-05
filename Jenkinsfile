@@ -36,5 +36,12 @@ node("${SLAVE}") {
         sh "groovy ./artifacts push pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz ${env.BUILD_NUMBER}"
         echo "Artifacts are packaged and published"
     }
+
+    stage ('Asking for manual approval') {
+        timeout(time: 120, unit: 'SECONDS') {
+            input message: 'Deploy?', ok: 'Yes'
+        }
+    }
+
 }
 
