@@ -8,7 +8,7 @@ reponame="mvnrepo"
 
 switch (args[0]){
     case "push":
-        return push(args[1], args[2], args[3])
+        return push(args[1], args[2])
         break
     case "pull":
         pull(args[1])
