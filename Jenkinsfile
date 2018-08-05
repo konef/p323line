@@ -89,7 +89,7 @@ node() {
             archiveArtifacts "pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz"
 
             step_name = "Publishing to Nexus"
-            sh "/home/student/Downloads/groovy-3.0.0/bin/groovy pushpull.groovy push pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz" 
+            sh "groovy pushpull.groovy push pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz" 
 
 
         }
