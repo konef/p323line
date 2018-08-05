@@ -1,7 +1,6 @@
-@Grapes([
-        @Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7'),
-        @GrabConfig( systemClassLoader=true )
-])
+@GrabConfig( systemClassLoader=true )
+@Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7')
+
 import groovyx.net.http.RESTClient
 import org.apache.http.entity.FileEntity
 
