@@ -4,6 +4,15 @@ String JDK = "java8"
 String GROOVY = "Groovy 251"
 
 
+def notification(stage, message) {
+    message = """------------------
+Stage: ${stage},
+Pipeline $JOB_NAME is "${message}"!
+------------------
+"""
+    mail bcc: '', body: message, cc: '', subject: 'Jenkins result', to: 'k.rahidb@gmail.com'
+}
+
 node() {
 
     try {
@@ -14,6 +23,7 @@ node() {
 
     catch (Exception ex) {
         println("Checkout failed")
+        notification("Checkout SCM", "failed")
     }
 
     try {
@@ -26,6 +36,7 @@ node() {
 
     catch (Exception ex) {
         println("Maven build failed")
+        notification("Building code", "failed")
     }
 
     try {
@@ -50,6 +61,7 @@ node() {
 
     catch (Exception ex) {
         println("Tests failed")
+        notification("Testing", "failed")
     }
 
     try {
@@ -64,6 +76,7 @@ node() {
 
     catch (Exception ex) {
         println("Triggering job failed")
+        notification("Triggering job", "failed")
     }
 
     try {
@@ -85,7 +98,9 @@ node() {
 
     catch (Exception ex) {
         println("Publishing artefact failed")
+        notification("Packaging and Publishing results", "failed")
     }
+
 
     stage('Asking for manual approval') {
         timeout(time: 1) {
@@ -114,5 +129,8 @@ node() {
 
     catch (Exception ex) {
         println("Deploing artefact failed")
+    }
+    if (currentBuild.result != "FAILURE") {
+        notification("Deployment", "successfully done")
     }
 }
