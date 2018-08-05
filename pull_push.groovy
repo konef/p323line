@@ -22,7 +22,7 @@ if("$PULLPUSH"=="push"){
     def preart = art_name.substring(0, art_name.lastIndexOf("-"))
     def build_number = art_name.replaceAll("\\D+","")
     println "Artifact suffix = ${preart}"
-    def File = new File ("war/target/${preart}-${build_number}.tar.gz").getBytes()
+    def File = new File ("${preart}-${build_number}.tar.gz").getBytes()
     def connection = new URL( "${way}/repository/${repo}/${preart}/${build_number}/${preart}-${build_number}.tar.gz" )
             .openConnection() as HttpURLConnection
     def auth = "${cred}".getBytes().encodeBase64().toString()
