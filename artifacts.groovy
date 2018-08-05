@@ -1,3 +1,6 @@
+@Grapes(
+        @Grab(group='org.apache.httpcomponents', module='httpcore', version='4.4.10')
+)
 hostname="192.168.1.4:8081"
 username="jenkins"
 password="jenkins"
