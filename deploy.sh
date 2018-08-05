@@ -16,7 +16,7 @@ fi
 
 sudo mv $home_dir/helloworld-ws.war /opt/tomcat/webapps/
 sleep 5
-echo $2
+
 curl http://EPBYMINW3088/tomcat/helloworld-ws/index.html | grep "Build Number: #$2"
 a=$?
 curl -I http://EPBYMINW3088/tomcat/helloworld-ws/ | awk '{print $2}' | head -n 1 | grep 200
