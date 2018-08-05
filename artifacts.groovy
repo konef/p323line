@@ -44,9 +44,10 @@ void pull(artifact) {
             requestContentType: 'application/zip'
     )
 }
-*/
+
 FileEntity setZipMimeType(Object data) throws UnsupportedEncodingException {
     def entity = new FileEntity((File) data, 'application/zip')
     entity.setContentType('application/zip')
     return entity
 }
+*/
