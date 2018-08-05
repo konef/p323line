@@ -109,7 +109,7 @@ node() {
     try {
         stage('Deployment') {
             sh """scp pushpull.groovy vagrant@tomcat:/opt/apps/
-                  ssh vagrant@tomcat '''cd /opt/apps/
+                  ssh vagrant@192.168.1.2 '''cd /opt/apps/
                                         groovy pushpull.groovy pull pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz
                                         tar -xf ${STUDENT}-${env.BUILD_NUMBER}.tar.gz helloworld-ws.war
                                         mv /opt/tomcat/webapps/helloworld-ws.war /opt/apps/old/helloworld-ws-old.war
