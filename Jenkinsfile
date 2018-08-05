@@ -44,6 +44,6 @@ node("${SLAVE}") {
     }
     stage("Deployment"){
             sh "groovy pull_push.groovy -p pull -a pipeline-disakau-${BUILD_NUMBER}.tar.gz"
-    		sh "scp pipeline-disakau-${BUILD_NUMBER}.tar.gz root@http://192.168.100.20:8080:/vagrant/apache-tomcat-8.5.32/webapps"
+    		sh "scp pipeline-disakau-${BUILD_NUMBER}.tar.gz root@192.168.100.20:8080:/vagrant/apache-tomcat-8.5.32/webapps"
     }
 }
