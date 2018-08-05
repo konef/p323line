@@ -1,3 +1,4 @@
+#!/bin/groovy
 @Grab(group='org.apache.httpcomponents', module='httpcore', version='4.4.10')
 import org.apache.http.*
 hostname="192.168.1.4:8081"
@@ -16,7 +17,7 @@ switch (args[1]){
         print("WRONG ARGUMENTS!${args}")
 }
 
-void pull(artifact) {
+void push(artifact) {
     println("Pushing artifact: ${artifact}")
     def File = new File (artifact).getBytes()
     def connection = new URL( "${hostname}/repository/${reponame}/${artifact}")
@@ -32,8 +33,8 @@ void pull(artifact) {
     writer.close()
     println connection.responseCode
 }
-
-void push(artifact) {
+/*
+void pull(artifact) {
     restClient = new RESTClient("http://${hostname}/repository/${reponame}/")
     restClient.auth.basic 'Artifacts-service-user', 'Artifacts'
     restClient.encoder.'application/zip' = this.&setZipMimeType
@@ -43,7 +44,7 @@ void push(artifact) {
             requestContentType: 'application/zip'
     )
 }
-
+*/
 FileEntity setZipMimeType(Object data) throws UnsupportedEncodingException {
     def entity = new FileEntity((File) data, 'application/zip')
     entity.setContentType('application/zip')
