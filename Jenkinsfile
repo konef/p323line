@@ -52,9 +52,9 @@ node("${SLAVE}"){
         sh 'tar -zxf akavaleu_dsl_script.tar.gz'
         sh 'cp -f helloworld-ws/target/helloworld-ws.war .'
         sh 'tar -czf pipeline-akavaleu-$BUILD_NUMBER.tar.gz helloworld-ws.war jobs.groovy Jenkinsfile'
-        sh 'mkdir arti && mv pipeline-akavaleu-$BUILD_NUMBER.tar.gz arti/'
+        sh 'mv pipeline-akavaleu-$BUILD_NUMBER.tar.gz $WORKSPACE/arti/'
         push_tar()
-        archiveArtifacts 'arti/pipeline-akavaleu-$BUILD_NUMBER.tar.gz'
+        archiveArtifacts '$WORKSPACE/arti/pipeline-akavaleu-$BUILD_NUMBER.tar.gz'
     }
 
     stage ('Asking for manual approval')
