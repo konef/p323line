@@ -38,8 +38,12 @@ node("${SLAVE}") {
            sh "groovy pull_push.groovy -p push -a pipeline-disakau-${BUILD_NUMBER}.tar.gz"
     }
     stage ('Asking for manual approval') {
-      timeout(time:1, unit:'HOURS') {
+      timeout(time: 120, unit: 'SECONDS') {
                input message:'Do you approve that deployment?', ok: 'Yes'
                }
+    }
+    stage("Deployment"){
+            sh "groovy pull_push.groovy -p pull -a pipeline-disakau-${BUILD_NUMBER}.tar.gz"
+    		sh "scp pipeline-disakau-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW0501:/opt/tomcat/latest/webapps"
     }
 }
