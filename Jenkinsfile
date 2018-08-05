@@ -1,3 +1,5 @@
+import jenkins.model.*
+jenkins = Jenkins.instance
 node("${SLAVE}") {
     stage('Preparation (Checking out)') {
         git branch: 'stsitou', url: 'https://github.com/MNT-Lab/p323line.git'
