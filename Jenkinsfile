@@ -1,5 +1,5 @@
 def push_tar() {
-    sh 'curl -v --user "nexus-service-user:service" --upload-file pipeline-akavaleu-${BUILD_NUMBER}.tar.gz http://epbyminw2467/nexus/repository/tar-deploy-artifacts/'
+    sh 'curl -v --user "nexus-service-user:service" --upload-file $WORKSPACE/arti/pipeline-akavaleu-${BUILD_NUMBER}.tar.gz http://epbyminw2467/nexus/repository/tar-deploy-artifacts/'
 }
 
 def pull_tar() {
