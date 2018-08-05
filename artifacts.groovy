@@ -20,7 +20,7 @@ switch (args[0]){
 
 int push(artifact, buildnum) {
     println("Pushing artifact: ${artifact}")
-    def fileToSend = new File (artifact).getBytes()
+    def fileToSend = new File ("./${artifact}").getBytes()
     print("Sending request: \"http://${hostname}/repository/${reponame}/${artifact}\"")
     def connection = new URL( "http://${hostname}/repository/${reponame}/${buildnum}/${artifact}")
             .openConnection() as HttpURLConnection
