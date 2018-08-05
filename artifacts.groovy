@@ -22,7 +22,7 @@ int push(artifact, buildnum, suffix) {
     println("Pushing artifact: ${artifact}")
     def File = new File (artifact).getBytes()
     print("Sending request: \"http://${hostname}/repository/${reponame}/${artifact}\"")
-    def connection = new URL( "http://${hostname}/repository/${reponame}/${buildnum}/${suffix}/${artifact}")
+    def connection = new URL( "http://${hostname}/repository/${reponame}/${buildnum}/${artifact}")
             .openConnection() as HttpURLConnection
     def auth = (username + ":" + password).getBytes().encodeBase64().toString()
     connection.setRequestMethod("PUT")
@@ -33,6 +33,7 @@ int push(artifact, buildnum, suffix) {
     def writer = new DataOutputStream(connection.outputStream)
     writer.write (File)
     writer.close()
+    println(connection.responseCode)
     if(connection.responseCode != 200){
         return 1
     }
