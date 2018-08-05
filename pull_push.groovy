@@ -15,7 +15,7 @@ def PULLPUSH = options.p
 
 def cred = "nexus-service-user:admin123"
 def repo = "maven-releases/HW-ws"
-def way = "http://192.168.100.13:8081"
+def way = "http://EPBYMINW0501/nexus"
 
 if("$PULLPUSH"=="push"){
     println "push ${art_name}"
