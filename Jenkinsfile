@@ -1,7 +1,3 @@
-def email(String stage, String desc) {
-    mail bcc: '', body: "${desc}", cc: '', from: '', replyTo: '', subject: "Stage ${stage} failed", to: 'danzisakau@gmail.com'
-}
-
 node("${SLAVE}") {
     stage('Preparating (Checking out)'){
         try {
@@ -9,7 +5,7 @@ node("${SLAVE}") {
                     url: 'https://github.com/MNT-Lab/p323line'
         }
         catch (err) {
-            email(stage, desc)
+            mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
             throw err
         }
     }
@@ -26,7 +22,7 @@ node("${SLAVE}") {
             }
         }
         catch (err) {
-            email(stage, desc)
+            mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
             throw err
         }
     }
@@ -41,7 +37,7 @@ node("${SLAVE}") {
                     selector: lastSuccessful()
         }
         catch (err) {
-            email(stage, desc)
+            mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
             throw err
         }
     }
@@ -55,7 +51,7 @@ node("${SLAVE}") {
             sh "groovy pull_push.groovy -p push -a pipeline-disakau-${BUILD_NUMBER}.tar.gz"
         }
         catch (err) {
-            email(stage, desc)
+            mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
             throw err
         }
     }
@@ -67,7 +63,7 @@ node("${SLAVE}") {
             }
         }
         catch (err) {
-            email(stage, desc)
+            mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
             throw err
         }
     }
@@ -79,7 +75,7 @@ node("${SLAVE}") {
             sh "ssh vagrant@192.168.100.20 'cd /vagrant/apache-tomcat-8.5.32/webapps/ && tar xzf pipeline-disakau-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-disakau-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
         }
         catch (err) {
-            email(stage, desc)
+            mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
             throw err
         }
     }
@@ -89,7 +85,7 @@ node("${SLAVE}") {
             println "COMPLETED"
         }
         finally {
-            mail bcc: '', body: 'failed stage at ', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
+            mail bcc: '', body: 'Success', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
         }
     }
 }
