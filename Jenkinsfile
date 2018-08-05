@@ -37,4 +37,8 @@ node("${SLAVE}") {
            archiveArtifacts "pipeline-disakau-${BUILD_NUMBER}.tar.gz"
            sh "groovy pull_push.groovy -p push -a pipeline-disakau-${BUILD_NUMBER}.tar.gz"
     }
+    stage ('Asking for manual approval') {
+      timeout(time:1, unit:'HOURS') {
+               input message:'Do you approve that deployment?', ok: 'Yes'
+    }
 }
