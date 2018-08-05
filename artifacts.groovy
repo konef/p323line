@@ -11,18 +11,18 @@ switch (args[1]){
         pull(args[2])
         break
     default:
-        print("WRONG ARGUMENTS!"+args)
+        print("WRONG ARGUMENTS!${args}")
 }
 
 void pull(artifact) {
-    println("Pushing artifact: " + artifact)
+    println("Pushing artifact: ${artifact}")
     def File = new File (artifact).getBytes()
-    def connection = new URL( hostname_+"/repository/" + reponame + "/" + artifact )
+    def connection = new URL( "${hostname}/repository/${reponame}/${artifact}")
             .openConnection() as HttpURLConnection
     def auth = (username + ":" + password).getBytes().encodeBase64().toString()
     connection.setRequestMethod("PUT")
     connection.doOutput = true
-    connection.setRequestProperty("Authorization" , "Basic "+auth)
+    connection.setRequestProperty("Authorization" , "Basic ${auth}")
     connection.setRequestProperty( "Content-Type", "application/octet-stream" )
     connection.setRequestProperty( "Accept", "*/*" )
     def writer = new DataOutputStream(connection.outputStream)
@@ -32,11 +32,11 @@ void pull(artifact) {
 }
 
 void push(artifact) {
-    restClient = new RESTClient("http://" + hostname + "/repository/"+ reponame +"/")
+    restClient = new RESTClient("http://${hostname}/repository/${reponame}/")
     restClient.auth.basic 'Artifacts-service-user', 'Artifacts'
     restClient.encoder.'application/zip' = this.&setZipMimeType
     restClient.put(
-            path: "http://" + hostname +"/repository/" + mvnrepo + "/" + artifact,
+            path: "http://${hostname}/repository/${reponame}/${artifact}",
             body: new File(artifact),
             requestContentType: 'application/zip'
     )

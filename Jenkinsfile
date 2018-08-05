@@ -28,9 +28,10 @@ node("${SLAVE}") {
         copyArtifacts filter: "${student}_dsl_script.tar.gz", projectName: "MNTLAB-stsitou-child1-build-job", selector: lastSuccessful()
         echo "Job status: ${childjob.result}"
     }
+
     stage('Packaging and Publishing results') {
         sh "tar -xzf stsitou_dsl_script.tar.gz "
-        sh "tar -czf pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy -C helloworld-ws/target/ helloworld-ws.war"
+        sh "tar -czf pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy -C helloworld-ws/target/helloworld-ws.war"
         archiveArtifacts "pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz"
         sh "groovy ./artifacts push pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz"
         echo "Artifacts are packaged and published"
