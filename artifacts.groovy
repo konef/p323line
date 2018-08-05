@@ -6,15 +6,16 @@ username="jenkins"
 password="jenkins"
 reponame="mvnrepo"
 
-switch (args[1]){
+switch (args[0]){
     case "push":
-        push(args[2])
+        push(args[1])
         break
     case "pull":
-        pull(args[2])
+        pull(args[1])
         break
     default:
         print("WRONG ARGUMENTS!${args}")
+        return 1
 }
 
 void push(artifact) {
