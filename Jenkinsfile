@@ -110,6 +110,7 @@ node() {
     try {
         stage('Deployment') {
             sh """tar -xf pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz helloworld-ws.war
+                  whoami
                   ssh vagrant@tomcat 'mv /opt/tomcat/webapps/helloworld-ws.war /opt/apps/old/helloworld-ws-old.war'
                   ssh vagrant@tomcat 'sudo rm -rf /opt/tomcat/webapps/helloworld-ws'
                   scp helloworld-ws.war vagrant@tomcat:/opt/tomcat/webapps/
