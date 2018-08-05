@@ -13,21 +13,25 @@ step_name = ""
 
 
 def notification(stage_name, step_name, message, to) {
-mail bcc: '', body: """------------------
+    mail subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message",
+            body: """
+------------------
 Stage: "$stage_name",
 Step: "$step_name",
 Date/Time: ${date_time.format(date)},
 Pipeline "$JOB_NAME" is $message!
 ------------------
 
-You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME""", cc: '', from: '', replyTo: '', subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message", to: "${to}"
-
+You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME""",
+            to: to, replyTo: '',
+            from: 'noreply@jenkins.io',
+            bcc: '', cc: ''
 }
 
 
 try {
 
-    node($SLAVE) {
+    node("${SLAVE}") {
         def groovy = 'groovy4'
         stage('Preparation (Checking out)') {
             stage_name = "Preparation."
@@ -44,8 +48,7 @@ try {
             def CUR_USER = wrap([$class: 'BuildUser']) {
                 return env.BUILD_USER
             }
-            sh """cp /opt/jenkins/index.html helloworld-ws/src/main/webapp/
-            sed -i "s/BuildNumber/$BUILD_NUMBER/" helloworld-ws/src/main/webapp/index.html
+            sh """sed -i "s/BuildNumber/$BUILD_NUMBER/" helloworld-ws/src/main/webapp/index.html
             sed -i "s/BuildTime/${date_time.format(date)}/" helloworld-ws/src/main/webapp/index.html
             sed -i "s/User/${CUR_USER}/" helloworld-ws/src/main/webapp/index.html"""
 
@@ -57,20 +60,20 @@ try {
         stage('Testing') {
             stage_name = "Testing"
             parallel(
-                    'Pre-integration Test': {
+                    "Pre-integration Test" : {
                         step_name = "Pre-integration Test"
                         withMaven(jdk: 'java8', maven: 'mavenLocal') {
                             sh 'mvn -f helloworld-ws/pom.xml pre-integration-test'
                         }
                     },
-                    'Integration Test': {
+                    "Integration Test" : {
                         sleep 3
                         step_name = "Integration Test"
                         withMaven(jdk: 'java8', maven: 'mavenLocal') {
                             sh 'mvn -f helloworld-ws/pom.xml integration-test'
                         }
                     },
-                    'Post-integration Test': {
+                    "Post-integration Test" : {
                         sleep 10
                         step_name = "Post-integration Test"
                         withMaven(jdk: 'java8', maven: 'mavenLocal') {
