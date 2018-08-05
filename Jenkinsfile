@@ -1,16 +1,13 @@
 def push_tar() {
-    nexusArtifactUploader artifacts: [[artifactId: 'pipeline-akavaleu', classifier: '',
-                                       file: 'pipeline-akavaleu-${BUILD_NUMBER}.tar.gz', type: 'tar.gz']],
-            credentialsId: '1dc8df2b-fb7f-45ce-b268-a3953340ef26', groupId: 'pre-prod', nexusUrl: 'epbyminw2467.epam.com/nexus',
-            nexusVersion: 'nexus3', protocol: 'http', repository: 'tar-deploy-artifacts', version: '${BUILD_NUMBER}'
+    sh 'curl -v --user "nexus-service-user:service" --upload-file pipeline-akavaleu-${BUILD_NUMBER}.tar.gz http://epbyminw2467/nexus/repository/tar-deploy-artifacts/'
 }
 
 def pull_tar() {
-    sh 'wget --user=nexus-service-user --password=service http://epbyminw2467/nexus/repository/tar-deploy-artifacts/pre-prod/pipeline-akavaleu/${BUILD_NUMBER}/pipeline-akavaleu-${BUILD_NUMBER}.tar.gz'
+    sh 'wget --user=nexus-service-user --password=service http://epbyminw2467/nexus/repository/tar-deploy-artifacts/pipeline-akavaleu-${BUILD_NUMBER}.tar.gz'
 }
 
 
-node("${SLAVE}"){
+node {
     def giturl = 'https://github.com/MNT-Lab/p323line.git'
 
     stage('Clone sources') {
@@ -20,13 +17,13 @@ node("${SLAVE}"){
     }
 
     stage('Maven build') {
-        withMaven(maven: 'mavenLocal') {
+        withMaven(jdk: 'java', maven: 'Maven_3_5_4') {
             sh 'mvn -f helloworld-ws/pom.xml package'
         }
     }
 
-    stage('Testing') {
-        withMaven(maven: 'mavenLocal') {
+/*   stage('Testing') {
+        withMaven(jdk: 'java', maven: 'Maven_3_5_4') {
             parallel(
                     pre_integration_test:{
                         sh 'mvn -f helloworld-ws/pom.xml package pre-integration-test'
@@ -43,6 +40,7 @@ node("${SLAVE}"){
             )
         }
     }
+*/
 
     stage ('Trigger job, fetch artifact'){
         build job: 'MNTLAB-akavaleu-child1-build-job' ,
