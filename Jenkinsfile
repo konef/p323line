@@ -91,7 +91,6 @@ node() {
             step_name = "Publishing to Nexus"
             sh "groovy pushpull.groovy push pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz" 
 
-
         }
     }
 
@@ -109,20 +108,24 @@ node() {
 
     try {
         stage('Deployment') {
-            sh """tar -xf pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz helloworld-ws.war
-                  whoami
-                  ssh vagrant@tomcat 'mv /opt/tomcat/webapps/helloworld-ws.war /opt/apps/old/helloworld-ws-old.war'
-                  ssh vagrant@tomcat 'sudo rm -rf /opt/tomcat/webapps/helloworld-ws'
-                  scp helloworld-ws.war vagrant@tomcat:/opt/tomcat/webapps/
-                  sleep 30
-                  if curl -L http://epbyminw2473/tomcat/helloworld-ws/index.html | grep "helloworld-ws Quickstart"
-                  then 
-                    echo "good"
-                  else
-                    ssh vagrant@tomcat 'cp /opt/apps/old/helloworld-ws-old.war /opt/tomcat/webapps/helloworld-ws.war' 
-                    echo "no good"
-                    ssh vagrant@tomcat 'sudo rm -rf /opt/tomcat/webapps/helloworld-ws'
-                  fi
+            sh """scp pushpull.groovy vagrant@tomcat:/opt/apps/
+                  ssh vagrant@tomcat '''cd /opt/apps/
+                                        groovy pushpull.groovy pull pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz
+                                        tar -xf ${STUDENT}-${env.BUILD_NUMBER}.tar.gz helloworld-ws.war
+                                        mv /opt/tomcat/webapps/helloworld-ws.war /opt/apps/old/helloworld-ws-old.war
+                                        sudo rm -rf /opt/tomcat/webapps/helloworld-ws
+                                        cp helloworld-ws.war /opt/tomcat/webapps/helloworld-ws.war
+                                        sleep 30
+                                        if curl -L http://epbyminw2473/tomcat/helloworld-ws/index.html | grep "helloworld-ws Quickstart"
+                                        then 
+                                            echo "good"
+                                        else
+                                            cp /opt/apps/old/helloworld-ws-old.war /opt/tomcat/webapps/helloworld-ws.war
+                                            echo "no good"
+                                            sudo rm -rf /opt/tomcat/webapps/helloworld-ws
+                                        fi
+                                        '''
+
                """
         }
     }
