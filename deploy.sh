@@ -3,6 +3,7 @@
 home_dir=/home/vagrant/Jenkins
 
 tar -xvzf $home_dir/$1 -C $home_dir/
+rm $home_dir/$1
 
 if [[ -f $home_dir/helloworld-ws.war_old ]]
    then 
@@ -37,5 +38,3 @@ else
   echo "FAIL - return to previous version. $a,$b"
   exit 1
 fi
-
-rm $home_dir/$1
