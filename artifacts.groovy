@@ -8,7 +8,7 @@ reponame="mvnrepo"
 
 switch (args[0]){
     case "push":
-        push(args[1])
+        return push(args[1], args[2], args[3])
         break
     case "pull":
         pull(args[1])
@@ -18,11 +18,11 @@ switch (args[0]){
         return 1
 }
 
-void push(artifact) {
+int push(artifact, buildnum, suffix) {
     println("Pushing artifact: ${artifact}")
     def File = new File (artifact).getBytes()
     print("Sending request: \"http://${hostname}/repository/${reponame}/${artifact}\"")
-    def connection = new URL( "http://${hostname}/repository/${reponame}/${artifact}")
+    def connection = new URL( "http://${hostname}/repository/${reponame}/${buildnum}/${suffix}/${artifact}")
             .openConnection() as HttpURLConnection
     def auth = (username + ":" + password).getBytes().encodeBase64().toString()
     connection.setRequestMethod("PUT")
@@ -33,7 +33,9 @@ void push(artifact) {
     def writer = new DataOutputStream(connection.outputStream)
     writer.write (File)
     writer.close()
-    println connection.responseCode
+    if(connection.responseCode != 200){
+        return 1
+    }
 }
 /*
 void pull(artifact) {
