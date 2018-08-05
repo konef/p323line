@@ -1,5 +1,3 @@
-import jenkins.model.*
-jenkins = Jenkins.instance
 node("${SLAVE}") {
     stage('Preparation (Checking out)') {
         git branch: 'stsitou', url: 'https://github.com/MNT-Lab/p323line.git'
@@ -27,7 +25,7 @@ node("${SLAVE}") {
     stage("Triggering job and fetching artifact after finishing"){
         echo "Starting another job"
         def childjob  = build job: 'EPBYMINW2466/MNTLAB-stsitou-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: 'stsitou')]
-        copyArtifacts filter: "${student}_dsl_script.tar.gz", projectName: "MNTLAB-stsitou-child1-build-job", selector: lastSuccessful()
+        copyArtifacts filter: "stsitou_dsl_script.tar.gz", projectName: "MNTLAB-stsitou-child1-build-job", selector: lastSuccessful()
         echo "Job status: ${childjob.result}"
     }
 
