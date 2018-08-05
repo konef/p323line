@@ -48,7 +48,7 @@ def upload() {
 def download() {
         respons_down = request.get(
                 uri: "${server}${argument.r}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz")
-        new File("/home/student/Downloads/${argument.n}") << respons_down.data
+        new File("./downloads/${argument.n}") << respons_down.data
         assert respons_down.status == 200
 }
 
