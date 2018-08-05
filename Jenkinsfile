@@ -131,7 +131,7 @@ try {
         }
 
         stage('Send notification') {
-            notification("Deployment", "Application has been deployed: http://{$JENKINS_URL}tomcat/helloworld-ws/index.html",
+            notification("Deployment", "Application has been deployed: http://EPBYMINW3088.epam.com/tomcat/helloworld-ws/index.html",
                     "COMPLETED", "$DL")
         }
     }
