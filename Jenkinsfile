@@ -85,11 +85,11 @@ node("${SLAVE}") {
     }
 
     stage('Sending status') {
-        try{
+        try {
             println "COMPLETED"
         }
         finally {
-            email($STAGE_NAME, SUCCESS)
+            mail bcc: '', body: 'failed stage at ', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
         }
     }
 }
