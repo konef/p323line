@@ -1,3 +1,12 @@
+@Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7')
+import groovyx.net.http.RESTClient
+import org.apache.http.entity.FileEntity
+
+hostname="192.168.1.4:8081"
+username="jenkins"
+password="jenkins"
+reponame="mvnrepo"
+
 node("${SLAVE}") {
     stage('Preparation (Checking out)') {
         git branch: 'stsitou', url: 'https://github.com/MNT-Lab/p323line.git'
@@ -37,13 +46,6 @@ node("${SLAVE}") {
     }
 }
 
-import groovyx.net.http.RESTClient
-import org.apache.http.entity.FileEntity
-
-hostname="192.168.1.4:8081"
-username="jenkins"
-password="jenkins"
-reponame="mvnrepo"
 
 void pull(artifact) {
     restClient = new RESTClient("http://" + hostname + "/repository/" + reponame + "/")
