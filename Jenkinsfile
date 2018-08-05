@@ -17,13 +17,13 @@ node("${SLAVE}"){
     }
 
     stage('Maven build') {
-        withMaven(jdk: 'java', maven: 'Maven_3_5_4') {
+        withMaven(maven: 'mavenLocal') {
             sh 'mvn -f helloworld-ws/pom.xml package'
         }
     }
 
-/*   stage('Testing') {
-        withMaven(jdk: 'java', maven: 'Maven_3_5_4') {
+    stage('Testing') {
+        withMaven(maven: 'mavenLocal') {
             parallel(
                     pre_integration_test:{
                         sh 'mvn -f helloworld-ws/pom.xml package pre-integration-test'
@@ -40,7 +40,6 @@ node("${SLAVE}"){
             )
         }
     }
-*/
 
     stage ('Trigger job, fetch artifact'){
         build job: 'MNTLAB-akavaleu-child1-build-job' ,
