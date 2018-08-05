@@ -39,6 +39,7 @@ node("${SLAVE}") {
     }
     stage ('Asking for manual approval') {
       timeout(time:1, unit:'HOURS') {
-               input message:'Do you approve that deployment?', ok: 'Yes'}
+               input message:'Do you approve that deployment?', ok: 'Yes'
+               }
     }
 }
