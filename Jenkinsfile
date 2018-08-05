@@ -54,7 +54,7 @@ node("${SLAVE}"){
         sh 'tar -czf pipeline-akavaleu-$BUILD_NUMBER.tar.gz helloworld-ws.war jobs.groovy Jenkinsfile'
         sh 'mv pipeline-akavaleu-$BUILD_NUMBER.tar.gz $WORKSPACE/arti/'
         push_tar()
-        archiveArtifacts 'pipeline-akavaleu-$BUILD_NUMBER.tar.gz'
+        archiveArtifacts 'arti/pipeline-akavaleu-$BUILD_NUMBER.tar.gz'
     }
 
     stage ('Asking for manual approval')
