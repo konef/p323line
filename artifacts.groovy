@@ -21,6 +21,7 @@ switch (args[0]){
 void push(artifact) {
     println("Pushing artifact: ${artifact}")
     def File = new File (artifact).getBytes()
+    print("Sending request: \"http://${hostname}/repository/${reponame}/${artifact}\"")
     def connection = new URL( "http://${hostname}/repository/${reponame}/${artifact}")
             .openConnection() as HttpURLConnection
     def auth = (username + ":" + password).getBytes().encodeBase64().toString()
