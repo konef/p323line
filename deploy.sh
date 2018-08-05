@@ -17,7 +17,7 @@ fi
 sudo mv $home_dir/helloworld-ws.war /opt/tomcat/webapps/
 sleep 5
 
-curl http://EPBYMINW3088/tomcat/helloworld-ws/index.html | grep "Build Number: #$2"
+curl http://EPBYMINW3088/tomcat/helloworld-ws/index.html | grep 'Build Number: #$2'
 a=$?
 curl -I http://EPBYMINW3088/tomcat/helloworld-ws/ | awk '{print $2}' | head -n 1 | grep 200
 b=$?
@@ -37,3 +37,5 @@ else
   echo "FAIL - return to previous version. $a,$b"
   exit 1
 fi
+
+rm $home_dir/$1

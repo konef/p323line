@@ -14,9 +14,9 @@ step_name = ""
 
 def notification(stage_name, step_name, message, to) {
     emailext body: """------------------
-Stage: $stage_name,
-Step: $step_name,
-Date/Time: ${date_time.format(date)},
+Stage: $stage_name
+Step: $step_name
+Date/Time: ${date_time.format(date)}
 Pipeline $JOB_NAME is $message!
 ------------------
 
@@ -42,7 +42,7 @@ You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME""",
 
 try {
 
-    node() {
+    node("$SLAVE") {
         def groovy = 'groovy4'
         stage('Preparation (Checking out)') {
             stage_name = "Preparation."
@@ -134,20 +134,11 @@ try {
                 sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c pull -r My-release"
             }
             step_name = "Publishing through SSH."
-            sh "scp -P2201 ./downloads/$archive_name vagrant@EPBYMINW3088:/home/vagrant/Jenkins"
-            sh "scp -P2201 deploy.sh vagrant@EPBYMINW3088:/home/vagrant/Jenkins"
-            sh "ssh -P2201 vagrant@EPBYMINW3088 'chmod +x /home/vagrant/Jenkins/deploy.sh'"
-            """ssh -P2201 vagrant@EPBYMINW3088 "bash /home/vagrant/Jenkins/deploy.sh $archive_name"
+            sh "scp -P 2201 ./downloads/$archive_name vagrant@EPBYMINW3088:/home/vagrant/Jenkins/"
+            sh "scp -P 2201 deploy.sh vagrant@EPBYMINW3088:/home/vagrant/Jenkins/"
+            sh "ssh -p2201 vagrant@EPBYMINW3088 'chmod +x /home/vagrant/Jenkins/deploy.sh'"
+            sh """ssh -p2201 vagrant@EPBYMINW3088 "bash /home/vagrant/Jenkins/deploy.sh $archive_name $BUILD_NUMBER"
             """
-            """ssh -P2201 vagrant@EPBYMINW3088 "rm /home/vagrant/Jenkins/$archive_name"
-            """
-
-            // sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat_8', transfers: [sshTransfer(excludes: '',
-            //         execCommand: """chmod +x ~/Jenkins/deploy.sh
-            //         ~/Jenkins/deploy.sh $archive_name $BUILD_NUMBER
-            //         rm -rf ~/Jenkins/""", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false,
-            //         patternSeparator: '[, ]+', remoteDirectory: 'Jenkins', remoteDirectorySDF: false, removePrefix: '',
-            //         sourceFiles: "$archive_name, deploy.sh")], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }
 
         stage('Results') {
