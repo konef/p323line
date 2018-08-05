@@ -18,13 +18,15 @@ switch (args[0]){
         return 1
 }
 
-int push(artifact, buildnum, suffix) {
+int push(artifact, buildnum) {
     println("Pushing artifact: ${artifact}")
     def File = new File (artifact).getBytes()
     print("Sending request: \"http://${hostname}/repository/${reponame}/${artifact}\"")
     def connection = new URL( "http://${hostname}/repository/${reponame}/${buildnum}/${artifact}")
             .openConnection() as HttpURLConnection
-    def auth = "${username}:${password}".getBytes().encodeBase64().toString()
+    def credentials = "${username}:${password}"
+    println("Creds: ${credentials}")
+    def auth = credentials.getBytes().encodeBase64().toString()
     connection.setRequestMethod("PUT")
     connection.doOutput = true
     connection.setRequestProperty("Authorization" , "Basic ${auth}")
@@ -33,7 +35,6 @@ int push(artifact, buildnum, suffix) {
     def writer = new DataOutputStream(connection.outputStream)
     writer.write (File)
     writer.close()
-    println(connection.getRequestProperty("Authorization"))
     println(connection.responseCode)
     if(connection.responseCode != 200){
         return 1

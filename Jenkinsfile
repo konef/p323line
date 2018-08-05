@@ -33,7 +33,7 @@ node("${SLAVE}") {
         sh "tar -xzf stsitou_dsl_script.tar.gz "
         sh "tar -czf pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy helloworld-ws/target/helloworld-ws.war"
         archiveArtifacts "pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz"
-        sh "groovy ./artifacts push pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz ${env.BUILD_NUMBER} ${env.ARTIFACT_SUFFIX}"
+        sh "groovy ./artifacts push pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz ${env.BUILD_NUMBER}"
         echo "Artifacts are packaged and published"
     }
 }
