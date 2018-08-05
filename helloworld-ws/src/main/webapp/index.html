@@ -1,21 +1,91 @@
-<!--
-    JBoss, Home of Professional Open Source
-    Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
-    contributors by the @authors tag. See the copyright.txt in the
-    distribution for a full listing of individual contributors.
+<!DOCTYPE HTML>
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
--->
 <html>
-    <head><title>helloworld-ws Quickstart</title></head>
+    <head>
+<meta charset="utf-8">
+<title>Jenkins Task 8</title>
+<style>
+
+*{
+	maring: 0;
+	padding: 0;
+}
+body{
+	font-family: 'Source Sans Pro', sans-serif;
+	
+}
+a:link{
+	color: #1f3759;
+	text-decoration: none;
+}
+a:active{
+	color: #1f3759;
+	text-decoration: none;
+}
+a:hover{
+	color: #9fb7d9;
+	text-decoration: none;
+}
+a:visited{
+	color: #1f3759;
+	text-decoration: none;
+}
+a.underline, .underline{
+	text-decoration: underline;
+}
+.bree-font{
+	font-family: 'Bree Serif', serif;
+}
+#content{
+	margin: 0 auto;
+	width: 960px;
+}
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: block;
+}
+#logo {
+	margin: 1em;
+	float: left;
+	display: bloack;
+}
+nav{
+	float: right;
+	display: block;
+}
+nav ul > li{
+	list-style: none;
+	float: left;
+	margin: 0 2em;
+	display: block;
+}
+#main-body{
+	text-align: center;
+}
+.enormous-font{
+	font-size: 10em;
+	margin-bottom: 0em;
+	margin-top: 60px;
+}
+.big-font{
+	font-size: 2em;
+}
+hr{
+	width: 25%;
+	height: 1px;
+	background: #1f3759;
+	border: 0px;
+}
+</style>
+</head>
 
     <body>
 
@@ -28,12 +98,30 @@
     	 There is no user interface for this quickstart. Instead, you can verify the
          Web Service is running and deployed correctly by accessing the following URL:
          </p>
-         <div style="margin-left: 1em;">
+	 <div style="margin-left: 1em;">
          <a href="HelloWorldService?wsdl">HelloWorldService?wsdl</a>
          </div>
          <p>
           This URL will display the WSDL definition for the deployed Web Service endpoint.
     	</p>
+        <div id="content">
+    	   <header>
+             <div id="logo">
+            	<a href="#"></a>
+             </div>
+           </header>
+        
+          <div class="clearfix"></div>
+        
+          <div id="main-body">
+            <p class="enormous-font bree-font"> Okey </p>
+            <p class="big-font">Build Number: #BuildNumber</p>
+	    <p class="big-font">Build Time: BuildTime</p>
+            <hr>
+            <p class="big-font">Author: User </p>
+          </div>
+         </div>
     </body>
 
 </html>
+
