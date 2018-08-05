@@ -20,10 +20,9 @@ Date/Time: ${date_time.format(date)}
 Pipeline $JOB_NAME is $message!
 ------------------
 
-You can find more information: http://EPBYMINW3088/jenkins/job/$JOB_NAME""",
+You can find more information: $JOB_URL""",
             subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message",
-            to: "$to",
-            from: 'noreply@jenkins.io'
+            to: "$to"
 //    mail subject: "Jenkins notification: $JOB_NAME, build #$BUILD_NUMBER - $message",
 //            body: """
 //------------------
