@@ -89,7 +89,7 @@ node("${SLAVE}") {
             println "COMPLETED"
         }
         finally {
-            email($STAGE_NAME, FAILED)
+            email($STAGE_NAME, SUCCESS)
         }
     }
 }
