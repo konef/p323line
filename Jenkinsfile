@@ -37,8 +37,6 @@ node("${SLAVE}") {
     }
 }
 
-@Grab('org.codehaus.groovy.modules.http-builder:http-builder:0.7')
-
 import groovyx.net.http.RESTClient
 import org.apache.http.entity.FileEntity
 
