@@ -3,6 +3,7 @@ String MAVEN = "mavenLocal"
 String JDK = "java8"
 String GROOVY = "Groovy 251"
 
+
 node() {
 
     try {
@@ -87,9 +88,31 @@ node() {
     }
 
     stage('Asking for manual approval') {
-        step_name = "Waiting 1 minute."
-        timeout(time: 60) {
+        timeout(time: 1) {
             input 'Do you approve the deployment?'
         }
+    }
+
+    try {
+        stage('Deployment') {
+            sh """tar -xf pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz helloworld-ws.war
+                  ssh vagrant@tomcat 'mv /opt/tomcat/webapps/helloworld-ws.war /opt/apps/old/helloworld-ws-old.war'
+                  ssh vagrant@tomcat 'sudo rm -rf /opt/tomcat/webapps/helloworld-ws'
+                  scp helloworld-ws.war vagrant@tomcat:/opt/tomcat/webapps/
+                  sleep 30
+                  if curl -L http://epbyminw2473/tomcat/helloworld-ws/index.html | grep "helloworld-ws Quickstart"
+                  then 
+                    echo "good"
+                  else
+                    ssh vagrant@tomcat 'cp /opt/apps/old/helloworld-ws-old.war /opt/tomcat/webapps/helloworld-ws.war' 
+                    echo "no good"
+                    ssh vagrant@tomcat 'sudo rm -rf /opt/tomcat/webapps/helloworld-ws'
+                  fi
+               """
+        }
+    }
+
+    catch (Exception ex) {
+        println("Deploing artefact failed")
     }
 }
