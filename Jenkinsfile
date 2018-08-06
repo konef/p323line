@@ -1,4 +1,4 @@
-#!groovy
+#!groovy4
 
 @Library('global-libs@master') _
 
