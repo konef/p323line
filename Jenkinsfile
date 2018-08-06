@@ -46,10 +46,10 @@ node("${SLAVE}") {
 
     stage('Deployment') {
         sh "groovy ./artifacts pull pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz ${env.BUILD_NUMBER}"
-        sh "ls ${artifact}"
+        sh "ls pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz"
         echo "Artifact is downloaded"
-        sh "tar -xf"
-        sh "sudo -u vagrant scp ./pom.xml 192.168.1.5:/home/vagrant/tomcat/webapps"
+        sh "tar -xf ./pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz"
+        sh "sudo -u vagrant scp ./helloworld-ws/target/helloworld-ws.war 192.168.1.5:/home/vagrant/tomcat/webapps/"
     }
 
 }
