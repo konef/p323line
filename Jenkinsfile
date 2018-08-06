@@ -99,7 +99,10 @@ try {
             step_name = "Archive the artifact"
             archiveArtifacts "$archive_name"
             step_name = "Push the artifact to Nexus."
-            ysokalNexus("$archive_name", "push", "My-release")
+            ysokalNexus {
+                name="$archive_name"
+                cmd="push"
+                repo="My-release"}
 //            withEnv(["GROOVY_HOME=${tool groovy}"]) {
 //              sh "$GROOVY_HOME/bin/groovy ysokalNexus $archive_name 'push' 'My-release'"
 //            }
