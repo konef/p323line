@@ -37,7 +37,7 @@ def mail_to(String stage, String state, String step, recipient) {
     mail subject: "JOB ${env.JOB_NAME} (${env.BUILD_NUMBER}): State ***${state}*** ",
          body: """
 ***
-Date/Time: ${sdf.format(date)},
+\033[1mDate/Time:\033[0m ${sdf.format(date)},
 Stage: "${stage}",
 Step: "${step}",
 Job "${env.JOB_NAME}" has status: "${state}" ${symb}
