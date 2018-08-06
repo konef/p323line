@@ -99,7 +99,7 @@ node ("${SLAVE}"){
                 pull()
                 //sh "mv pipeline-apatapniou-${BUILD_NUMBER}.tar.gz artifacts/"
                 sh "tar -xzvf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
-                sh "scp helloworld-ws.war root@192.168.100.120:/opt/tomcat/webapps && rm -rf helloworld-ws.war"
+                sh "scp -P2200 helloworld-ws.war root@epbyminw2470:/opt/tomcat/webapps && rm -rf helloworld-ws.war"
                 sh "rm -rf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
                 }
    
