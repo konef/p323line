@@ -47,7 +47,8 @@ node("${SLAVE}") {
     stage('Deployment') {
         sh "groovy ./artifacts pull pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz ${env.BUILD_NUMBER}"
         sh "ls ${artifact}"
-        echo "Artifacts are packaged and published"
+        echo "Artifact is downloaded"
+        sh "sudo -u vagrant scp ./pom.xml 192.168.1.5:/home/vagrant/tomcat/webapps"
     }
 
 }
