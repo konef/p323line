@@ -17,7 +17,7 @@ node ("${SLAVE}"){
   try {
     stage('Build'){
       withMaven(maven: 'Maven') {
-        sh "mvn -f ./helloworld-ws/pom.xml install"
+        sh "mvn -f ./helloworld-ws/pom.xml package"
       }
     }
   }
