@@ -1,8 +1,8 @@
 def push() {
- nexusArtifactUploader artifacts: [[artifactId: 'pipeline-apatapniou', classifier: '', file: 'pipeline-apatapniou-${BUILD_NUMBER}.tar.gz', type: 'tar.gz']], credentialsId: 'd94be367-3162-4284-9eac-fd7a3ce92a42', groupId: 'pipe-task11', nexusUrl: 'epbyminw2470/nexus', nexusVersion: 'nexus3', protocol: 'http', repository: 'Pipeline', version: '${BUILD_NUMBER}'
-}
+    sh 'curl -v --user "myuser:pass" --upload-file pipeline-apatapniou-${BUILD_NUMBER}.tar.gz http://epbyminw2470/nexus/repository/Pipeline/pipe-task11/${BUILD_NUMBER}/'
+  }
 def pull(){
-  sh "wget --user=myuser --password=pass http://epbyminw2470/nexus/repository/Pipeline/pipe-task11/pipeline-apatapniou/${BUILD_NUMBER}/pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
+  sh "wget --user=myuser --password=pass http://epbyminw2470/nexus/repository/Pipeline/pipe-task11/${BUILD_NUMBER}/pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
 }
 node ("${SLAVE}"){
   try {
