@@ -23,4 +23,5 @@ def nexus(String stap) {
             def url = new URL("http://${nexus_path}/repository/${repo}/${group}/${artifact}/${version}/pipeline-ymaniukevich-${build_num}.tar.gz").openConnection()
             out << url.inputStream
         }
+    }
 }
