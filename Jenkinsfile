@@ -1,3 +1,5 @@
+#!groovy
+
 @Library('global-libs@master') _
 
 import java.text.SimpleDateFormat
