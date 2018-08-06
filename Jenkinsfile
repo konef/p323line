@@ -98,10 +98,9 @@ try {
             archiveArtifacts "$archive_name"
 
             step_name = "Push the artifact to Nexus."
-            ysokalNexus("$archive_name", "push", "My-release")
-      //      withEnv(["GROOVY_HOME=${tool groovy}"]) {
-      //          sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c push -r My-release"
-      //      }
+            withEnv(["GROOVY_HOME=${tool groovy}"]) {
+              sh "$GROOVY_HOME/bin/groovy ysokalNexus("$archive_name", "push", "My-release")"
+            }
         }
 
         stage('Asking for manual approval') {
