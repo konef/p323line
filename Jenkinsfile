@@ -1,3 +1,5 @@
+@Library('global-libs@master') _
+
 import java.text.SimpleDateFormat
 
 
@@ -113,8 +115,9 @@ try {
             stage_name = "Deployment."
             step_name = "Pull artifact from Nexus"
             sh "mkdir ./downloads"
-            withEnv(["GROOVY_HOME=${tool groovy}"]) {
-                sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c pull -r My-release"
+            ysokalNexus("$archive_name", "pull", "My-release")
+   //         withEnv(["GROOVY_HOME=${tool groovy}"]) {
+   //             sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c pull -r My-release"
             }
             step_name = "Publishing through SSH."
             sh "scp -P 2201 ./downloads/$archive_name vagrant@EPBYMINW3088:/home/vagrant/Jenkins/"
