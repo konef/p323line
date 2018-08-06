@@ -6,7 +6,7 @@ def nexus(String stap) {
     def version = "1.${BUILD_NUMBER}"
     def repo = "project-releases"
 
-    if (stap == "push") {
+    if (stap == 'push') {
         def File = new File("pipeline-ymaniukevich-${build_num}.tar.gz").getBytes()
         def con = new URL("http://${nexus_path}/repository/${repo}/${group}/${artifact}/${version}/pipeline-ymaniukevich-${build_num}.tar.gz").openConnection()
         def authString = "admin:admin123".getBytes().encodeBase64().toString()
@@ -18,10 +18,9 @@ def nexus(String stap) {
         writer.write(File)
         writer.close()
         println con.responseCode
-    } else {
+    } else if (stap == 'pull') {
         new File("/${work_path}/${artifact}-${version}.tar.gz").withOutputStream { out ->
             def url = new URL("http://${nexus_path}/repository/${repo}/${group}/${artifact}/${version}/pipeline-ymaniukevich-${build_num}.tar.gz").openConnection()
             out << url.inputStream
         }
-    }
 }
