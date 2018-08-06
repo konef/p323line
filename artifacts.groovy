@@ -6,10 +6,10 @@ reponame="mvnrepo"
 
 switch (args[0]){
     case "push":
-        return push(args[1], args[2])
+        push(args[1], args[2])
         break
     case "pull":
-        return pull(args[1], args[2])
+        pull(args[1], args[2])
         break
     default:
         print("WRONG ARGUMENTS!${args}")
@@ -35,7 +35,7 @@ int push(artifact, buildnum) {
     writer.close()
     println(connection.responseCode)
     if(connection.responseCode != 200){
-        return 1
+        throw new Exception("Artifact was not pushed")
     }
 }
 
