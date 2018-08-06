@@ -13,7 +13,7 @@ Pipeline $JOB_NAME is "${message}"!
     mail bcc: '', body: message, cc: '', subject: 'Jenkins result', to: 'k.rahidb@gmail.com'
 }
 
-node() {
+node("$SLAVE") {
 
     try {
         stage('Preparation (Checking out)') {
