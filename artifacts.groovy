@@ -4,7 +4,7 @@ import org.apache.http.*
 hostname="192.168.1.4:8081"
 username="jenkins"
 password="jenkins"
-reponame="mvnrepo"
+reponame="mvnrepo" 
 
 switch (args[0]){
     case "push":
@@ -40,21 +40,13 @@ int push(artifact, buildnum) {
         return 1
     }
 }
-/*
-void pull(artifact) {
-    restClient = new RESTClient("http://${hostname}/repository/${reponame}/")
-    restClient.auth.basic 'Artifacts-service-user', 'Artifacts'
-    restClient.encoder.'application/zip' = this.&setZipMimeType
-    restClient.put(
-            path: "http://${hostname}/repository/${reponame}/${artifact}",
-            body: new File(artifact),
-            requestContentType: 'application/zip'
-    )
-}
 
-FileEntity setZipMimeType(Object data) throws UnsupportedEncodingException {
-    def entity = new FileEntity((File) data, 'application/zip')
-    entity.setContentType('application/zip')
-    return entity
+void pull(artifact) {
+    println "Pulling ${ARTIFACT_NAME}"
+    new File ("~/${artifact}").withOutputStream { out ->
+        def url = new URL("http://${hostname}/repository/${reponame}/${buildnum}/${artifact}").openConnection()
+        url.setRequestProperty("Authorization" , "Basic ${auth}")
+        out << url.inputStream
+    }
+    sh "touch ~/${artifact}"
 }
-*/

@@ -43,5 +43,10 @@ node("${SLAVE}") {
         }
     }
 
+    stage('Deployment') {
+
+        echo "Artifacts are packaged and published"
+    }
+
 }
 
