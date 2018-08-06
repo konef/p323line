@@ -4,7 +4,7 @@ import org.apache.http.entity.*
 import hudson.model.*
 
 
-def call(name, cmd, repo) {
+def call(String name, String cmd, String repo) {
     server = "http://EPBYMINW3088/nexus/repository/"
     groupId = "pipeline"
     username = 'Jenkins'
