@@ -65,7 +65,7 @@ node ("${SLAVE}"){
   {
     mail bcc: '', body: 'HEY! Whats wrong with you ?!! ERROR WITH TRIGGERING BUILD_NUMBER: ${BUILD_NUMBER} !!', cc: '', from: '', replyTo: '', subject: 'Jenkins', to: 'apotapnyov@yandex.by'
   }
-
+    try{
       stage ('Packaging and Publishing results'){
         sh "tar -xzvf apatapniou_dsl_script.tar.gz"
         sh "cp helloworld-ws/target/helloworld-ws.war ."
@@ -73,6 +73,11 @@ node ("${SLAVE}"){
         archiveArtifacts 'pipeline-apatapniou-${BUILD_NUMBER}.tar.gz'
         push()
       }
+}
+        catch (all)
+    {
+      mail bcc: '', body: 'HEY! Whats wrong with you ?!! ERROR WITH PACKAGING AND PUBLISING !!', cc: '', from: '', replyTo: '', subject: 'Jenkins', to: 'apotapnyov@yandex.by'
+    }
     try {
       stage ('Asking for manual approval')
               {
@@ -87,7 +92,7 @@ node ("${SLAVE}"){
     {
       mail bcc: '', body: 'HEY! Whats wrong with you ?!! ERROR WITH ASKING MANUAL APPROVAL !!', cc: '', from: '', replyTo: '', subject: 'Jenkins', to: 'apotapnyov@yandex.by'
     }
-    try {
+
       stage ('Deployment')
               {
                 sh "rm -rf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
@@ -97,11 +102,7 @@ node ("${SLAVE}"){
                 sh "scp -P2200 helloworld-ws.war root@127.0.0.1:/opt/tomcat/webapps && rm -rf helloworld-ws.war"
                 sh "rm -rf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
                 }
-    }
-    catch (all)
-    {
-      mail bcc: '', body: 'HEY! Whats wrong with you ?!! ERROR WITH DEPLOYMENT !!', cc: '', from: '', replyTo: '', subject: 'Jenkins', to: 'apotapnyov@yandex.by'
-    }
+   
     mail bcc: '', body: 'SUCCESS! YOU ARE GENIOUS! ', cc: '', from: '', replyTo: '', subject: 'Jenkins', to: 'apotapnyov@yandex.by'
 
   }
