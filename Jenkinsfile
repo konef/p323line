@@ -1,7 +1,7 @@
 String STUDENT = "knovichuk"
 String MAVEN = "mavenLocal"
 String JDK = "java8"
-String GROOVY = "Groovy 251"
+
 
 
 def notification(stage, message) {
@@ -14,7 +14,7 @@ Pipeline $JOB_NAME is "${message}"!
 }
 
 node("$SLAVE") {
-
+    def groovy = 'groovy4'
     try {
         stage('Preparation (Checking out)') {
             git branch: "$STUDENT", url: 'https://github.com/MNT-Lab/p323line.git'
@@ -89,8 +89,9 @@ node("$SLAVE") {
             archiveArtifacts "pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz"
 
             step_name = "Publishing to Nexus"
-            sh "groovy pushpull.groovy push pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz" 
-
+            withEnv(["GROOVY_HOME=${tool groovy}"]) {
+            sh "$GROOVY_HOME/bin/groovy pushpull.groovy push pipeline-${STUDENT}-${env.BUILD_NUMBER}.tar.gz" 
+            }
         }
     }
 
