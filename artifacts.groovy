@@ -11,7 +11,7 @@ switch (args[0]){
         return push(args[1], args[2])
         break
     case "pull":
-        pull(args[1], args[2])
+        return pull(args[1], args[2])
         break
     default:
         print("WRONG ARGUMENTS!${args}")
