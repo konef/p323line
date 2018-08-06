@@ -1,4 +1,4 @@
-@Library('global-libs') _
+@Library('global-libs')
 
 def Notification(status, stage_n, err) {
     	def date = new Date()
