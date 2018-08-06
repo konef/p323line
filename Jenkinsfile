@@ -4,6 +4,7 @@ node("${SLAVE}") {
     }
     stage('Building code') {
         withMaven(maven: 'mavenLocal') {
+            sh "sed -i 's/helloworld-ws Quickstart/helloworld-ws Quickstart build #${env.BUILD_NUMBER}/' ./helloworld-ws/src/main/webapp/index.html"
             sh "mvn -f ./helloworld-ws/pom.xml package"
         }
     }
