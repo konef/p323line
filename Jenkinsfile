@@ -101,7 +101,7 @@ node ("${SLAVE}"){
                 sh "tar -xzvf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
                 //sh "scp -P2200 helloworld-ws.war root@epbyminw2470:/opt/tomcat/webapps && rm -rf helloworld-ws.war"
                 sh "rm -rf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
-                sh "scp helloworld-ws.war root@192.168.100.120:/opt/tomcat/webapps/"
+                sh "scp -P 2200 helloworld-ws.war root@EPBYMINW2470:/opt/tomcat/webapps/"
                 //sh "ssh root@192.168.100.120 'cd /opt/tomcat/webapps/ && tar xzf pipeline-apapniou-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"  
               }
    
