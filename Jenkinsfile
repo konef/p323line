@@ -27,15 +27,15 @@ node("${SLAVE}"){
             parallel(
                     pre_integration_test:{
                         sh 'mvn -f helloworld-ws/pom.xml package pre-integration-test'
-                        //sleep(20)
+                        sleep(5)
                     },
                     integration_test:{
                         sh 'mvn -f helloworld-ws/pom.xml package integration-test'
-                        //sleep(20)
+                        sleep(5)
                     },
                     post_integration_test:{
                         sh 'mvn -f helloworld-ws/pom.xml package post-integration-test'
-                        //sleep(20)
+                        sleep(5)
                     }
             )
         }
