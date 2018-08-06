@@ -43,9 +43,7 @@ int push(artifact, buildnum) {
 
 void pull(artifact) {
     println "Pulling ${artifact}..."
-    File artifactTest = new File("~/${artifact}")
-    if(!artifactTest.exists()) artifactTest.createNewFile()
-    artifactTest = new File ("~/${artifact}").withOutputStream { out ->
+    new File ("${artifact}").withOutputStream { out ->
         def url = new URL("http://${hostname}/repository/${reponame}/${buildnum}/${artifact}").openConnection()
         url.setRequestProperty("Authorization" , "Basic ${auth}")
         out << url.inputStream
