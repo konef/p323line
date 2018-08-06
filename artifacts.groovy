@@ -11,7 +11,7 @@ switch (args[0]){
         return push(args[1], args[2])
         break
     case "pull":
-        pull(args[1])
+        pull(args[1], args[2])
         break
     default:
         print("WRONG ARGUMENTS!${args}")
@@ -41,7 +41,7 @@ int push(artifact, buildnum) {
     }
 }
 
-void pull(artifact) {
+void pull(artifact, buildnum) {
     println "Pulling ${artifact}..."
     new File ("${artifact}").withOutputStream { out ->
         def url = new URL("http://${hostname}/repository/${reponame}/${buildnum}/${artifact}").openConnection()
