@@ -32,11 +32,11 @@ node ("${SLAVE}"){
                 parallel (
                         "pre-integration-test":  {
                           sh "mvn -f ./helloworld-ws/pom.xml pre-integration-test"
-                          sleep(10)
+                          sleep(30)
                         },
                         "integration-test": {
                           sh "mvn -f ./helloworld-ws/pom.xml integration-test"
-                          sleep(30)
+                          sleep(60)
 
                         },
                         "post-integration-test": {
