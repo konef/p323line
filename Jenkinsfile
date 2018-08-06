@@ -73,8 +73,8 @@ node("${SLAVE}") {
             sh "groovy pull_push.groovy -p pull -a pipeline-disakau-${BUILD_NUMBER}.tar.gz"
             sh "scp -P 2200 pipeline-disakau-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW0501:/vagrant/apachetomcat/webapps/"
             sh "ssh -p2200 vagrant@EPBYMINW0501 'cd /vagrant/apachetomcat/webapps/ && tar xzf pipeline-disakau-${BUILD_NUMBER}.tar.gz && " +
-                    "rm -rf pipeline-disakau-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy && cd helloworld-ws/ && sleep 10 && " +
-                    "sed -i \"s/helloworld-ws Quickstart/helloworld-ws $BUILD_NUMBER/\" index.html'"
+                    "rm -rf pipeline-disakau-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy && sleep 10 && " +
+                    "sed -i \"s/helloworld-ws Quickstart/helloworld-ws $BUILD_NUMBER/\" /vagrant/apachetomcat/webapps/helloworld-ws/index.html'"
         }
         catch (err) {
             mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
