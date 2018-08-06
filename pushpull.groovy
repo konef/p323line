@@ -49,14 +49,10 @@ def push(GAV) {
 
 def pull(GAV) {
     try {
-        def url = new URL("http://epbyminw2473/nexus/repository/maven-releases/${GAV.groupID}/${GAV.artifactID}/${GAV.version}/${GAV.artifactID}-${GAV.version}.tar.gz")
-
-        def authString = "jenkins:jenkins".getBytes().encodeBase64().toString()
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-      
-        conn.setRequestProperty( "Authorization", "Basic ${authString}" )
-        new File("./${GAV.artifactID}-${GAV.version}.tar.gz").withOutputStream { out ->
-            out << conn.inputStream }
+        respons_down = request.get(uri: "http://epbyminw2473/nexus/repository/maven-releases/${GAV.groupID}/${GAV.artifactID}/${GAV.version}/${GAV.artifactID}-${GAV.version}.tar.gz")
+        
+        new File("./${GAV.artifactID}-${GAV.version}.tar.gz") << respons_down.data
+        assert respons_down.status == 200
     }
     catch (Exception ex) {
         println ex.getMessage()
