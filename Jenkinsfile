@@ -83,7 +83,7 @@ node("${SLAVE}"){
             throw new Exception()
         }
 
-        try{
+     /*   try{
             stage ('Asking for manual approval'){
                 input "Deploy artefact?"
             }
@@ -92,7 +92,7 @@ node("${SLAVE}"){
             result = "FAIL Asking for manual approval"
             throw new Exception()
         }
-
+*/
         try{
             stage ('Deployment'){
                 sh "groovy ./download.groovy pull"
