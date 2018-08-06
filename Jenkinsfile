@@ -101,8 +101,8 @@ node ("${SLAVE}"){
                 //sh "tar -xzvf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
                 //sh "scp -P2200 helloworld-ws.war root@epbyminw2470:/opt/tomcat/webapps && rm -rf helloworld-ws.war"
                 //sh "rm -rf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz"
-                sh "scp -P 2200 pipeline-apatapniou-${BUILD_NUMBER}.tar.gz root@EPBYMINW2470:/opt/tomcat/webapps/"
-                sh "ssh -p2200 root@EPBYMINW2470 'cd /opt/tomcat/webapps/ && tar xzf pipeline-apapniou-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"  
+                sh "scp pipeline-apatapniou-${BUILD_NUMBER}.tar.gz root@192.168.100.120:/opt/tomcat/webapps/"
+                sh "ssh root@192.168.100.120 'cd /opt/tomcat/webapps/ && tar xzf pipeline-apapniou-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"  
               }
    
     mail bcc: '', body: 'SUCCESS! YOU ARE GENIOUS! ', cc: '', from: '', replyTo: '', subject: 'Jenkins', to: 'apotapnyov@yandex.by'
