@@ -72,7 +72,7 @@ node ("${SLAVE}"){
         sh "tar -czf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy helloworld-ws.war"
         archiveArtifacts 'pipeline-apatapniou-${BUILD_NUMBER}.tar.gz'
         push()
-  
+      }
     try {
       stage ('Asking for manual approval')
               {
