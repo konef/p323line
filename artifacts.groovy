@@ -16,7 +16,7 @@ switch (args[0]){
         return 1
 }
 
-int push(artifact, buildnum) {
+void push(artifact, buildnum) {
     println("Pushing artifact: ${artifact}...")
     def fileToSend = new File ("./${artifact}").getBytes()
     print("Sending request: \"http://${nexus_hostname}/repository/${reponame}/${buildnum}/${artifact}\"")
@@ -33,6 +33,10 @@ int push(artifact, buildnum) {
     def writer = new DataOutputStream(connection.outputStream)
     writer.write (fileToSend)
     writer.close()
+    println(connection.responseCode)
+    if(connection.responseCode != 201){
+        throw new Exception("Artifact was not pushed")
+    }
 }
 
 void pull(artifact, buildnum) {
