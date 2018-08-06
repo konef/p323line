@@ -71,8 +71,8 @@ node("${SLAVE}") {
     stage("Deployment") {
         try {
             sh "groovy pull_push.groovy -p pull -a pipeline-disakau-${BUILD_NUMBER}.tar.gz"
-            sh "scp -P 2202 pipeline-disakau-${BUILD_NUMBER}.tar.gz vagrant@192.168.100.20:/vagrant/apachetomcat/webapps/"
-            sh "ssh -p2202 vagrant@192.168.100.20 'cd /vagrant/apachetomcat/webapps/ && tar xzf pipeline-disakau-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-disakau-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
+            sh "scp -P 2202 pipeline-disakau-${BUILD_NUMBER}.tar.gz vagrant@EPBYMINW0501:/vagrant/apache-tomcat-8.5.32/webapps/"
+            sh "ssh -p2202 vagrant@EPBYMINW0501 'cd /vagrant/apache-tomcat-8.5.32/webapps/ && tar xzf pipeline-disakau-${BUILD_NUMBER}.tar.gz && rm -rf pipeline-disakau-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy'"
         }
         catch (err) {
             mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'danzisakau@gmail.com'
