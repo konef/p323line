@@ -44,7 +44,8 @@ node("${SLAVE}") {
     }
 
     stage('Deployment') {
-
+        sh "groovy ./artifacts pull pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz"
+        sh "ls ~/${artifact}"
         echo "Artifacts are packaged and published"
     }
 

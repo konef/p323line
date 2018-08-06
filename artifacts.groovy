@@ -4,7 +4,7 @@ import org.apache.http.*
 hostname="192.168.1.4:8081"
 username="jenkins"
 password="jenkins"
-reponame="mvnrepo" 
+reponame="mvnrepo"
 
 switch (args[0]){
     case "push":
@@ -48,5 +48,4 @@ void pull(artifact) {
         url.setRequestProperty("Authorization" , "Basic ${auth}")
         out << url.inputStream
     }
-    sh "touch ~/${artifact}"
 }
