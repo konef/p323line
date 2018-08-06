@@ -33,7 +33,6 @@ int push(artifact, buildnum) {
     def writer = new DataOutputStream(connection.outputStream)
     writer.write (fileToSend)
     writer.close()
-    println(connection.responseCode)
 }
 
 void pull(artifact, buildnum) {
