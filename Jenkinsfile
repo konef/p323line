@@ -65,19 +65,14 @@ node ("${SLAVE}"){
   {
     mail bcc: '', body: 'HEY! Whats wrong with you ?!! ERROR WITH TRIGGERING BUILD_NUMBER: ${BUILD_NUMBER} !!', cc: '', from: '', replyTo: '', subject: 'Jenkins', to: 'apotapnyov@yandex.by'
   }
-    try {
+
       stage ('Packaging and Publishing results'){
         sh "tar -xzvf apatapniou_dsl_script.tar.gz"
         sh "cp helloworld-ws/target/helloworld-ws.war ."
         sh "tar -czf pipeline-apatapniou-${BUILD_NUMBER}.tar.gz Jenkinsfile jobs.groovy helloworld-ws.war"
         archiveArtifacts 'pipeline-apatapniou-${BUILD_NUMBER}.tar.gz'
         push()
-      }
-    }
-    catch (all)
-    {
-      mail bcc: '', body: 'HEY! Whats wrong with you ?!! ERROR WITH PACKAGING AND PUBLISING !!', cc: '', from: '', replyTo: '', subject: 'Jenkins', to: 'apotapnyov@yandex.by'
-    }
+  
     try {
       stage ('Asking for manual approval')
               {
