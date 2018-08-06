@@ -34,7 +34,7 @@ int push(artifact, buildnum) {
     writer.write (fileToSend)
     writer.close()
     println(connection.responseCode)
-    if(connection.responseCode != 201){
+    if(connection.responseCode != "201"){
         throw new Exception("Artifact was not pushed")
     }
 }
