@@ -98,9 +98,10 @@ try {
             archiveArtifacts "$archive_name"
 
             step_name = "Push the artifact to Nexus."
-            withEnv(["GROOVY_HOME=${tool groovy}"]) {
-                sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c push -r My-release"
-            }
+            ysokalNexus("$archive_name", "push", "My-release")
+      //      withEnv(["GROOVY_HOME=${tool groovy}"]) {
+      //          sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c push -r My-release"
+      //      }
         }
 
         stage('Asking for manual approval') {
@@ -115,9 +116,9 @@ try {
             stage_name = "Deployment."
             step_name = "Pull artifact from Nexus"
             sh "mkdir ./downloads"
-            ysokalNexus("$archive_name", "pull", "My-release")
-   //         withEnv(["GROOVY_HOME=${tool groovy}"]) {
-   //             sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c pull -r My-release"
+     //       ysokalNexus("$archive_name", "pull", "My-release")
+            withEnv(["GROOVY_HOME=${tool groovy}"]) {
+                sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c pull -r My-release"
             }
             step_name = "Publishing through SSH."
             sh "scp -P 2201 ./downloads/$archive_name vagrant@EPBYMINW3088:/home/vagrant/Jenkins/"
