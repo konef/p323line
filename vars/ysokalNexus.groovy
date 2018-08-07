@@ -20,7 +20,7 @@ def call(name, cmd, repo) {
     println("name - $name, cmd - $cmd, repo - $repo")
     if (cmd == "push") {
         println("Call upload")
-        request.encoder.'application/zip' = this.&encodeZipFile
+        request.encoder.'application/zip' = ysokalEncodeZipFile
         respons_up = request.put(
                 uri: "${server}${repo}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz",
                 body: new File(name),
@@ -41,10 +41,4 @@ def call(name, cmd, repo) {
     else {
         println("This script is supported only 'pull' or 'push' commands!")
     }
-}
-
-def encodeZipFile(Object data) throws UnsupportedEncodingException {
-    def entity = new FileEntity((File) data, "application/zip")
-    entity.setContentType("application/zip")
-    return entity
 }
