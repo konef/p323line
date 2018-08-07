@@ -9,7 +9,7 @@ def push() {
 }
 
 def pull() {
-    sh 'wget http://nexus/repository/maven-releases/Task11/pipeline-ukuchynski/${BUILD_NUMBER}/pipeline-ukuchynski-${BUILD_NUMBER}.tar.gz'
+    sh 'wget http://192.168.1.11:8081/repository/maven-releases/Task11/pipeline-ukuchynski/${BUILD_NUMBER}/pipeline-ukuchynski-${BUILD_NUMBER}.tar.gz'
 }
 
 node("${SLAVE}") {
