@@ -14,11 +14,14 @@ def call(name, cmd, repo) {
     f_name = name.split('.tar')[0]
     artifactId = f_name.split('-')[1]
     version = f_name.split('-')[-1]
-    println("name - $name, cmd - $cmd, repo - $repo")
+
     request = new RESTClient(server)
     request.auth.basic("${username}", "${password}")
-
-    if ("$cmd" == "push") {
+    println("name - $name, cmd - $cmd, repo - $repo")
+    command = [push: {->upload()}, pull: {->download()}]
+    
+    def upload() {
+        println("Call upload!")
         request.encoder.'application/zip' = this.&encodeZipFile
         respons_up = request.put(
                 uri: "${server}${repo}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz",
@@ -26,23 +29,23 @@ def call(name, cmd, repo) {
                 requestContentType: 'application/zip')
         assert respons_up.status == 201
     }
-    else if ("$cmd" == "pull") {
-        respons_down = request.get(
-                uri: "${server}${repo}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz")
+
+    def download() {
+        println("Call download!")
         def folder = new File( './downloads' )
         if ( !folder.exists()){
             folder.mkdir()
         }
-        new File( folder, "${name}") << respons_down.data
-        assert respons_down.status == 200
+        respons_down = request.get(
+                uri: "${server}${repo}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz")
+                    new File( folder, "${name}") << respons_down.data
+                    assert respons_down.status == 200
     }
-    else {
-        println("This script is supported only 'pull' or 'push' commands!")
-    }
-}
 
-def encodeZipFile(Object data) throws UnsupportedEncodingException {
-    def entity = new FileEntity((File) data, "application/zip")
-    entity.setContentType("application/zip")
-    return entity
+    def encodeZipFile(Object data) throws UnsupportedEncodingException {
+        def entity = new FileEntity((File) data, "application/zip")
+        entity.setContentType("application/zip")
+        return entity
+    }
+    command[cmd]
 }
