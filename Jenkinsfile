@@ -73,7 +73,7 @@ node("${SLAVE}") {
     }
 
     stage('Sending build results E-mail'){
-        mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "Build is successful", to: 'lokkacocca@yandex.ru'
+        mail bcc: '', body: 'SUCCESS', cc: '', from: '', replyTo: '', subject: "Build is successful", to: 'lokkacocca@yandex.ru'
     }
 
 }
