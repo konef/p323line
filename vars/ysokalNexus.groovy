@@ -4,7 +4,6 @@ import org.apache.http.entity.*
 import hudson.model.*
 
 
-@NonCPS
 def call(name, cmd, repo) {
     server = "http://EPBYMINW3088/nexus/repository/"
     groupId = "pipeline"
@@ -20,11 +19,11 @@ def call(name, cmd, repo) {
     println("name - $name, cmd - $cmd, repo - $repo")
     if (cmd == "push") {
         println("Call upload")
+        request.encoder.'application/zip' = this.&encodeZipFile
         respons_up = request.put(
                 uri: "${server}${repo}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz",
                 body: new File(name),
-                requestContentType: 'multipart/form-data')
-        println("Call assert")
+                requestContentType: 'application/zip')
         assert respons_up.status == 201
     }
     else if (cmd == "pull") {
@@ -41,4 +40,10 @@ def call(name, cmd, repo) {
     else {
         println("This script is supported only 'pull' or 'push' commands!")
     }
+}
+@NonCPS
+def encodeZipFile(Object data) throws UnsupportedEncodingException {
+    def entity = new FileEntity((File) data, "application/zip")
+    entity.setContentType("application/zip")
+    return entity
 }
