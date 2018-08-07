@@ -4,12 +4,8 @@ import org.apache.http.entity.*
 import hudson.model.*
 
 
-def call(body) {
-
-    def pipelineParams = [:]
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = pipelineParams
-    body()
+@NonCPS
+def call(name, cmd, repo) {
     server = "http://EPBYMINW3088/nexus/repository/"
     groupId = "pipeline"
     username = 'Jenkins'
