@@ -20,13 +20,10 @@ def call(name, cmd, repo) {
     println("name - $name, cmd - $cmd, repo - $repo")
     if (cmd == "push") {
         println("Call upload")
-        request.encoder.'application/zip' = new FileEntity((File) data, "application/zip")
-        entity.setContentType("application/zip")
-        println("Call PUT")
         respons_up = request.put(
                 uri: "${server}${repo}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz",
                 body: new File(name),
-                requestContentType: 'application/zip')
+                requestContentType: 'multipart/form-data')
         println("Call assert")
         assert respons_up.status == 201
     }
