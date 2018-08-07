@@ -20,7 +20,8 @@ def call(name, cmd, repo) {
     println("name - $name, cmd - $cmd, repo - $repo")
     if (cmd == "push") {
         println("Call upload")
-        request.encoder.'application/zip' = ysokalEncodeZipFile
+        request.encoder.'application/zip' = new FileEntity((File) data, "application/zip")
+        entity.setContentType("application/zip")
         respons_up = request.put(
                 uri: "${server}${repo}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz",
                 body: new File(name),
