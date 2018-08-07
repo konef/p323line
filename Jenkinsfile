@@ -60,7 +60,7 @@ node("${SLAVE}") {
         exit_code = sh (
                 script: 'curl -s -o /dev/null -I -w \'%{http_code}\' http://192.168.1.5:8080/helloworld-ws/',
                 returnStdout: true
-        ).trim()
+        ).trim()+"\n"
         if(exit_code != "200"){
             echo "Deployment failed. Redeploying last artifact"
             lastBuild = env.BUILD_NUMBER - 1
