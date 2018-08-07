@@ -37,7 +37,7 @@ try {
             deleteDir()
 
             step_name = "Download from GitHub."
-            git branch: "$student", url: 'https://github.com/MNT-Lab/p323line.git'
+            checkout scm
         }
 
         stage('Building code') {
