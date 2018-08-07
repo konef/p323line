@@ -101,7 +101,7 @@ try {
             step_name = "Push the artifact to Nexus."
 //            ysokalNexus("$archive_name", "push", "My-release")
             withEnv(["GROOVY_HOME=${tool groovy}"]) {
-              sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c pull -r My-release"
+              sh "$GROOVY_HOME/bin/groovy archive_loader.groovy -n $archive_name -c push -r My-release"
             }
         }
 
