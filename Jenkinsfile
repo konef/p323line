@@ -61,7 +61,7 @@ node("${SLAVE}") {
                 script: 'curl -s -o /dev/null -I -w \'%{http_code}\' http://192.168.1.5:8080/helloworld-ws/',
                 returnStdout: true
         ).trim()+"\n"
-        if(exit_code != "200"){
+        if(exit_code != "200\n"){
             echo "Deployment failed. Redeploying last artifact"
             lastBuild = env.BUILD_NUMBER - 1
             sh "groovy ./artifacts pull pipeline-stsitou-${lastBuild}.tar.gz ${lastBuild}"
