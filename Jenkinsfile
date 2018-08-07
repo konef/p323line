@@ -28,7 +28,7 @@ node("${SLAVE}") {
         def childjob  = build job: 'EPBYMINW2466/MNTLAB-stsitou-child1-build-job', parameters: [string(name: 'BRANCH_NAME', value: 'stsitou')]
         copyArtifacts filter: "stsitou_dsl_script.tar.gz", projectName: "MNTLAB-stsitou-child1-build-job", selector: lastSuccessful()
         echo "Job status: ${childjob.result}"
-        if(${childjob.result}!="SUCCESS"){
+        if(childjob.result!="SUCCESS"){
             mail bcc: '', body: 'Failed', cc: '', from: '', replyTo: '', subject: "$STAGE_NAME stage failed ", to: 'lokkacocca@yandex.ru'
             throw new Exception("External job failed")
         }
