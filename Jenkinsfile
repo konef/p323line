@@ -5,7 +5,7 @@ def SendEmail(status, stag, err) {
 }
 
 def push() {
-    nexusArtifactUploader artifacts: [[artifactId: 'pipeline-ukuchynski', classifier: '', file: 'pipeline-ukuchynski-${BUILD_NUMBER}.tar.gz', type: 'tar.gz']], credentialsId: 'nexus', groupId: 'Task11', nexusUrl: 'nexus', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '$BUILD_NUMBER' 
+    nexusArtifactUploader artifacts: [[artifactId: 'pipeline-ukuchynski', classifier: '', file: 'pipeline-ukuchynski-${BUILD_NUMBER}.tar.gz', type: 'tar.gz']], credentialsId: 'nexus', groupId: 'Task11', nexusUrl: '192.168.1.11:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '$BUILD_NUMBER' 
 }
 
 def pull() {
