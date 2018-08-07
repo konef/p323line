@@ -14,7 +14,7 @@ def call(name, cmd, repo) {
     f_name = name.split('.tar')[0]
     artifactId = f_name.split('-')[1]
     version = f_name.split('-')[-1]
-
+    println("name - $name, cmd - $cmd, repo - $repo")
     request = new RESTClient(server)
     request.auth.basic("${username}", "${password}")
 
