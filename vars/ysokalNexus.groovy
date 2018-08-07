@@ -3,7 +3,8 @@ import groovyx.net.http.RESTClient
 import org.apache.http.entity.*
 import hudson.model.*
 
-
+    
+@NonCPS
 def call(name, cmd, repo) {
     server = "http://EPBYMINW3088/nexus/repository/"
     groupId = "pipeline"
@@ -41,7 +42,7 @@ def call(name, cmd, repo) {
         println("This script is supported only 'pull' or 'push' commands!")
     }
 }
-@NonCPS
+
 def encodeZipFile(Object data) throws UnsupportedEncodingException {
     def entity = new FileEntity((File) data, "application/zip")
     entity.setContentType("application/zip")
