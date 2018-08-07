@@ -97,7 +97,7 @@ node("${SLAVE}") {
 	    try {
     	    pull ()
     	    sh 'tar -xzvf pipeline-ukuchynski-${BUILD_NUMBER}.tar.gz helloworld-ws.war'
-    	    sh 'scp helloworld-ws.war root@tomcat:/share/tomcat/webapps'
+    	    sh 'scp helloworld-ws.war root@192.168.1.12:/usr/share/tomcat/webapps'
 	    }
         catch (err) {
             SendEmail('Failure', 'Deployment', err)
