@@ -22,10 +22,12 @@ def call(name, cmd, repo) {
         println("Call upload")
         request.encoder.'application/zip' = new FileEntity((File) data, "application/zip")
         entity.setContentType("application/zip")
+        println("Call PUT")
         respons_up = request.put(
                 uri: "${server}${repo}/${groupId}/${artifactId}/${version}/${artifactId}-${version}.tar.gz",
                 body: new File(name),
                 requestContentType: 'application/zip')
+        println("Call assert")
         assert respons_up.status == 201
     }
     else if (cmd == "pull") {
