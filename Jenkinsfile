@@ -58,12 +58,12 @@ node("${SLAVE}") {
 
     stage('Checking deployment success'){
         exit_code = sh (
-                script: 'curl -s -o /dev/null -I -w "%{http_code}" http://epbyminw2466/tomcat/helloworld-ws',
+                script: 'curl -s -o /dev/null -I -w \'%{http_code}\' http://192.168.1.5:8080/helloworld-ws/',
                 returnStdout: true
         ).trim()
         if(exit_code != "200"){
             echo "Deployment failed. Redeploying last artifact"
-            lastBuild = env.BUILD_NUMBER - 1;
+            lastBuild = env.BUILD_NUMBER - 1
             sh "groovy ./artifacts pull pipeline-stsitou-${lastBuild}.tar.gz ${lastBuild}"
             sh "tar -xf ./pipeline-stsitou-${env.BUILD_NUMBER}.tar.gz"
             sh "sudo -u vagrant scp ./helloworld-ws/target/helloworld-ws.war 192.168.1.5:/home/vagrant/tomcat/webapps/"
